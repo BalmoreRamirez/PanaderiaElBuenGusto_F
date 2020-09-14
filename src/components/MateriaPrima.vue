@@ -17,31 +17,59 @@
                   <span class="headline">Materia prima</span>
                 </v-card-title>
                 <v-card-text>
-                  <v-form>
+                  <v-form v-model="valid">
                     <v-container>
                       <v-row>
                         <v-col cols="12" sm="6">
-                          <v-text-field label="Codigo*" v-model="CodigoMP" required></v-text-field>
+                          <v-text-field v-model="CodigoMP" 
+                                        label="Codigo*"  
+                                        :rules="[required('codigo')]">
+                          </v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6">
-                          <v-text-field label="Nombre*" v-model="NombreMP" required></v-text-field>
+                          <v-text-field v-model="NombreMP"
+                                        label="Nombre*"  
+                                        :rules="[required('nombre')]">
+                          </v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6">
-                          <v-text-field label="Clase*" v-model="Clase" required></v-text-field>
+                          <v-text-field v-model="Clase"
+                                        label="Clase*"  
+                                        :rules="[required('clase')]">
+                          </v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6">
-                          <v-text-field label="Observacion*" v-model="Observacion" required></v-text-field>
+                          <v-text-field v-model="Observacion" 
+                                        label="Observacion*"
+                                        :rules="[required('Observacion')]">
+                          </v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6">
-                          <v-text-field label="Descripcion*" v-model="Descripcion" required></v-text-field>
+                          <v-text-field v-model="Descripcion"
+                                        label="Descripcion*">
+                          </v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6">
-                          <v-text-field label="Unidad Medida*" v-model="UnidadMedidaID" required></v-text-field>
+                          <v-text-field v-model="UnidadMedidaID"
+                                        label="Unidad Medida*"  
+                                        :rules="[required('Unidad de medida')]">
+                          </v-text-field>
                         </v-col>
-                        <v-col cols="12" sm="6">
+                        <v-card-actions>
+                          <v-flex>
+                            <v-btn  @click="close">Salir</v-btn>
+                          </v-flex>
+                          <v-flex class="text-xs-right">
+                            <v-btn  @click="saveMateriaPrima" :disabled="!valid">Guardar</v-btn>
+                          </v-flex>
+                        </v-card-actions>
+                        <!--<v-col cols="12" sm="6">
                           <v-btn small color="primary" dark @click="close">Salir</v-btn>
-                          <v-btn small color="primary" dark @click="addBook">Guardar</v-btn>
+                          <v-btn small color="primary" dark @click="saveMateriaPrima" :disabled="!valid">Guardar</v-btn>
                         </v-col>
+                        -->
+                        
+       
                       </v-row>
                     </v-container>
                   </v-form>
@@ -53,6 +81,7 @@
         </template>
       </v-data-table>
     </v-flex>
+    
   </v-layout>
 </template>
 
@@ -62,6 +91,11 @@ export default {
 
   data() {
     return {
+      valid:false,
+      required(propertyType){
+        return v=>v && v.length>0 || `Tienes que ingresar ${propertyType}`
+
+      },
       MateriaPrima: [],
       CodigoMP: "",
       NombreMP: "",
@@ -93,7 +127,7 @@ export default {
       const res = await this.$http.get(this.url);
       this.MateriaPrima = res.data;
     },
-    addBook: async function() {
+    saveMateriaPrima: async function() {
       const obj = new FormData();
       obj.append("CodigoMP", this.CodigoMP);
       obj.append("NombreMP", this.NombreMP);

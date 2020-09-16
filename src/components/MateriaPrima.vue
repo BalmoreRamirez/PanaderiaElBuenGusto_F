@@ -21,46 +21,51 @@
                     <v-container>
                       <v-row>
                         <v-col cols="12" sm="6">
-                          <v-text-field v-model="CodigoMP" 
-                                        label="Codigo*"  
-                                        :rules="[required('codigo')]">
-                          </v-text-field>
+                          <v-text-field
+                            v-model="CodigoMP"
+                            label="Codigo*"
+                            :rules="[required('codigo')]"
+                          ></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6">
-                          <v-text-field v-model="NombreMP"
-                                        label="Nombre*"  
-                                        :rules="[required('nombre')]">
-                          </v-text-field>
+                          <v-text-field
+                            v-model="NombreMP"
+                            label="Nombre*"
+                            :rules="[required('nombre')]"
+                          ></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6">
-                          <v-text-field v-model="Clase"
-                                        label="Clase*"  
-                                        :rules="[required('clase')]">
-                          </v-text-field>
+                          <v-text-field v-model="Clase" label="Clase*" :rules="[required('clase')]"></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6">
-                          <v-text-field v-model="Observacion" 
-                                        label="Observacion*"
-                                        :rules="[required('Observacion')]">
-                          </v-text-field>
+                          <v-text-field
+                            v-model="Observacion"
+                            label="Observacion*"
+                            :rules="[required('Observacion')]"
+                          ></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6">
-                          <v-text-field v-model="Descripcion"
-                                        label="Descripcion*">
-                          </v-text-field>
+                          <v-text-field v-model="Descripcion" label="Descripcion*"></v-text-field>
                         </v-col>
+
                         <v-col cols="12" sm="6">
-                          <v-text-field v-model="UnidadMedidaID"
-                                        label="Unidad Medida*"  
-                                        :rules="[required('Unidad de medida')]">
-                          </v-text-field>
+                          <v-select
+                            :items="UnidadMedida"
+                             item-text="NombreUnidad"
+                             item-value="IdUnidadMedida"
+                            v-model="UnidadMedidaID"
+                            label="Selecione la unidad"
+                            
+                          >
+                          </v-select>
                         </v-col>
+
                         <v-card-actions>
                           <v-flex>
-                            <v-btn  @click="close">Salir</v-btn>
+                            <v-btn @click="close">Salir</v-btn>
                           </v-flex>
                           <v-flex class="text-xs-right">
-                            <v-btn  @click="saveMateriaPrima" :disabled="!valid">Guardar</v-btn>
+                            <v-btn @click="saveMateriaPrima" :disabled="!valid">Guardar</v-btn>
                           </v-flex>
                         </v-card-actions>
                         <!--<v-col cols="12" sm="6">
@@ -68,8 +73,6 @@
                           <v-btn small color="primary" dark @click="saveMateriaPrima" :disabled="!valid">Guardar</v-btn>
                         </v-col>
                         -->
-                        
-       
                       </v-row>
                     </v-container>
                   </v-form>
@@ -81,7 +84,6 @@
         </template>
       </v-data-table>
     </v-flex>
-    
   </v-layout>
 </template>
 
@@ -91,18 +93,23 @@ export default {
 
   data() {
     return {
-      valid:false,
-      required(propertyType){
-        return v=>v && v.length>0 || `Tienes que ingresar ${propertyType}`
-
+      valid: false,
+      required(propertyType) {
+        return v =>
+          (v && v.length > 0) || `Tienes que ingresar ${propertyType}`;
       },
+      
       MateriaPrima: [],
+      UnidadMedida: [],
       CodigoMP: "",
       NombreMP: "",
       Clase: "",
       Observacion: "",
       Descripcion: "",
-      UnidadMedidaID: "",
+      NombreUnidad: "",
+      UnidadMedidaID:"",
+
+      url2: "http://localhost/PanaderiaBG/public/UnidadMateria",
       url: "http://localhost/PanaderiaBG/public/MateriaPrima",
       search: "",
       dialog: false,
@@ -118,11 +125,15 @@ export default {
         { text: "Clase", value: "Clase" },
         { text: "Obervacion", value: "Observacion" },
         { text: "Descripcion", value: "Descripcion" },
-        { text: "Unidad de Medida", value: "UnidadMedidaID" }
+        { text: "Unidad de Medida", value: "NombreUnidad" }
       ]
     };
   },
   methods: {
+    getUnidad: async function() {
+      const res = await this.$http.get(this.url2);
+      this.UnidadMedida = res.data;
+    },
     getMateriaPrima: async function() {
       const res = await this.$http.get(this.url);
       this.MateriaPrima = res.data;
@@ -143,15 +154,15 @@ export default {
       this.Observacion = "";
       this.Descripcion = "";
       this.UnidadMedidaID = "";
+       this.getMateriaPrima();
     },
-       close () {
-        this.dialog = false
-      },
-
+    close() {
+      this.dialog = false;
+    }
   },
   created() {
     this.getMateriaPrima();
-  },
-
+    this.getUnidad();
+  }
 };
 </script>

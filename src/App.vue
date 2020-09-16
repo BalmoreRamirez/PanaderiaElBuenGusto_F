@@ -25,39 +25,31 @@
                 <v-list-item-title>Producto</v-list-item-title>
               </v-list-item-content>
             </template>
+
             <v-list-item
-                v-for="(admin, i) in admins"
-                :key="i"
+                link
+                :to="{name:'configProduct'}"
+            >
+              <v-list-item-title>Configuracion Producto</v-list-item-title>
+            </v-list-item>
+            <v-list-item
                 link
                 :to="{name:'materiaPrima'}"
             >
-              <v-list-item-title v-text="admin[0]"></v-list-item-title>
+              <v-list-item-title>Materia Prima</v-list-item-title>
             </v-list-item>
           </v-list-group>
-          <v-list-group
-              sub-group
-              no-action
-          >
-            <template v-slot:activator>
-              <v-list-item-content>
-                <v-list-item-title>Actions</v-list-item-title>
-              </v-list-item-content>
-            </template>
-            <v-list-item
-                v-for="(crud, i) in cruds"
-                :key="i"
 
-            >
-              <v-list-item-title v-text="crud[0]"></v-list-item-title>
-              <v-list-item-action>
-                <v-icon v-text="crud[1]"></v-icon>
-              </v-list-item-action>
-            </v-list-item>
-          </v-list-group>
         </v-list-group>
       </v-list>
     </v-navigation-drawer>
-  <HeaderNav></HeaderNav>
+    <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app color="blue darken-3" dark>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-toolbar-title style="width: 300px" class="ml-0 pl-4">
+        <span class="hidden-sm-and-down">TEST UFG</span>
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+    </v-app-bar>
     <v-main>
       <v-container class="fill-height" fluid>
         <v-slide-y-transition>
@@ -72,20 +64,21 @@
 
 <script>
 import Footer from "@/components/Home/Footer";
-import HeaderNav from "@/components/Home/HeaderNav";
+//import HeaderNav from "@/components/Home/HeaderNav";
 
 export default {
   name: "panaderia",
-  components: {Footer,HeaderNav},
+  components: {Footer},
   props: {
     source: String
   },
   data() {
     return {
+      dialog: false,
       drawer: null,
       admins: [
-        ['Configurar', 'people_outline'],
-        ['Registrar', 'settings'],
+        ['Configurar Producto', 'people_outline'],
+        ['Materia prima', 'settings'],
       ],
       cruds: [
         ['Create', 'add'],
@@ -93,6 +86,7 @@ export default {
         ['Update', 'update'],
         ['Delete', 'delete'],
       ],
+
     };
 
   }

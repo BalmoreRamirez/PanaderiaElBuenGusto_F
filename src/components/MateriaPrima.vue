@@ -10,7 +10,7 @@
             <v-spacer></v-spacer>
             <v-dialog v-model="dialog" persistent max-width="600px">
               <template v-slot:activator="{ on, attrs }">
-                <v-btn color="blue" dark v-bind="attrs" v-on="on">Ingresar registro</v-btn>
+                <v-btn color="blue" class="ml-3" dark v-bind="attrs" v-on="on">Ingresar registro</v-btn>
               </template>
               <v-card>
                 <v-card-title>
@@ -22,16 +22,16 @@
                       <v-row>
                         <v-col cols="12" sm="6">
                           <v-text-field
-                            v-model="CodigoMP"
-                            label="Codigo*"
-                            :rules="[required('codigo')]"
+                              v-model="CodigoMP"
+                              label="Codigo*"
+                              :rules="[required('codigo')]"
                           ></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6">
                           <v-text-field
-                            v-model="NombreMP"
-                            label="Nombre*"
-                            :rules="[required('nombre')]"
+                              v-model="NombreMP"
+                              label="Nombre*"
+                              :rules="[required('nombre')]"
                           ></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6">
@@ -39,9 +39,9 @@
                         </v-col>
                         <v-col cols="12" sm="6">
                           <v-text-field
-                            v-model="Observacion"
-                            label="Observacion*"
-                            :rules="[required('Observacion')]"
+                              v-model="Observacion"
+                              label="Observacion*"
+                              :rules="[required('Observacion')]"
                           ></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6">
@@ -50,12 +50,11 @@
 
                         <v-col cols="12" sm="6">
                           <v-select
-                            :items="UnidadMedida"
-                             item-text="NombreUnidad"
-                             item-value="IdUnidadMedida"
-                            v-model="UnidadMedidaID"
-                            label="Selecione la unidad"
-                            
+                              :items="UnidadMedida"
+                              item-text="NombreUnidad"
+                              item-value="IdUnidadMedida"
+                              v-model="UnidadMedidaID"
+                              label="Selecione la unidad"
                           >
                           </v-select>
                         </v-col>
@@ -68,11 +67,6 @@
                             <v-btn @click="saveMateriaPrima" :disabled="!valid">Guardar</v-btn>
                           </v-flex>
                         </v-card-actions>
-                        <!--<v-col cols="12" sm="6">
-                          <v-btn small color="primary" dark @click="close">Salir</v-btn>
-                          <v-btn small color="primary" dark @click="saveMateriaPrima" :disabled="!valid">Guardar</v-btn>
-                        </v-col>
-                        -->
                       </v-row>
                     </v-container>
                   </v-form>
@@ -96,9 +90,9 @@ export default {
       valid: false,
       required(propertyType) {
         return v =>
-          (v && v.length > 0) || `Tienes que ingresar ${propertyType}`;
+            (v && v.length > 0) || `Tienes que ingresar ${propertyType}`;
       },
-      
+
       MateriaPrima: [],
       UnidadMedida: [],
       CodigoMP: "",
@@ -107,7 +101,7 @@ export default {
       Observacion: "",
       Descripcion: "",
       NombreUnidad: "",
-      UnidadMedidaID:"",
+      UnidadMedidaID: "",
 
       url2: "http://localhost/PanaderiaBG/public/UnidadMateria",
       url: "http://localhost/PanaderiaBG/public/MateriaPrima",
@@ -121,24 +115,24 @@ export default {
           value: "CodigoMP"
         },
         //  { text: "Codigo", value: "CodigoMP" },
-        { text: "Nombre", value: "NombreMP" },
-        { text: "Clase", value: "Clase" },
-        { text: "Obervacion", value: "Observacion" },
-        { text: "Descripcion", value: "Descripcion" },
-        { text: "Unidad de Medida", value: "NombreUnidad" }
+        {text: "Nombre", value: "NombreMP"},
+        {text: "Clase", value: "Clase"},
+        {text: "Obervacion", value: "Observacion"},
+        {text: "Descripcion", value: "Descripcion"},
+        {text: "Unidad de Medida", value: "NombreUnidad"}
       ]
     };
   },
   methods: {
-    getUnidad: async function() {
+    getUnidad: async function () {
       const res = await this.$http.get(this.url2);
       this.UnidadMedida = res.data;
     },
-    getMateriaPrima: async function() {
+    getMateriaPrima: async function () {
       const res = await this.$http.get(this.url);
       this.MateriaPrima = res.data;
     },
-    saveMateriaPrima: async function() {
+    saveMateriaPrima: async function () {
       const obj = new FormData();
       obj.append("CodigoMP", this.CodigoMP);
       obj.append("NombreMP", this.NombreMP);
@@ -154,7 +148,7 @@ export default {
       this.Observacion = "";
       this.Descripcion = "";
       this.UnidadMedidaID = "";
-       this.getMateriaPrima();
+      this.getMateriaPrima();
     },
     close() {
       this.dialog = false;

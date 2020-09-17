@@ -10,7 +10,7 @@
             <v-spacer></v-spacer>
             <v-dialog v-model="dialog" persistent max-width="600px">
               <template v-slot:activator="{ on, attrs }">
-                <v-btn color="blue" dark v-bind="attrs" v-on="on">Ingresar registro</v-btn>
+                <v-btn color="blue" class="ml-3" dark v-bind="attrs" v-on="on">Ingresar registro</v-btn>
               </template>
               <v-card>
                 <v-card-title>
@@ -110,7 +110,7 @@ export default {
       valid: false,
       required(propertyType) {
         return v =>
-          (v && v.length > 0) || `Tienes que ingresar ${propertyType}`;
+            (v && v.length > 0) || `Tienes que ingresar ${propertyType}`;
       },
       letter(propertyType){return v => /^[ñA-Za-z _]*[ñA-Za-z][ñA-Za-z _]+$/.test(v) || `Solo acepta ${propertyType}`
            },
@@ -168,11 +168,11 @@ export default {
       this.UnidadMedida = res.data;
       
     },
-    getMateriaPrima: async function() {
+    getMateriaPrima: async function () {
       const res = await this.$http.get(this.url);
       this.MateriaPrima = res.data;
     },
-    saveMateriaPrima: async function() {
+    saveMateriaPrima: async function () {
       const obj = new FormData();
       obj.append("CodigoMP", this.CodigoMP);
       obj.append("NombreMP", this.NombreMP);

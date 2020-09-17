@@ -1,46 +1,34 @@
 <template>
   <v-app id="inspire">
     <v-navigation-drawer v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" app>
-      <v-list>
+      <v-list dense nav>
         <v-list-item :to="{name:'Home'}">
           <v-list-item-icon>
-            <v-icon>mdi-home</v-icon>
+            <v-icon>dashboard</v-icon>
           </v-list-item-icon>
-          <v-list-item-title>Home</v-list-item-title>
+
+          <v-list-item-content>
+            <v-list-item-title>Home</v-list-item-title>
+          </v-list-item-content>
         </v-list-item>
-        <v-list-group
-            prepend-icon="account_circle"
-            value="true"
-        >
-          <template v-slot:activator>
-            <v-list-item-title>Materia prima</v-list-item-title>
-          </template>
-          <v-list-group
-              no-action
-              sub-group
-              value="true"
-          >
-            <template v-slot:activator>
-              <v-list-item-content>
-                <v-list-item-title>Producto</v-list-item-title>
-              </v-list-item-content>
-            </template>
+        <v-list-item :to="{name:'materiaPrima'}">
+          <v-list-item-icon>
+            <v-icon>settings_applications</v-icon>
+          </v-list-item-icon>
 
-            <v-list-item
-                link
-                :to="{name:'configProduct'}"
-            >
-              <v-list-item-title>Configuracion Producto</v-list-item-title>
-            </v-list-item>
-            <v-list-item
-                link
-                :to="{name:'materiaPrima'}"
-            >
-              <v-list-item-title>Materia Prima</v-list-item-title>
-            </v-list-item>
-          </v-list-group>
+          <v-list-item-content>
+            <v-list-item-title>Materia Prima</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item :to="{name:'materiaPrima'}">
+          <v-list-item-icon>
+            <v-icon>settings_applications</v-icon>
+          </v-list-item-icon>
 
-        </v-list-group>
+          <v-list-item-content>
+            <v-list-item-title>Distribuir Materia Prima</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app color="blue darken-3" dark>
@@ -57,15 +45,12 @@
         </v-slide-y-transition>
       </v-container>
     </v-main>
-
     <Footer></Footer>
   </v-app>
 </template>
 
 <script>
 import Footer from "@/components/Home/Footer";
-//import HeaderNav from "@/components/Home/HeaderNav";
-
 export default {
   name: "panaderia",
   components: {Footer},
@@ -76,17 +61,6 @@ export default {
     return {
       dialog: false,
       drawer: null,
-      admins: [
-        ['Configurar Producto', 'people_outline'],
-        ['Materia prima', 'settings'],
-      ],
-      cruds: [
-        ['Create', 'add'],
-        ['Read', 'insert_drive_file'],
-        ['Update', 'update'],
-        ['Delete', 'delete'],
-      ],
-
     };
 
   }

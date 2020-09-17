@@ -24,14 +24,14 @@
                           <v-text-field
                             v-model="CodigoMP"
                             label="Codigo*"
-                            :rules="[required('codigo')]"
-                          ></v-text-field>
+                            :rules="[required('codigo'), number('numeros')]">
+                          </v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6">
                           <v-text-field
                             v-model="NombreMP"
                             label="Nombre*"
-                            :rules="[required('nombre')]"
+                             :rules="[required('nombre'), letter('letras')]"
                           ></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6">
@@ -41,11 +41,12 @@
                           <v-text-field
                             v-model="Observacion"
                             label="Observacion*"
-                            :rules="[required('Observacion')]"
-                          ></v-text-field>
+                            counter=30
+                            :rules="[required('Observacion'),maxlength('Observacion',30)]">
+                            </v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6">
-                          <v-text-field v-model="Descripcion" label="Descripcion*"></v-text-field>
+                          <v-text-field v-model="Descripcion" label="Descripcion"></v-text-field>
                         </v-col>
 
                         <v-col cols="12" sm="6">
@@ -54,7 +55,24 @@
                              item-text="NombreUnidad"
                              item-value="IdUnidadMedida"
                             v-model="UnidadMedidaID"
-                            label="Selecione la unidad"
+                           label="Selecione la unidad"
+                           :rules="[(v) => !!v || 'unidad es requerido']"
+                           required
+                           
+                            
+                          >
+                          </v-select>
+                        </v-col>
+
+                          <v-col cols="12" sm="6">
+                          <v-select
+                            :items="Proveedor"
+                             item-text="NombreProveedor"
+                            item-value="IdProveedor"
+                            v-model="ProveedorID"
+                            label="Selecione Proveedor"
+                            :rules="[(v) => !!v || 'proveedor es requerido']"
+                           required
                             
                           >
                           </v-select>
@@ -68,11 +86,7 @@
                             <v-btn @click="saveMateriaPrima" :disabled="!valid">Guardar</v-btn>
                           </v-flex>
                         </v-card-actions>
-                        <!--<v-col cols="12" sm="6">
-                          <v-btn small color="primary" dark @click="close">Salir</v-btn>
-                          <v-btn small color="primary" dark @click="saveMateriaPrima" :disabled="!valid">Guardar</v-btn>
-                        </v-col>
-                        -->
+                     
                       </v-row>
                     </v-container>
                   </v-form>
@@ -98,9 +112,18 @@ export default {
         return v =>
           (v && v.length > 0) || `Tienes que ingresar ${propertyType}`;
       },
+      letter(propertyType){return v => /^[ñA-Za-z _]*[ñA-Za-z][ñA-Za-z _]+$/.test(v) || `Solo acepta ${propertyType}`
+           },
+      number(propertyType){return v => /^\d+$/.test(v) || `Solo acepta ${propertyType}`
+           },
+      maxlength(propertyType,maxlength ){
+        return v=>v && v.length<=maxlength || `${propertyType} no puede superar los ${maxlength} caracteres`
+           },
       
       MateriaPrima: [],
       UnidadMedida: [],
+      Proveedor:[],
+      
       CodigoMP: "",
       NombreMP: "",
       Clase: "",
@@ -108,7 +131,11 @@ export default {
       Descripcion: "",
       NombreUnidad: "",
       UnidadMedidaID:"",
+      NombreProveedor:"",
+      ProveedorID:"",
+      
 
+      url3: "http://localhost/PanaderiaBG/public/ProveedorMateria",
       url2: "http://localhost/PanaderiaBG/public/UnidadMateria",
       url: "http://localhost/PanaderiaBG/public/MateriaPrima",
       search: "",
@@ -125,14 +152,21 @@ export default {
         { text: "Clase", value: "Clase" },
         { text: "Obervacion", value: "Observacion" },
         { text: "Descripcion", value: "Descripcion" },
-        { text: "Unidad de Medida", value: "NombreUnidad" }
+        { text: "Unidad de Medida", value: "NombreUnidad" },
+        { text: "Proveedor", value: "NombreProveedor" }
+        
       ]
     };
   },
   methods: {
+    getProveedores: async function() {
+      const res = await this.$http.get(this.url3);
+      this.Proveedor = res.data;
+    },
     getUnidad: async function() {
       const res = await this.$http.get(this.url2);
       this.UnidadMedida = res.data;
+      
     },
     getMateriaPrima: async function() {
       const res = await this.$http.get(this.url);
@@ -146,6 +180,7 @@ export default {
       obj.append("Observacion", this.Observacion);
       obj.append("Descripcion", this.Descripcion);
       obj.append("UnidadMedidaID", this.UnidadMedidaID);
+      obj.append("ProveedorID", this.ProveedorID);
       const res = await this.$http.post(this.url, obj);
       this.MateriaPrima.push(res.data.result);
       this.CodigoMP = "";
@@ -154,7 +189,9 @@ export default {
       this.Observacion = "";
       this.Descripcion = "";
       this.UnidadMedidaID = "";
-       this.getMateriaPrima();
+      this.ProveedorID="";
+      this.getMateriaPrima();
+      
     },
     close() {
       this.dialog = false;
@@ -163,6 +200,7 @@ export default {
   created() {
     this.getMateriaPrima();
     this.getUnidad();
+    this.getProveedores();
   }
 };
 </script>

@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import MateriaPrima from '../components/MateriaPrima.vue'
 import ConfigProduct from "@/components/ConfigProduct";
+import EntradaMatPrima from "@/components/EntradaMatPrima";
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,11 @@ const routes = [
         path: '/configProduct',
         name: 'configProduct',
         component: ConfigProduct
+    },
+    {
+        path: '/entradaMatPrima',
+        name: 'entradaMatPrima',
+        component: EntradaMatPrima
     },
     {
         path: '/about',

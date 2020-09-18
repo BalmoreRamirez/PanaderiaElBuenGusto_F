@@ -20,13 +20,13 @@
             <v-list-item-title>Materia Prima</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item :to="{name:'materiaPrima'}">
+        <v-list-item :to="{name:'entradaMatPrima'}">
           <v-list-item-icon>
             <v-icon>settings_applications</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title>Distribuir Materia Prima</v-list-item-title>
+            <v-list-item-title>Entrada Materia</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>

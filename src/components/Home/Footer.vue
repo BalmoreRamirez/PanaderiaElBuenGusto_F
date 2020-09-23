@@ -3,7 +3,7 @@
     <v-row justify="center" no-gutters>
       <v-col class="blue darken-4 lighten-2 py-4 text-center white--text" cols="12">
         {{ new Date().getFullYear() }} —
-        <strong>UFG</strong>
+        <strong>Panaderia El Buen Gusto</strong>
       </v-col>
     </v-row>
   </v-footer>

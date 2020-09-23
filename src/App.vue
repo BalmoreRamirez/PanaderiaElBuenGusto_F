@@ -15,7 +15,7 @@
         <!------------>
         <v-list-item :to="{name:'materiaPrima'}">
           <v-list-item-icon>
-            <v-icon>settings_applications</v-icon>
+            <v-icon>shopping_basket</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
@@ -25,7 +25,7 @@
         <!------------>
         <v-list-item :to="{name:'entradaMatPrima'}">
           <v-list-item-icon>
-            <v-icon>settings_applications</v-icon>
+            <v-icon>library_add</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
@@ -35,7 +35,7 @@
         <!------------>
         <v-list-item :to="{name:'migracionMatePrima'}">
           <v-list-item-icon>
-            <v-icon>settings_applications</v-icon>
+            <v-icon>queue_play_next</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
@@ -58,7 +58,7 @@
     <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app color="blue darken-3" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title style="width: 300px" class="ml-0 pl-4">
-        <span class="hidden-sm-and-down">TEST UFG</span>
+        <span class="hidden-sm-and-down">Panaderia El Buen Gusto</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
     </v-app-bar>

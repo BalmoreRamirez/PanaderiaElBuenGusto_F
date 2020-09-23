@@ -2,91 +2,93 @@
   <v-layout>
     <v-flex>
       <v-data-table
-        :headers="headers"
-        :items="EntradaMatPrima"
-        :search="search"
-        class="elevation-1"
+          :headers="headers"
+          :items="EntradaMatPrima"
+          :search="search"
+          class="elevation-10"
       >
         <template v-slot:top>
           <v-toolbar flat color="white">
-            <v-toolbar-title>Entradas de Materia Prima</v-toolbar-title>
+            <v-toolbar-title>Registro de entradas de Materia Prima</v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>
             <v-spacer></v-spacer>
-            <v-dialog v-model="dialog" max-width="600px">
+            <v-spacer></v-spacer>
+            <v-dialog v-model="dialog" persistent max-width="600px">
               <template v-slot:activator="{ on, attrs }">
-                <v-btn color="blue" class="ml-3" dark v-bind="attrs" v-on="on">Ingresar registro</v-btn>
+                <v-btn class="mx-2" fab dark color="indigo" v-bind="attrs" v-on="on">
+                  <v-icon dark>add</v-icon>
+                </v-btn>
               </template>
               <v-card>
                 <v-card-title>
                   <span class="headline">Entrada de Materia Prima</span>
                 </v-card-title>
-
-                <v-card-text>
-                  <v-form v-model="valid">
+                <v-form v-model="valid">
+                  <v-card-text>
                     <v-container>
                       <v-row>
                         <v-col cols="12" sm="6">
                           <v-select
-                            :items="MateriaPrima"
-                            item-text="NombreMP"
-                            item-value="IdRegistroMP"
-                            v-model="MateriaPrimaID"
-                            label="Selecione Materia Prima"
-                            :rules="[(v) => !!v || 'Materia Prima es requerido']"
-                            required
+                              :items="MateriaPrima"
+                              item-text="NombreMP"
+                              item-value="IdRegistroMP"
+                              v-model="MateriaPrimaID"
+                              label="Selecione Materia Prima"
+                              :rules="[(v) => !!v || 'Materia Prima es requerido']"
+                              required
                           ></v-select>
                         </v-col>
                         <v-col cols="12" sm="6">
                           <v-text-field
-                            v-model="Desperdicio"
-                            label="Desperdicio*"
-                            :rules="[required('Desperdicio'), number('numeros')]"
+                              v-model="Desperdicio"
+                              label="Desperdicio*"
+                              :rules="[required('Desperdicio'), number('numeros')]"
                           ></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6">
                           <v-text-field
-                            v-model="CantidadTotal"
-                            label="Cantidad*"
-                            :rules="[required('CantidadTotal'), number('numeros')]"
+                              v-model="CantidadTotal"
+                              label="Cantidad*"
+                              :rules="[required('CantidadTotal'), number('numeros')]"
                           ></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6">
                           <v-select
-                            :items="Bodegas"
-                            item-text="NombreBodega"
-                            item-value="IdBodega"
-                            v-model="BodegaID"
-                            label="Selecione Bodega"
-                            :rules="[(v) => !!v || 'Bodega es requerida']"
-                            required
+                              :items="Bodegas"
+                              item-text="NombreBodega"
+                              item-value="IdBodega"
+                              v-model="BodegaID"
+                              label="Selecione Bodega"
+                              :rules="[(v) => !!v || 'Bodega es requerida']"
+                              required
                           ></v-select>
                         </v-col>
                         <v-col cols="12" sm="6">
                           <v-text-field
-                            v-model="PrecioUnitario"
-                            label="Precio Unitario*"
-                            :rules="[required('PrecioUnitario'), number('numeros')]"
+                              v-model="PrecioUnitario"
+                              label="Precio Unitario*"
+                              :rules="[required('PrecioUnitario'), number('numeros')]"
                           ></v-text-field>
                         </v-col>
-                        <v-col cols="12" sm="6" >
+                        <v-col cols="12" sm="6">
                           <v-menu
-                            v-model="menu"
-                            :close-on-content-click="false"
-                            :nudge-right="40"
-                            transition="scale-transition"
-                            offset-y
-                            min-width="290px"
+                              v-model="menu"
+                              :close-on-content-click="false"
+                              :nudge-right="40"
+                              transition="scale-transition"
+                              offset-y
+                              min-width="290px"
                           >
                             <template v-slot:activator="{ on, attrs }">
                               <v-text-field
-                                v-model="FechaCaducidad"
-                                label="Fecha Caducidad"
-                                :rules="[required('FechaCaducidad')]"
-                                prepend-icon="event"
-                                readonly
-                                v-bind="attrs"
-                                v-on="on"
-                                
+                                  v-model="FechaCaducidad"
+                                  label="Fecha Caducidad"
+                                  :rules="[required('FechaCaducidad')]"
+                                  prepend-icon="event"
+                                  readonly
+                                  v-bind="attrs"
+                                  v-on="on"
+
                               ></v-text-field>
                             </template>
                             <v-date-picker v-model="FechaCaducidad" @input="menu"></v-date-picker>
@@ -94,44 +96,42 @@
                         </v-col>
                         <v-col cols="12" sm="6">
                           <v-select
-                            :items="UnidadMedida"
-                            item-text="NombreUnidad"
-                            item-value="IdUnidadMedida"
-                            v-model="UnidadMedidaID"
-                            label="Selecione la unidad"
-                            :rules="[(v) => !!v || 'Unidad es requerido']"
-                            required
+                              :items="UnidadMedida"
+                              item-text="NombreUnidad"
+                              item-value="IdUnidadMedida"
+                              v-model="UnidadMedidaID"
+                              label="Selecione la unidad"
+                              :rules="[(v) => !!v || 'Unidad es requerido']"
+                              required
                           ></v-select>
                         </v-col>
                         <v-col cols="12" sm="6">
                           <v-select
-                            :items="Proveedor"
-                            item-text="NombreProveedor"
-                            item-value="IdProveedor"
-                            v-model="ProveedorId"
-                            label="Selecione Proveedor"
-                            :rules="[(v) => !!v || 'proveedor es requerido']"
-                            required
+                              :items="Proveedor"
+                              item-text="NombreProveedor"
+                              item-value="IdProveedor"
+                              v-model="ProveedorId"
+                              label="Selecione Proveedor"
+                              :rules="[(v) => !!v || 'proveedor es requerido']"
+                              required
                           ></v-select>
                         </v-col>
-                        <v-card-actions>
-                          <v-flex>
-                            <v-btn @click="close">Salir</v-btn>
-                          </v-flex>
-                          <v-flex class="text-xs-right">
-                            <v-btn @click="saveMateriaPrima" :disabled="!valid">Guardar</v-btn>
-                          </v-flex>
-                        </v-card-actions>
                       </v-row>
                     </v-container>
-                  </v-form>
-                  <small>* campo requerido</small>
-                </v-card-text>
+                  </v-card-text>
+
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="close">Salir</v-btn>
+                    <v-btn color="blue darken-1" text @click="saveMateriaPrima" :disabled="!valid">Guardar</v-btn>
+                  </v-card-actions>
+                </v-form>
               </v-card>
             </v-dialog>
           </v-toolbar>
         </template>
       </v-data-table>
+
     </v-flex>
   </v-layout>
 </template>
@@ -146,20 +146,20 @@ export default {
       valid: false,
       required(propertyType) {
         return (v) =>
-          (v && v.length > 0) || `Tienes que ingresar ${propertyType}`;
+            (v && v.length > 0) || `Tienes que ingresar ${propertyType}`;
       },
       letter(propertyType) {
         return (v) =>
-          /^[ñA-Za-z _]*[ñA-Za-z][ñA-Za-z _]+$/.test(v) ||
-          `Solo acepta ${propertyType}`;
+            /^[ñA-Za-z _]*[ñA-Za-z][ñA-Za-z _]+$/.test(v) ||
+            `Solo acepta ${propertyType}`;
       },
       number(propertyType) {
         return (v) => /^\d+$/.test(v) || `Solo acepta ${propertyType}`;
       },
       maxlength(propertyType, maxlength) {
         return (v) =>
-          (v && v.length <= maxlength) ||
-          `${propertyType} no puede superar los ${maxlength} caracteres`;
+            (v && v.length <= maxlength) ||
+            `${propertyType} no puede superar los ${maxlength} caracteres`;
       },
 
       EntradaMatPrima: [],
@@ -188,14 +188,14 @@ export default {
       search: "",
       dialog: false,
       headers: [
-        { text: "Materia Prima", value: "NombreMP" },
-        { text: "Desperdicio", value: "Desperdicio" },
-        { text: "Cantidad Total", value: "CantidadTotal" },
-        { text: "Fecha Caducidad", value: "FechaCaducidad" },
-        { text: "Precio Unitario", value: "PrecioUnitario" },
-        { text: "Unidad de Medida", value: "NombreUnidad" },
-        { text: "Proveedor", value: "NombreProveedor" },
-        { text: "Bodega", value: "NombreBodega" },
+        {text: "Materia Prima", value: "NombreMP", class: 'indigo  white--text'},
+        {text: "Desperdicio", value: "Desperdicio", class: 'indigo  white--text'},
+        {text: "Cantidad Total", value: "CantidadTotal", class: 'indigo  white--text'},
+        {text: "Fecha Caducidad", value: "FechaCaducidad", class: 'indigo  white--text'},
+        {text: "Precio Unitario", value: "PrecioUnitario", class: 'indigo  white--text'},
+        {text: "Unidad de Medida", value: "NombreUnidad", class: 'indigo  white--text'},
+        {text: "Proveedor", value: "NombreProveedor", class: 'indigo  white--text'},
+        {text: "Bodega", value: "NombreBodega", class: 'indigo  white--text'},
       ],
     };
   },
@@ -220,6 +220,13 @@ export default {
       const res = await this.$http.get(this.url);
       this.EntradaMatPrima = res.data;
     },
+    close () {
+      this.dialog = false
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      })
+    },
     saveMateriaPrima: async function () {
       const obj = new FormData();
       obj.append("ProductoId", this.ProductoId);
@@ -243,10 +250,9 @@ export default {
       this.BodegaID = "";
       this.MateriaPrimaID = "";
       this.getEntradaMatPrima();
+      this.close();
     },
-    close() {
-      this.dialog = false;
-    },
+
   },
   created() {
     this.getEntradaMatPrima();

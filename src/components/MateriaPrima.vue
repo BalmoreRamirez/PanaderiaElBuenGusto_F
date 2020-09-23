@@ -10,7 +10,9 @@
             <v-spacer></v-spacer>
             <v-dialog v-model="dialog" persistent max-width="600px">
               <template v-slot:activator="{ on, attrs }">
-                <v-btn color="blue" class="ml-3" dark v-bind="attrs" v-on="on">Ingresar registro</v-btn>
+                <v-btn  class="mx-2" fab dark color="indigo"  v-bind="attrs" v-on="on">
+                  <v-icon dark>add</v-icon>
+                </v-btn>
               </template>
               <v-card>
                 <v-card-title>

@@ -2,6 +2,7 @@
   <v-app id="inspire">
     <v-navigation-drawer v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" app>
       <v-list dense nav>
+        <!------------>
         <v-list-item :to="{name:'Home'}">
           <v-list-item-icon>
             <v-icon>dashboard</v-icon>
@@ -11,6 +12,7 @@
             <v-list-item-title>Home</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <!------------>
         <v-list-item :to="{name:'materiaPrima'}">
           <v-list-item-icon>
             <v-icon>settings_applications</v-icon>
@@ -20,6 +22,7 @@
             <v-list-item-title>Materia Prima</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <!------------>
         <v-list-item :to="{name:'entradaMatPrima'}">
           <v-list-item-icon>
             <v-icon>settings_applications</v-icon>
@@ -29,6 +32,27 @@
             <v-list-item-title>Entrada Materia</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <!------------>
+        <v-list-item :to="{name:'migracionMatePrima'}">
+          <v-list-item-icon>
+            <v-icon>settings_applications</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>Migracion Materia Prima</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <!------------>
+        <v-list-item :to="{name:'usuarios'}">
+          <v-list-item-icon>
+            <v-icon>group</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>Usuarios</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
       </v-list>
     </v-navigation-drawer>
     <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app color="blue darken-3" dark>

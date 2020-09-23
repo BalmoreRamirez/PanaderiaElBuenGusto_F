@@ -85,6 +85,8 @@
                             <v-btn @click="close">Salir</v-btn>
                           </v-flex>
                           <v-flex class="text-xs-right">
+                            <v-spacer></v-spacer>
+                            <v-spacer></v-spacer>
                             <v-btn @click="saveMateriaPrima" :disabled="!valid">Guardar</v-btn>
                           </v-flex>
                         </v-card-actions>
@@ -137,7 +139,7 @@ export default {
       ProveedorID:"",
       
 
-      url3: "http://localhost/PanaderiaBG/public/ProveedorMateria",
+      url3: "http://localhost/PanaderiaBG/public/Proveedores",
       url2: "http://localhost/PanaderiaBG/public/UnidadMateria",
       url: "http://localhost/PanaderiaBG/public/MateriaPrima",
       search: "",

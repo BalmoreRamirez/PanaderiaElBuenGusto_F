@@ -2,102 +2,134 @@
   <v-layout>
     <v-flex>
       <v-data-table
-          :headers="headers"
-          :items="desserts"
-          sort-by="calories"
-          class="elevation-1"
+        :headers="headers"
+        :items="EntradaMatPrima"
+        :search="search"
+        class="elevation-1"
       >
         <template v-slot:top>
           <v-toolbar flat color="white">
             <v-toolbar-title>Entradas de Materia Prima</v-toolbar-title>
-            <v-divider
-                class="mx-4"
-                inset
-                vertical
-            ></v-divider>
+            <v-divider class="mx-4" inset vertical></v-divider>
             <v-spacer></v-spacer>
-            <v-dialog v-model="dialog" max-width="500px">
+            <v-dialog v-model="dialog" max-width="600px">
               <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                    color="primary"
-                    dark
-                    class="mb-2"
-                    v-bind="attrs"
-                    v-on="on"
-                >Nueva entrada
-                </v-btn>
+                <v-btn color="blue" class="ml-3" dark v-bind="attrs" v-on="on">Ingresar registro</v-btn>
               </template>
               <v-card>
                 <v-card-title>
-                  <span class="headline">{{ formTitle }}</span>
+                  <span class="headline">Entrada de Materia Prima</span>
                 </v-card-title>
 
                 <v-card-text>
-                  <v-form>
+                  <v-form v-model="valid">
                     <v-container>
                       <v-row>
                         <v-col cols="12" sm="6">
-                          <v-text-field
-                              label="Proveedor*">
-                          </v-text-field>
+                          <v-select
+                            :items="MateriaPrima"
+                            item-text="NombreMP"
+                            item-value="IdRegistroMP"
+                            v-model="MateriaPrimaID"
+                            label="Selecione Materia Prima"
+                            :rules="[(v) => !!v || 'Materia Prima es requerido']"
+                            required
+                          ></v-select>
                         </v-col>
                         <v-col cols="12" sm="6">
                           <v-text-field
-                              label="Producto*"
+                            v-model="Desperdicio"
+                            label="Desperdicio*"
+                            :rules="[required('Desperdicio'), number('numeros')]"
                           ></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6">
-                          <v-text-field  label="Cantidad Total*"></v-text-field>
+                          <v-text-field
+                            v-model="CantidadTotal"
+                            label="Cantidad*"
+                            :rules="[required('CantidadTotal'), number('numeros')]"
+                          ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6">
+                          <v-select
+                            :items="Bodegas"
+                            item-text="NombreBodega"
+                            item-value="IdBodega"
+                            v-model="BodegaID"
+                            label="Selecione Bodega"
+                            :rules="[(v) => !!v || 'Bodega es requerida']"
+                            required
+                          ></v-select>
                         </v-col>
                         <v-col cols="12" sm="6">
                           <v-text-field
-                              label="Desperdicio*"
-                              counter=30
-                              >
-                          </v-text-field>
+                            v-model="PrecioUnitario"
+                            label="Precio Unitario*"
+                            :rules="[required('PrecioUnitario'), number('numeros')]"
+                          ></v-text-field>
                         </v-col>
-                        <v-col cols="12" sm="6">
+                        <v-col cols="12" sm="6" >
+                          <v-menu
+                            v-model="menu"
+                            :close-on-content-click="false"
+                            :nudge-right="40"
+                            transition="scale-transition"
+                            offset-y
+                            min-width="290px"
+                          >
+                            <template v-slot:activator="{ on, attrs }">
                               <v-text-field
-                              label="Desperdicio*"
-                              counter=30
-                              >
-                          </v-text-field>
+                                v-model="FechaCaducidad"
+                                label="Fecha Caducidad"
+                                :rules="[required('FechaCaducidad')]"
+                                prepend-icon="event"
+                                readonly
+                                v-bind="attrs"
+                                v-on="on"
+                                
+                              ></v-text-field>
+                            </template>
+                            <v-date-picker v-model="FechaCaducidad" @input="menu"></v-date-picker>
+                          </v-menu>
                         </v-col>
                         <v-col cols="12" sm="6">
                           <v-select
-                              label="Unidad Medida"
-                              :rules="[(v) => !!v || 'unidad es requerido']"
-                              required
-                          >
-                          </v-select>
+                            :items="UnidadMedida"
+                            item-text="NombreUnidad"
+                            item-value="IdUnidadMedida"
+                            v-model="UnidadMedidaID"
+                            label="Selecione la unidad"
+                            :rules="[(v) => !!v || 'Unidad es requerido']"
+                            required
+                          ></v-select>
                         </v-col>
                         <v-col cols="12" sm="6">
                           <v-select
-                              label="Precio Uni"
-                              :rules="[(v) => !!v || 'proveedor es requerido']"
-                              required
-                          >
-                          </v-select>
+                            :items="Proveedor"
+                            item-text="NombreProveedor"
+                            item-value="IdProveedor"
+                            v-model="ProveedorId"
+                            label="Selecione Proveedor"
+                            :rules="[(v) => !!v || 'proveedor es requerido']"
+                            required
+                          ></v-select>
                         </v-col>
-      
-
+                        <v-card-actions>
+                          <v-flex>
+                            <v-btn @click="close">Salir</v-btn>
+                          </v-flex>
+                          <v-flex class="text-xs-right">
+                            <v-btn @click="saveMateriaPrima" :disabled="!valid">Guardar</v-btn>
+                          </v-flex>
+                        </v-card-actions>
                       </v-row>
                     </v-container>
                   </v-form>
+                  <small>* campo requerido</small>
                 </v-card-text>
-
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" >Cancel</v-btn>
-                  <v-btn color="blue darken-1" >Save</v-btn>
-                </v-card-actions>
               </v-card>
             </v-dialog>
           </v-toolbar>
-        </template>
-
-        <template v-slot:no-data>
-          <v-btn color="primary" @click="initialize">Reset</v-btn>
         </template>
       </v-data-table>
     </v-flex>
@@ -107,114 +139,121 @@
 <script>
 export default {
   name: "EntradaMatPrima",
-  data () {
- return{
-     dialog: false,
+  data() {
+    return {
+      date: false,
+      menu: false,
+      valid: false,
+      required(propertyType) {
+        return (v) =>
+          (v && v.length > 0) || `Tienes que ingresar ${propertyType}`;
+      },
+      letter(propertyType) {
+        return (v) =>
+          /^[ñA-Za-z _]*[ñA-Za-z][ñA-Za-z _]+$/.test(v) ||
+          `Solo acepta ${propertyType}`;
+      },
+      number(propertyType) {
+        return (v) => /^\d+$/.test(v) || `Solo acepta ${propertyType}`;
+      },
+      maxlength(propertyType, maxlength) {
+        return (v) =>
+          (v && v.length <= maxlength) ||
+          `${propertyType} no puede superar los ${maxlength} caracteres`;
+      },
+
+      EntradaMatPrima: [],
+      MateriaPrima: [],
+      Bodegas: [],
+      UnidadMedida: [],
+      Proveedor: [],
+
+      ProveedorId: "",
+      NombreProveedor: "",
+      MateriaPrimaID: "",
+      NombreMP: "",
+      CantidadTotal: "",
+      Desperdicio: "",
+      FechaCaducidad: "",
+      UnidadMedidaID: "",
+      NombreUnidad: "",
+      PrecioUnitario: "",
+      BodegaID: "",
+      NombreBodega: "",
+      url5: "http://localhost/PanaderiaBG/public/ShowMateriaPrima",
+      url4: "http://localhost/PanaderiaBG/public/Bodegas",
+      url3: "http://localhost/PanaderiaBG/public/Proveedores",
+      url2: "http://localhost/PanaderiaBG/public/UnidadMateria",
+      url: "http://localhost/PanaderiaBG/public/MateriaPrimaProveedor",
+      search: "",
+      dialog: false,
       headers: [
-        {
-          text: 'Dessert (100g serving)',
-          align: 'start',
-          sortable: false,
-          value: 'name',
-        },
-        { text: 'Calories', value: 'calories' },
-        { text: 'Fat (g)', value: 'fat' },
-        { text: 'Carbs (g)', value: 'carbs' },
-        { text: 'Protein (g)', value: 'protein' },
-        { text: 'Actions', value: 'actions', sortable: false },
+        { text: "Materia Prima", value: "NombreMP" },
+        { text: "Desperdicio", value: "Desperdicio" },
+        { text: "Cantidad Total", value: "CantidadTotal" },
+        { text: "Fecha Caducidad", value: "FechaCaducidad" },
+        { text: "Precio Unitario", value: "PrecioUnitario" },
+        { text: "Unidad de Medida", value: "NombreUnidad" },
+        { text: "Proveedor", value: "NombreProveedor" },
+        { text: "Bodega", value: "NombreBodega" },
       ],
-      desserts: [],
-
- }
+    };
   },
-   computed: {
-      formTitle () {
-        return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
-      },
+  methods: {
+    getMateriaPrima: async function () {
+      const res = await this.$http.get(this.url5);
+      this.MateriaPrima = res.data;
     },
-      created () {
-      this.initialize()
+    getBodegas: async function () {
+      const res = await this.$http.get(this.url4);
+      this.Bodegas = res.data;
     },
-    methods: {
-      initialize () {
-        this.desserts = [
-          {
-            name: 'Frozen Yogurt',
-            calories: 159,
-            fat: 6.0,
-            carbs: 24,
-            protein: 4.0,
-          },
-          {
-            name: 'Ice cream sandwich',
-            calories: 237,
-            fat: 9.0,
-            carbs: 37,
-            protein: 4.3,
-          },
-          {
-            name: 'Eclair',
-            calories: 262,
-            fat: 16.0,
-            carbs: 23,
-            protein: 6.0,
-          },
-          {
-            name: 'Cupcake',
-            calories: 305,
-            fat: 3.7,
-            carbs: 67,
-            protein: 4.3,
-          },
-          {
-            name: 'Gingerbread',
-            calories: 356,
-            fat: 16.0,
-            carbs: 49,
-            protein: 3.9,
-          },
-          {
-            name: 'Jelly bean',
-            calories: 375,
-            fat: 0.0,
-            carbs: 94,
-            protein: 0.0,
-          },
-          {
-            name: 'Lollipop',
-            calories: 392,
-            fat: 0.2,
-            carbs: 98,
-            protein: 0,
-          },
-          {
-            name: 'Honeycomb',
-            calories: 408,
-            fat: 3.2,
-            carbs: 87,
-            protein: 6.5,
-          },
-          {
-            name: 'Donut',
-            calories: 452,
-            fat: 25.0,
-            carbs: 51,
-            protein: 4.9,
-          },
-          {
-            name: 'KitKat',
-            calories: 518,
-            fat: 26.0,
-            carbs: 65,
-            protein: 7,
-          },
-        ]
-      },
-
-    }}
-  
+    getProveedores: async function () {
+      const res = await this.$http.get(this.url3);
+      this.Proveedor = res.data;
+    },
+    getUnidad: async function () {
+      const res = await this.$http.get(this.url2);
+      this.UnidadMedida = res.data;
+    },
+    getEntradaMatPrima: async function () {
+      const res = await this.$http.get(this.url);
+      this.EntradaMatPrima = res.data;
+    },
+    saveMateriaPrima: async function () {
+      const obj = new FormData();
+      obj.append("ProductoId", this.ProductoId);
+      obj.append("Desperdicio", this.Desperdicio);
+      obj.append("CantidadTotal", this.CantidadTotal);
+      obj.append("FechaCaducidad", this.FechaCaducidad);
+      obj.append("PrecioUnitario", this.PrecioUnitario);
+      obj.append("UnidadMedidaID", this.UnidadMedidaID);
+      obj.append("ProveedorId", this.ProveedorId);
+      obj.append("BodegaID", this.BodegaID);
+      obj.append("MateriaPrimaID", this.MateriaPrimaID);
+      const res = await this.$http.post(this.url, obj);
+      this.EntradaMatPrima.push(res.data.result);
+      this.ProductoId = "";
+      this.Desperdicio = "";
+      this.CantidadTotal = "";
+      this.FechaCaducidad = "";
+      this.PrecioUnitario = "";
+      this.UnidadMedidaID = "";
+      this.ProveedorId = "";
+      this.BodegaID = "";
+      this.MateriaPrimaID = "";
+      this.getEntradaMatPrima();
+    },
+    close() {
+      this.dialog = false;
+    },
+  },
+  created() {
+    this.getEntradaMatPrima();
+    this.getUnidad();
+    this.getProveedores();
+    this.getBodegas();
+    this.getMateriaPrima();
+  },
+};
 </script>
-
-<style scoped>
-
-</style>

@@ -39,7 +39,7 @@
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title>Migracion Materia Prima</v-list-item-title>
+            <v-list-item-title>Movimientos de materia prima</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <!------------>

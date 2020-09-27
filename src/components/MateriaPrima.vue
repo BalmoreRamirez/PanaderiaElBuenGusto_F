@@ -13,6 +13,15 @@
             <v-toolbar-title>Registro de Materia Prima</v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>
             <v-spacer></v-spacer>
+          <!--- <div>
+             <v-alert type="success" v-model="alert">
+               <div>
+                 <v-btn small fab color="#5C6BC0" dark 
+                 @click="alert=false">x</v-btn>
+                 Insertado con exito
+               </div>
+             </v-alert>
+           </div>-->
             <v-spacer></v-spacer>
 
             <v-dialog v-model="dialog" persistent max-width="600px">
@@ -166,6 +175,7 @@ export default {
       UnidadMedidaID: "",
       NombreProveedor: "",
       ProveedorID: "",
+      alert:false,
       url3: "/PanaderiaBG/public/Proveedores",
       url2: "/PanaderiaBG/public/UnidadMateria",
       url: "http://localhost/PanaderiaBG/public/MateriaPrima",
@@ -235,7 +245,15 @@ export default {
       obj.append("UnidadMedidaID", this.UnidadMedidaID);
       obj.append("ProveedorID", this.ProveedorID);
       const res = await this.$http.post(this.url, obj);
+
       this.MateriaPrima.push(res.data.result);
+      //this.alert=true
+      
+      if ( res.data.result) {
+        alert("exito")
+      }else{
+        console.log("fallo")
+      }
       this.CodigoMP = "";
       this.NombreMP = "";
       this.Clase = "";

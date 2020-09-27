@@ -72,7 +72,7 @@
                                 v-on="on"
                               ></v-text-field>
                             </template>
-                            <v-date-picker
+                           <v-date-picker
                               v-model="FechaMovimiento"
                               @input="menu"
                             ></v-date-picker>
@@ -165,6 +165,7 @@ export default {
       Cantidad: "",
       FechaMovimiento: "",
       NombreMP: "",
+       menu: "",
       RegistroMPID: "",
       NombreSucursal: "",
       SucursalID: "",

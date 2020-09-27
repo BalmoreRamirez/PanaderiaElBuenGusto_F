@@ -6,6 +6,7 @@ import ConfigProduct from "@/components/ConfigProduct";
 import EntradaMatPrima from "@/components/EntradaMatPrima";
 import MigracionMatePrima from "@/components/MigracionMatePrima";
 import Usuarios from "@/components/Usuarios";
+import Inventario from "@/components/Inventario";
 
 Vue.use(VueRouter)
 
@@ -34,6 +35,11 @@ const routes = [
         path: '/migracionMatePrima',
         name: 'migracionMatePrima',
         component: MigracionMatePrima
+    },
+    {
+        path: '/inventario',
+        name: 'inventario',
+        component: Inventario
     },
     {
         path: '/usuarios',

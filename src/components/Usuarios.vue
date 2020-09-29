@@ -29,17 +29,19 @@
                 <v-card-title>
                   <span class="headline">Usuarios</span>
                 </v-card-title>
-                <v-form v-model="valid">
+                <v-form ref="form" v-model="valid"> 
                   <v-card-text>
                     <v-container>
                       <v-row>
                         <v-col cols="12" sm="6">
-                          <v-text-field v-model="NombreUsuario" label="Nombre*">
+                          <v-text-field v-model="NombreUsuario" label="Nombre*" id="NombreUsuario" @keydown="errors.clear('NombreUsuario')" >
                           </v-text-field>
+                           <span class="red--text" v-text="errors.get('NombreUsuario')"></span>
                         </v-col>
                         <v-col cols="12" sm="6">
-                          <v-text-field v-model="EmailUsuario" label="Correo">
+                          <v-text-field v-model="EmailUsuario" label="Correo" id="EmailUsuario" @keydown="errors.clear('EmailUsuario')">
                           </v-text-field>
+                          <span class="red--text" v-text="errors.get('EmailUsuario')"></span>
                         </v-col>
                         <v-col cols="12" sm="6">
                           <v-select
@@ -48,14 +50,19 @@
                             item-value="IdRol"
                             v-model="RolId"
                             label="Selecione el rol"
+                            id="RolId"
+                            @click="errors.clear('RolId')"
                             required
                           >
                           </v-select>
+                          <span class="red--text" v-text="errors.get('RolId')"></span>
                         </v-col>
                         <v-col cols="12" sm="6">
-                          <v-text-field v-model="Password" label="Contraseña">
+                          <v-text-field :type="'password'" v-model="Password" label="Contraseña" id="Password" @keydown="errors.clear('Password')">
                           </v-text-field>
+                           <span class="red--text" v-text="errors.get('Password')"></span>
                         </v-col>
+                        
                       </v-row>
                     </v-container>
                   </v-card-text>
@@ -68,32 +75,74 @@
                       >Guardar</v-btn
                     >
                   </v-card-actions>
+                   
                 </v-form>
               </v-card>
             </v-dialog>
           </v-toolbar>
+          <div>
+          <v-alert  
+                   :value="Alert"
+                    type = "success"
+                    border="top"
+                    dense
+                     >
+                     Usuario guardado correctamente.
+                    </v-alert>
+                    </div>
         </template>
       </v-data-table>
     </v-flex>
   </v-layout>
 </template>
+
 <script>
 import axios from "axios";
 axios.defaults.baseURL = "http://localhost";
+
+class Errors{
+  constructor(){
+    this.errors = {}
+  }
+
+  get(field){
+    if (this.errors[field]){
+      return this.errors[field][0];
+    }
+
+  }
+  record(errors){
+    this.errors = errors;
+  }
+
+  clear(field){
+    delete this.errors[field];
+  }
+
+  // any(){
+  //   return Object.Keys(this.errors).length > 0 ;
+  // }
+}
+
 export default {
   
   name: "Usuarios", //1-definimos el nombre
+
   data() {
     return {
       //retornamos los datos a utilizar
       valid: false,
       dialog: false,
+      Alert: false,
+      errors: new Errors(),
       Usuarios: [],
       Roles: [],
       NombreUsuario: "",
       EmailUsuario: "",
       RolId: "",
+      NombreRol: "",
       Password: "",
+      
       urlUsers: "http://localhost/PanaderiaBG/public/Usuarios",
       urlRoles: "/PanaderiaBG/public/Roles",
       headers: [
@@ -104,7 +153,9 @@ export default {
         },
         { text: "Correo", value: "EmailUsuario", class: "indigo  white--text" },
         { text: "Rol", value: "NombreRol", class: "indigo  white--text" }
-      ]};},
+      ]
+    };
+  },
 
   methods: {
 
@@ -113,38 +164,53 @@ export default {
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
-      });},
+        this.clean();
+      });
+    },
+
+    clean(){
+      this.$refs.form.reset()
+    },
 
     getUsers: async function() {
       const res = await this.$http.get(this.urlUsers);
       this.Usuarios = res.data;
+      setTimeout(()=>{
+      this.Alert=false
+       },5000)
     },
 
     getRol: async function() {
       const res = await this.$http.get(this.urlRoles);
       this.Roles = res.data;
     },
-
     saveUsers: async function() {
       const obj = new FormData();
       obj.append("NombreUsuario", this.NombreUsuario);
       obj.append("EmailUsuario", this.EmailUsuario);
       obj.append("RolId", this.RolId);
       obj.append("Password", this.Password);
-      const res = await this.$http.post(this.urlUsers, obj);
-      this.Usuarios.push(res.data.result);
-      this.NombreUsuario = "";
-      this.EmailUsuario = "";
-      this.RolId = "";
-      this.Password = "";
-      this.getUsers();
-      this.close();
-    }},
-
+      axios.post(this.urlUsers, obj)
+      .then(response => {
+        console.log(response.data.result)
+         this.Usuarios.push(response.data.result);
+        this.Alert = true
+         this.getUsers();
+         this.clean();
+         this.close();
+      })
+      .catch(error =>
+         this.errors.record(error.response.data)
+        );
+      
+    }
+  },
   created() {
     this.getUsers();
     this.getRol();
-  }};
+  },
+   
+  };
 
 </script>
 

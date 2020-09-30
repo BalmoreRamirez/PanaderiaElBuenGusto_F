@@ -41,16 +41,23 @@
                   <span class="headline">Inventario</span>
                 </v-card-title>
 
-                <v-form v-model="valid">
+                <v-form ref="form" v-model="valid">
                   <v-card-text>
                     <v-container>
                       <v-row>
                         <v-col cols="12" sm="6">
                           <v-text-field
+                            type="number"
                             v-model="Cantidad"
                             label="Cantidad*"
-                            :rules="[required('cantidad '), number('numeros')]"
+                            :rules="[required('cantidad ')]"
+                            id="Cantidad"
+                            @keydown="errors.clear('Cantidad')"
                           ></v-text-field>
+                          <span
+                            class="red--text"
+                            v-text="errors.get('Cantidad')"
+                          ></span>
                         </v-col>
                         <v-col cols="12" sm="6">
                           <v-menu
@@ -72,7 +79,7 @@
                                 v-on="on"
                               ></v-text-field>
                             </template>
-                           <v-date-picker
+                            <v-date-picker
                               v-model="FechaMovimiento"
                               @input="menu"
                             ></v-date-picker>
@@ -89,9 +96,15 @@
                             :rules="[
                               (v) => !!v || 'Materia prima es requerido',
                             ]"
+                            id="IdRegistroMP"
+                            @click="errors.clear('IdRegistroMP')"
                             required
                           >
                           </v-select>
+                          <span
+                            class="red--text"
+                            v-text="errors.get('IdRegistroMP')"
+                          ></span>
                         </v-col>
                         <v-col cols="12" sm="6">
                           <v-select
@@ -101,9 +114,15 @@
                             v-model="SucursalID"
                             label="Selecione una sucursal"
                             :rules="[(v) => !!v || 'Sucursal es requerido']"
+                            id="IdSucursal"
+                            @click="errors.clear('IdSucursal')"
                             required
                           >
                           </v-select>
+                          <span
+                            class="red--text"
+                            v-text="errors.get('IdSucursal')"
+                          ></span>
                         </v-col>
                       </v-row>
                     </v-container>
@@ -125,6 +144,11 @@
               </v-card>
             </v-dialog>
           </v-toolbar>
+          <div>
+            <v-alert :value="Alert" type="success" border="top" dense>
+              Registro guardado exitosamente.
+            </v-alert>
+          </div>
         </template>
       </v-data-table>
     </v-flex>
@@ -134,10 +158,35 @@
 <script>
 import axios from "axios";
 axios.defaults.baseURL = "http://localhost";
+
+class Errors {
+  constructor() {
+    this.errors = {};
+  }
+
+  get(field) {
+    if (this.errors[field]) {
+      return this.errors[field][0];
+    }
+  }
+
+  //Guarda los errores en el array
+  record(errors) {
+    this.errors = errors;
+  }
+
+  //Limpia validaciones backend
+  clear(field) {
+    delete this.errors[field];
+  }
+}
+
 export default {
   name: "TableInventario",
   data() {
     return {
+      Alert: false,
+      errors: new Errors(),
       valid: false,
       required(propertyType) {
         return (v) =>
@@ -165,7 +214,7 @@ export default {
       Cantidad: "",
       FechaMovimiento: "",
       NombreMP: "",
-       menu: "",
+      menu: "",
       RegistroMPID: "",
       NombreSucursal: "",
       SucursalID: "",
@@ -219,12 +268,22 @@ export default {
     getInventario: async function () {
       const res = await this.$http.get(this.url);
       this.Inventario = res.data;
+      setTimeout(() => {
+        this.Alert = false;
+      }, 5000);
     },
+
+    //limpia errores front-end
+    clear() {
+      this.$refs.form.reset();
+    },
+
     close() {
       this.dialog = false;
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
+        this.clear();
       });
     },
     saveInventario: async function () {
@@ -234,14 +293,23 @@ export default {
       obj.append("FechaMovimiento", this.FechaMovimiento);
       obj.append("MateriaPrimaID", this.RegistroMPID);
       obj.append("SucursalID", this.SucursalID);
-      const res = await this.$http.post(this.url, obj);
-      this.Inventario.push(res.data.result);
-      this.Cantidad = "";
-      this.FechaMovimiento = "";
-      this.RegistroMPID = "";
-      this.SucursalID = "";
-      this.getInventario();
-      this.close();
+      axios
+        .post(this.url, obj)
+
+        .then((response) => {
+          //console.log(response.data.result)
+
+          this.Inventario.push(response.data.result);
+          this.Cantidad = "";
+          this.FechaMovimiento = "";
+          this.RegistroMPID = "";
+          this.SucursalID = "";
+          this.Alert = true;
+          this.getInventario();
+          this.clear();
+          this.close();
+        })
+        .catch((error) => this.errors.record(error.response.data));
     },
   },
   created() {

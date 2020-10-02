@@ -5,6 +5,7 @@
         :headers="headers"
         :items="Pedido"
         :search="search"
+        
         class="elevation-10"
       >
         <template v-slot:top>
@@ -14,14 +15,14 @@
             <v-spacer></v-spacer>
             <v-spacer></v-spacer>
             <v-dialog v-model="dialog" max-width="500px">
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
+              <template v-slot:activator="{  }">
+               <v-btn
                   class="mx-2"
                   fab
                   dark
                   color="indigo"
-                  v-bind="attrs"
-                  v-on="on"
+                  @click="formNuevo"
+                  
                 >
                   <v-icon dark>add</v-icon>
                 </v-btn>
@@ -118,7 +119,7 @@
                     <v-btn
                       color="blue darken-1"
                       text
-                      @click="savePedido"
+                      @click="guardar"
                       :disabled="!valid"
                       >Guardar</v-btn
                     >
@@ -126,13 +127,28 @@
                 </v-form>
               </v-card>
             </v-dialog>
+
+
+
+
           </v-toolbar>
           <div>
             <v-alert :value="Alert" type="success" border="top" dense>
               Registro guardado exitosamente.
             </v-alert>
+            <v-alert :value="Alert2" type="success" border="top" dense>
+              Registro actualizado exitosamente.
+            </v-alert>
           </div>
         </template>
+        <template v-slot:[`item.actions`]="{ item }">
+   
+   <v-btn class="mb-2"  color="primary" @click="formEdit(item)">
+     Editar
+   </v-btn>
+   
+    </template>
+
       </v-data-table>
     </v-flex>
   </v-layout>
@@ -169,6 +185,7 @@ export default {
   data() {
     return {
       Alert: false,
+      Alert2: false,
       errors: new Errors(),
       valid: false,
       required(propertyType) {
@@ -192,19 +209,26 @@ export default {
       Pedido: [],
       Bodegas: [],
       MateriaPrima: [],
-
+      IdPedido:"",
       CantidadPedido: "",
       DescripcionPedido: "",
       NombreMP: "",
       RegistroMPID: "",
       NombreBodega: "",
       BodegaID: "",
+      operacion: "",
       url3: "/PanaderiaBG/public/ShowMateriaPrima",
       url2: "/PanaderiaBG/public/Bodegas",
       url: "http://localhost/PanaderiaBG/public/Pedido",
       search: "",
       dialog: false,
+     
       headers: [
+         {
+          text: "ID Pedido",
+          value: "IdPedido",
+          class: "indigo white--text",
+        },
         {
           text: "Cantidad Pedido",
           value: "CantidadPedido",
@@ -228,6 +252,11 @@ export default {
           value: "NombreBodega",
           class: "indigo white--text",
         },
+
+         { text: 'Acción', 
+        value: 'actions',
+        class: "indigo  white--text", 
+        sortable: false },
       ],
     };
   },
@@ -246,21 +275,40 @@ export default {
       setTimeout(() => {
         this.Alert = false;
       }, 5000);
+      setTimeout(() => {
+        this.Alert2 = false;
+      }, 5000);
     },
 
     //limpia errores front-end
     clear() {
       this.$refs.form.reset();
+      
     },
 
     close() {
+      
       this.dialog = false;
+      this.dialogEdit = false;
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
         this.clear();
       });
     },
+
+    edit (item) {
+        this.CantidadPedido = item.CantidadPedido;
+        this.DescripcionPedido = item.DescripcionPedido;
+        this.NombreMP = item.NombreMP;
+        this.NombreBodega = item.NombreBodega;
+        
+        this.dialogEdit = true;
+
+        
+        
+    },
+
     savePedido: async function () {
       const obj = new FormData();
       obj.append("CantidadPedido", this.CantidadPedido);
@@ -285,6 +333,73 @@ export default {
         })
         .catch((error) => this.errors.record(error.response.data));
     },
+     formNuevo:function () {              
+             
+              this.operacion='crear';
+              this.CantidadPedido = '';
+               this.DescripcionPedido = '';
+               this.NombreMP = '';
+               this.NombreBodega = '';
+                this.dialog=true;
+              
+     },
+
+    formEdit:function(item){                              
+              
+               this.CantidadPedido = item.CantidadPedido;
+               this.DescripcionPedido = item.DescripcionPedido;
+               this.IdPedido = item.IdPedido;
+               this.RegistroMPID = item.IdRegistroMP;
+               this.BodegaID = item.IdBodega
+        
+              this.dialog = true;                     
+                                        
+              this.operacion='editar';
+              this.$refs.form.resetValidation();
+              
+
+             
+
+              
+    },
+
+     guardar:function(){
+              if(this.operacion=='crear'){
+                this.savePedido();                
+              }
+              if(this.operacion=='editar'){ 
+                this.saveEditar();                           
+              }
+              this.dialog=false;                        
+            }, 
+
+      saveEditar: async function (){
+        const obj = new FormData();
+      
+      obj.append("CantidadPedido", this.CantidadPedido);
+      obj.append("DescripcionPedido", this.DescripcionPedido);
+      obj.append("RegistroMPID", this.RegistroMPID);
+      obj.append("BodegaID", this.BodegaID);
+      axios
+        .post(this.url+"/"+this.IdPedido, obj)
+
+        .then((response) => {
+          //console.log(response.data.result)
+
+          this.Pedido.push(response.data.result);
+          this.CantidadPedido = "";
+          this.DescripcionPedido = "";
+          this.RegistroMPID = "";
+          this.BodegaID = "";
+          this.Alert2 = true;
+          this.getPedido();
+          this.clear();
+          this.close();
+        })
+        .catch((error) => this.errors.record(error.response.data));
+        
+
+      }
   },
   created() {
     this.getPedido();

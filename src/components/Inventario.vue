@@ -70,7 +70,9 @@
                           >
                             <template v-slot:activator="{ on, attrs }">
                               <v-text-field
-                                v-model="FechaMovimiento"
+                                :value="
+                                  computedFechaMovimientoFormattedMomentjs
+                                "
                                 label="Fecha de movimiento"
                                 :rules="[required('Fecha de movimiento')]"
                                 prepend-icon="event"
@@ -81,7 +83,7 @@
                             </template>
                             <v-date-picker
                               v-model="FechaMovimiento"
-                              @input="menu"
+                              @input="menu = false"
                             ></v-date-picker>
                           </v-menu>
                         </v-col>
@@ -157,6 +159,9 @@
 
 <script>
 import axios from "axios";
+//importo moment para setear la fecha del date picker en el formato segub necesidada
+import moment from "moment";
+
 axios.defaults.baseURL = "http://localhost";
 
 class Errors {
@@ -255,6 +260,15 @@ export default {
         },
       ],
     };
+  },
+
+  //Defino el formato a mostrar en el date picker en el formulario
+  computed: {
+    computedFechaMovimientoFormattedMomentjs() {
+      return this.FechaMovimiento
+        ? moment(this.FechaMovimiento).format("DD-MM-YYYY")
+        : "";
+    },
   },
   methods: {
     getMateriaPrima: async function () {

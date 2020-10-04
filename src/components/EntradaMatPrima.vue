@@ -73,13 +73,10 @@
                         </v-col>
                         <v-col cols="12" sm="6">
                           <v-text-field
-                               type="number"
+                            type="number"
                             v-model="CantidadTotal"
                             label="Cantidad*"
-                            :rules="[
-                              required('Cantidad Total')
-                              
-                            ]"
+                            :rules="[required('Cantidad Total')]"
                             id="CantidadTotal"
                             @keydown="errors.clear('CantidadTotal')"
                           ></v-text-field>
@@ -107,12 +104,10 @@
                         </v-col>
                         <v-col cols="12" sm="6">
                           <v-text-field
-                          type="number"
-                            v-model.number="PrecioUnitario"
+                            type="number"
+                            v-model="PrecioUnitario"
                             label="Precio Unitario*"
-                            :rules="[
-                              required('Precio Unitario')
-                            ]"
+                            :rules="[required('Precio Unitario')]"
                             id="PrecioUnitario"
                             @keydown="errors.clear('PrecioUnitario')"
                           ></v-text-field>
@@ -132,7 +127,7 @@
                           >
                             <template v-slot:activator="{ on, attrs }">
                               <v-text-field
-                                v-model="FechaCaducidad"
+                                :value="computedFechaCaducidadFormattedMomentjs"
                                 label="Fecha Caducidad"
                                 :rules="[required('Fecha Caducidad')]"
                                 prepend-icon="event"
@@ -143,10 +138,9 @@
                             </template>
                             <v-date-picker
                               v-model="FechaCaducidad"
-                              @input="menu"
+                              @input="menu = false"
                             ></v-date-picker>
                           </v-menu>
-                          
                         </v-col>
                         <v-col cols="12" sm="6">
                           <v-select
@@ -203,6 +197,7 @@
               </v-card>
             </v-dialog>
           </v-toolbar>
+
           <div>
             <v-alert :value="Alert" type="success" border="top" dense>
               Registro guardado exitosamente.
@@ -216,6 +211,9 @@
 
 <script>
 import axios from "axios";
+//importo moment para setear la fecha del date picker en el formato segub necesidada
+import moment from "moment";
+
 axios.defaults.baseURL = "http://localhost";
 
 class Errors {
@@ -246,7 +244,6 @@ export default {
     return {
       Alert: false,
       errors: new Errors(),
-      date: false,
       menu: false,
       valid: false,
       required(propertyType) {
@@ -292,6 +289,7 @@ export default {
       url: "http://localhost/PanaderiaBG/public/MateriaPrimaProveedor",
       search: "",
       dialog: false,
+
       headers: [
         {
           text: "Materia Prima",
@@ -311,6 +309,7 @@ export default {
         {
           text: "Fecha Caducidad",
           value: "FechaCaducidad",
+
           class: "indigo  white--text",
         },
         {
@@ -332,6 +331,14 @@ export default {
       ],
     };
   },
+  //Defino el formato a mostrar en el date picker en el formulario
+  computed: {
+    computedFechaCaducidadFormattedMomentjs() {
+      return this.FechaCaducidad
+        ? moment(this.FechaCaducidad).format("DD-MM-YYYY")
+        : "";
+    },
+  },
   methods: {
     getMateriaPrima: async function () {
       const res = await this.$http.get(this.url5);
@@ -349,9 +356,11 @@ export default {
       const res = await this.$http.get(this.url2);
       this.UnidadMedida = res.data;
     },
+
     getEntradaMatPrima: async function () {
       const res = await this.$http.get(this.url);
       this.EntradaMatPrima = res.data;
+
       setTimeout(() => {
         this.Alert = false;
       }, 5000);
@@ -395,7 +404,6 @@ export default {
           this.MateriaPrimaID = "";
           this.Alert = true;
           this.getEntradaMatPrima();
-          
 
           this.clear();
           this.close();

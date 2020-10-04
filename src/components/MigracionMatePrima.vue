@@ -37,6 +37,27 @@
                     <v-container>
                       <v-row>
                         <v-col cols="12" sm="6">
+                          <v-select
+                            :items="MateriaPrima"
+                            item-text="NombreMP"
+                            item-value="IdRegistroMP"
+                            v-model="RegistroMPID"
+                            label="Selecione la materia prima"
+                            :rules="[
+                              (v) => !!v || 'Materia prima es requerido',
+                            ]"
+                            id="IdRegistroMP"
+                            @click="errors.clear('IdRegistroMP')"
+                            required
+                          >
+                          </v-select>
+                          <span
+                            class="red--text"
+                            v-text="errors.get('IdRegistroMP')"
+                          ></span>
+                        </v-col>
+
+                        <v-col cols="12" sm="6">
                           <v-text-field
                             type="number"
                             v-model="CantidadPedido"
@@ -71,22 +92,20 @@
 
                         <v-col cols="12" sm="6">
                           <v-select
-                            :items="MateriaPrima"
-                            item-text="NombreMP"
-                            item-value="IdRegistroMP"
-                            v-model="RegistroMPID"
-                            label="Selecione la materia prima"
-                            :rules="[
-                              (v) => !!v || 'Materia prima es requerido',
-                            ]"
-                            id="IdRegistroMP"
-                            @click="errors.clear('IdRegistroMP')"
+                            :items="Sucursal"
+                            item-text="NombreSucursal"
+                            item-value="IdSucursal"
+                            v-model="SucursalID"
+                            label="Selecione una sucursal"
+                            :rules="[(v) => !!v || 'Sucursal es requerido']"
+                            id="IdSucursal"
+                            @click="errors.clear('IdSucursal')"
                             required
                           >
                           </v-select>
                           <span
                             class="red--text"
-                            v-text="errors.get('IdRegistroMP')"
+                            v-text="errors.get('IdSucursal')"
                           ></span>
                         </v-col>
                         <v-col cols="12" sm="6">
@@ -192,6 +211,7 @@ export default {
       Pedido: [],
       Bodegas: [],
       MateriaPrima: [],
+      Sucursal: [],
 
       CantidadPedido: "",
       DescripcionPedido: "",
@@ -199,12 +219,21 @@ export default {
       RegistroMPID: "",
       NombreBodega: "",
       BodegaID: "",
+      NombreSucursal: "",
+      SucursalID: "",
+      url4: "/PanaderiaBG/public/Sucursal",
       url3: "/PanaderiaBG/public/ShowMateriaPrima",
       url2: "/PanaderiaBG/public/Bodegas",
       url: "http://localhost/PanaderiaBG/public/Pedido",
       search: "",
       dialog: false,
       headers: [
+        {
+          text: "Materia Prima",
+          value: "NombreMP",
+          class: "indigo  white--text",
+        },
+
         {
           text: "Cantidad Pedido",
           value: "CantidadPedido",
@@ -218,9 +247,9 @@ export default {
         },
 
         {
-          text: "Materia Prima",
-          value: "NombreMP",
-          class: "indigo  white--text",
+          text: "Sucursal",
+          value: "NombreSucursal",
+          class: "indigo white--text",
         },
 
         {
@@ -239,6 +268,10 @@ export default {
     getBodegas: async function () {
       const res = await this.$http.get(this.url2);
       this.Bodegas = res.data;
+    },
+    getSucursal: async function () {
+      const res = await this.$http.get(this.url4);
+      this.Sucursal = res.data;
     },
     getPedido: async function () {
       const res = await this.$http.get(this.url);
@@ -267,6 +300,7 @@ export default {
       obj.append("DescripcionPedido", this.DescripcionPedido);
       obj.append("RegistroMPID", this.RegistroMPID);
       obj.append("BodegaID", this.BodegaID);
+      obj.append("SucursalID", this.SucursalID);
       axios
         .post(this.url, obj)
 
@@ -278,6 +312,7 @@ export default {
           this.DescripcionPedido = "";
           this.RegistroMPID = "";
           this.BodegaID = "";
+          this.SucursalID = "";
           this.Alert = true;
           this.getPedido();
           this.clear();
@@ -290,6 +325,7 @@ export default {
     this.getPedido();
     this.getMateriaPrima();
     this.getBodegas();
+    this.getSucursal();
   },
 };
 </script>

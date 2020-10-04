@@ -5,7 +5,6 @@
         :headers="headers"
         :items="Pedido"
         :search="search"
-        
         class="elevation-10"
       >
         <template v-slot:top>
@@ -15,15 +14,8 @@
             <v-spacer></v-spacer>
             <v-spacer></v-spacer>
             <v-dialog v-model="dialog" max-width="500px">
-              <template v-slot:activator="{  }">
-               <v-btn
-                  class="mx-2"
-                  fab
-                  dark
-                  color="indigo"
-                  @click="formNuevo"
-                  
-                >
+              <template v-slot:activator="{}">
+                <v-btn class="mx-2" fab dark color="indigo" @click="formNuevo">
                   <v-icon dark>add</v-icon>
                 </v-btn>
               </template>
@@ -146,10 +138,6 @@
                 </v-form>
               </v-card>
             </v-dialog>
-
-
-
-
           </v-toolbar>
           <div>
             <v-alert :value="Alert" type="success" border="top" dense>
@@ -161,13 +149,10 @@
           </div>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
-   
-   <v-btn class="mb-2"  color="primary" @click="formEdit(item)">
-     Editar
-   </v-btn>
-   
-    </template>
-
+          <v-btn class="mb-2" color="primary" @click="formEdit(item)">
+            Editar
+          </v-btn>
+        </template>
       </v-data-table>
     </v-flex>
   </v-layout>
@@ -230,7 +215,7 @@ export default {
       MateriaPrima: [],
       Sucursal: [],
 
-      IdPedido:"",
+      IdPedido: "",
       CantidadPedido: "",
       DescripcionPedido: "",
       NombreMP: "",
@@ -240,20 +225,21 @@ export default {
       NombreSucursal: "",
       SucursalID: "",
       operacion: "",
+
       url4: "/PanaderiaBG/public/Sucursal",
-      
       url3: "/PanaderiaBG/public/ShowMateriaPrima",
       url2: "/PanaderiaBG/public/Bodegas",
       url: "http://localhost/PanaderiaBG/public/Pedido",
       search: "",
       dialog: false,
-     
+
       headers: [
-         {
+              {
           text: "ID Pedido",
           value: "IdPedido",
           class: "indigo white--text",
         },
+      
         {
           text: "Materia Prima",
           value: "NombreMP",
@@ -284,10 +270,12 @@ export default {
           class: "indigo white--text",
         },
 
-         { text: 'Acción', 
-        value: 'actions',
-        class: "indigo  white--text", 
-        sortable: false },
+        {
+          text: "Acción",
+          value: "actions",
+          class: "indigo  white--text",
+          sortable: false,
+        },
       ],
     };
   },
@@ -318,11 +306,9 @@ export default {
     //limpia errores front-end
     clear() {
       this.$refs.form.reset();
-      
     },
 
     close() {
-      
       this.dialog = false;
       this.dialogEdit = false;
       this.$nextTick(() => {
@@ -332,16 +318,14 @@ export default {
       });
     },
 
-    edit (item) {
-        this.CantidadPedido = item.CantidadPedido;
-        this.DescripcionPedido = item.DescripcionPedido;
-        this.NombreMP = item.NombreMP;
-        this.NombreBodega = item.NombreBodega;
-        
-        this.dialogEdit = true;
+    edit(item) {
+      this.CantidadPedido = item.CantidadPedido;
+      this.DescripcionPedido = item.DescripcionPedido;
+      this.NombreMP = item.NombreMP;
+      this.NombreBodega = item.NombreBodega;
+      this.NombreSucursal = item.NombreSucursal;
 
-        
-        
+      this.dialogEdit = true;
     },
 
     savePedido: async function () {
@@ -370,55 +354,51 @@ export default {
         })
         .catch((error) => this.errors.record(error.response.data));
     },
-     formNuevo:function () {              
-             
-              this.operacion='crear';
-              this.CantidadPedido = '';
-               this.DescripcionPedido = '';
-               this.NombreMP = '';
-               this.NombreBodega = '';
-                this.dialog=true;
-              
-     },
-
-    formEdit:function(item){                              
-              
-               this.CantidadPedido = item.CantidadPedido;
-               this.DescripcionPedido = item.DescripcionPedido;
-               this.IdPedido = item.IdPedido;
-               this.RegistroMPID = item.IdRegistroMP;
-               this.BodegaID = item.IdBodega
-        
-              this.dialog = true;                     
-                                        
-              this.operacion='editar';
-              this.$refs.form.resetValidation();
-              
-
-             
-
-              
+    formNuevo: function () {
+      this.operacion = "crear";
+      this.CantidadPedido = "";
+      this.DescripcionPedido = "";
+      this.NombreMP = "";
+      this.NombreBodega = "";
+      this.NombreSucursal = "";
+      this.dialog = true;
     },
 
-     guardar:function(){
-              if(this.operacion=='crear'){
-                this.savePedido();                
-              }
-              if(this.operacion=='editar'){ 
-                this.saveEditar();                           
-              }
-              this.dialog=false;                        
-            }, 
+    formEdit: function (item) {
+      this.CantidadPedido = item.CantidadPedido;
+      this.DescripcionPedido = item.DescripcionPedido;
+      this.IdPedido = item.IdPedido;
+      this.RegistroMPID = item.IdRegistroMP;
+      this.BodegaID = item.IdBodega;
+      this.SucursalID = item.IdSucursal;
 
-      saveEditar: async function (){
-        const obj = new FormData();
-      
+      this.dialog = true;
+
+      this.operacion = "editar";
+      //Para que sirve esta linea de codigo?
+      this.$refs.form.resetValidation();
+    },
+
+    guardar: function () {
+      if (this.operacion == "crear") {
+        this.savePedido();
+      }
+      if (this.operacion == "editar") {
+        this.saveEditar();
+      }
+      this.dialog = false;
+    },
+
+    saveEditar: async function () {
+      const obj = new FormData();
+
       obj.append("CantidadPedido", this.CantidadPedido);
       obj.append("DescripcionPedido", this.DescripcionPedido);
       obj.append("RegistroMPID", this.RegistroMPID);
       obj.append("BodegaID", this.BodegaID);
+      obj.append("SucursalID", this.SucursalID);
       axios
-        .post(this.url+"/"+this.IdPedido, obj)
+        .post(this.url + "/" + this.IdPedido, obj)
 
         .then((response) => {
           //console.log(response.data.result)
@@ -434,9 +414,7 @@ export default {
           this.close();
         })
         .catch((error) => this.errors.record(error.response.data));
-        
-
-      }
+    },
   },
   created() {
     this.getPedido();

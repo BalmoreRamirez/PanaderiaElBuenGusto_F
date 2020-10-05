@@ -130,7 +130,7 @@
                     <v-btn
                       color="blue darken-1"
                       text
-                      @click="guardar"
+                      @click="savePedido"
                       :disabled="!valid"
                       >Guardar</v-btn
                     >
@@ -138,6 +138,135 @@
                 </v-form>
               </v-card>
             </v-dialog>
+
+
+
+
+             <v-dialog v-model="dialog2" max-width="500px">
+             
+
+              <v-card>
+                <v-card-title>
+                  <span class="headline">Editar Movimiento de Materia Prima</span>
+                </v-card-title>
+
+                <v-form ref="form" v-model="valid">
+                  <v-card-text>
+                    <v-container>
+                      <v-row>
+                        <v-col cols="12" sm="6">
+                          <v-select
+                            :items="MateriaPrima"
+                            item-text="NombreMP"
+                            item-value="IdRegistroMP"
+                            v-model="RegistroMPID"
+                            label="Selecione la materia prima"
+                            :rules="[
+                              (v) => !!v || 'Materia prima es requerido',
+                            ]"
+                            id="IdRegistroMP"
+                            @click="errors.clear('IdRegistroMP')"
+                            required
+                          >
+                          </v-select>
+                          <span
+                            class="red--text"
+                            v-text="errors.get('IdRegistroMP')"
+                          ></span>
+                        </v-col>
+
+                        <v-col cols="12" sm="6">
+                          <v-text-field
+                            type="number"
+                            v-model="CantidadPedido"
+                            label="Cantidad de pedido*"
+                            :rules='cantidadpedidoregla'
+                            required
+                            id="CantidadPedido2"
+                            @keydown="errors.clear('CantidadPedido')"
+                          ></v-text-field>
+                          <span
+                            class="red--text"
+                            v-text="errors.get('CantidadPedido')"
+                          ></span>
+                        </v-col>
+                        <v-col cols="12" sm="6">
+                          <v-text-field
+                            v-model="DescripcionPedido"
+                            label="Descripcion Pedido*"
+                            counter="30"
+                            :rules="[
+                              required('descripcion de pedido'),
+                              maxlength('Descripcion de pedido', 30),
+                            ]"
+                            id="DescripcionPedido"
+                            @keydown="errors.clear('DescripcionPedido')"
+                          >
+                            <span
+                              class="red--text"
+                              v-text="errors.get('DescripcionPedido')"
+                            ></span>
+                          </v-text-field>
+                        </v-col>
+
+                        <v-col cols="12" sm="6">
+                          <v-select
+                            :items="Sucursal"
+                            item-text="NombreSucursal"
+                            item-value="IdSucursal"
+                            v-model="SucursalID"
+                            label="Selecione una sucursal"
+                            :rules="[(v) => !!v || 'Sucursal es requerido']"
+                            id="IdSucursal"
+                            @click="errors.clear('IdSucursal')"
+                            required
+                          >
+                          </v-select>
+                          <span
+                            class="red--text"
+                            v-text="errors.get('IdSucursal')"
+                          ></span>
+                        </v-col>
+                        <v-col cols="12" sm="6">
+                          <v-select
+                            :items="Bodegas"
+                            item-text="NombreBodega"
+                            item-value="IdBodega"
+                            v-model="BodegaID"
+                            label="Selecione Bodega"
+                            :rules="[(v) => !!v || 'Bodega es requerido']"
+                            id="IdBodega"
+                            @click="errors.clear('IdBodega')"
+                            required
+                          >
+                          </v-select>
+                          <span
+                            class="red--text"
+                            v-text="errors.get('IdBodega')"
+                          ></span>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="close"
+                      >Salir</v-btn
+                    >
+                    <v-btn
+                      color="blue darken-1"
+                      text
+                      @click="saveEditar"
+                      >Guardar</v-btn
+                    >
+                  </v-card-actions>
+                </v-form>
+              </v-card>
+            </v-dialog>
+
+
+
+
           </v-toolbar>
           <div>
             <v-alert :value="Alert" type="success" border="top" dense>
@@ -192,6 +321,10 @@ export default {
       Alert2: false,
       errors: new Errors(),
       valid: false,
+
+      //Creando regla nueva para cantidad de pedido del formulario 2
+      cantidadpedidoregla: [v => !!v || "Cantidad de pedido es necesario"],
+
       required(propertyType) {
         return (v) =>
           (v && v.length > 0) || `Tienes que ingresar ${propertyType}`;
@@ -224,7 +357,7 @@ export default {
       BodegaID: "",
       NombreSucursal: "",
       SucursalID: "",
-      operacion: "",
+     
 
       url4: "/PanaderiaBG/public/Sucursal",
       url3: "/PanaderiaBG/public/ShowMateriaPrima",
@@ -232,13 +365,10 @@ export default {
       url: "http://localhost/PanaderiaBG/public/Pedido",
       search: "",
       dialog: false,
+      dialog2: false,
 
       headers: [
-              {
-          text: "ID Pedido",
-          value: "IdPedido",
-          class: "indigo white--text",
-        },
+              
       
         {
           text: "Materia Prima",
@@ -306,11 +436,13 @@ export default {
     //limpia errores front-end
     clear() {
       this.$refs.form.reset();
+      
+      
     },
 
     close() {
       this.dialog = false;
-      this.dialogEdit = false;
+      this.dialog2 = false;
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
@@ -318,15 +450,7 @@ export default {
       });
     },
 
-    edit(item) {
-      this.CantidadPedido = item.CantidadPedido;
-      this.DescripcionPedido = item.DescripcionPedido;
-      this.NombreMP = item.NombreMP;
-      this.NombreBodega = item.NombreBodega;
-      this.NombreSucursal = item.NombreSucursal;
-
-      this.dialogEdit = true;
-    },
+   
 
     savePedido: async function () {
       const obj = new FormData();
@@ -354,15 +478,18 @@ export default {
         })
         .catch((error) => this.errors.record(error.response.data));
     },
+
+
+  //Llama formulario de agregar 
+
     formNuevo: function () {
-      this.operacion = "crear";
-      this.CantidadPedido = "";
-      this.DescripcionPedido = "";
-      this.NombreMP = "";
-      this.NombreBodega = "";
-      this.NombreSucursal = "";
+      
+  
       this.dialog = true;
+      
     },
+
+    //Llama formulario editar y asigna valores a cada variable
 
     formEdit: function (item) {
       this.CantidadPedido = item.CantidadPedido;
@@ -372,22 +499,12 @@ export default {
       this.BodegaID = item.IdBodega;
       this.SucursalID = item.IdSucursal;
 
-      this.dialog = true;
-
-      this.operacion = "editar";
-      //Para que sirve esta linea de codigo?
-      this.$refs.form.resetValidation();
+      this.dialog2 = true;
+      
+     
     },
 
-    guardar: function () {
-      if (this.operacion == "crear") {
-        this.savePedido();
-      }
-      if (this.operacion == "editar") {
-        this.saveEditar();
-      }
-      this.dialog = false;
-    },
+   //Actualiza la informacion almacenada 
 
     saveEditar: async function () {
       const obj = new FormData();

@@ -1,30 +1,77 @@
 <template>
   <v-layout>
     <v-flex>
-      <v-data-table
-        :headers="headers"
-        :items="Inventario"
-        :search="search"
-        class="elevation-10"
-      >
+      <v-data-table :headers="headers" :items="Inventario" class="elevation-10">
         <template v-slot:top>
           <v-toolbar flat color="white">
-            <v-toolbar-title>Historial Movimiento Materia Prima</v-toolbar-title>
-            <v-divider class="mx-4" inset vertical></v-divider>
+            <v-toolbar-title
+              >Historial Movimiento Materia Prima</v-toolbar-title
+            >
+            <v-divider class="mx-6" inset vertical></v-divider>
+            <v-spacer></v-spacer>
+            <v-row>
+              <v-col cols="3">
+                 <!-- Filter for materia -->
+                <v-text-field
+                  v-model="NombreMP"
+                  append-icon="mdi-magnify"
+                  label="Materia"
+                  single-line
+                  hide-details
+                ></v-text-field>
+              </v-col>
+              <v-col cols="3">
+                <!-- Filter for sucursal -->
+                <v-select
+                  :items="Sucursal"
+                  item-text="NombreSucursal"
+                  v-model="SucursalID"
+                  label="Sucursal"
+                ></v-select>
+              </v-col>
+
+              <v-col cols="3">
+                <!-- Filter for fecha -->
+                <v-menu
+                  v-model="menu"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      :value="computedFechaMovimientoFormattedMomentjs"
+                      label="Fecha de movimiento"
+                      
+                      prepend-icon="event"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                      @click:clear="date = null"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="FechaMovimiento"
+                    @input="menu = false"
+                  ></v-date-picker>
+                </v-menu>
+              </v-col>
+              <v-col cols="3">
+              <v-btn color="blue darken-1" text @click="clearfilter"
+                      >Limpiar</v-btn
+                    >
+                
+              </v-col>
+ 
+
+
+            </v-row>
             <v-spacer></v-spacer>
 
-            <v-text-field
-              v-model="search"
-              append-icon="mdi-magnify"
-              label="Search"
-              single-line
-              hide-details
-            ></v-text-field>
-
-            <v-spacer></v-spacer>
+            <!-- Formulario que no se utiliza de momento  -->
             <v-dialog v-model="dialog" max-width="500px">
-              
-
               <v-card>
                 <v-card-title>
                   <span class="headline">Inventario</span>
@@ -134,6 +181,8 @@
                 </v-form>
               </v-card>
             </v-dialog>
+
+            <!-- Fin Formulario que no se utiliza de momento  -->
           </v-toolbar>
           <div>
             <v-alert :value="Alert" type="success" border="top" dense>
@@ -228,6 +277,7 @@ export default {
           text: "Nombre de Producto",
           value: "NombreMP",
           class: "indigo white--text",
+          filter: this.MateriaPrimaFilter,
         },
 
         {
@@ -236,19 +286,19 @@ export default {
           class: "indigo white--text",
         },
 
-         {
+        {
           text: " Sucursal",
           value: "NombreSucursal",
           class: "indigo  white--text",
+          filter: this.SucursalFilter,
         },
 
         {
           text: " Fecha de movimiento",
           value: "FechaMovimiento",
           class: "indigo  white--text",
+          filter: this.FechaFilter,
         },
-
-       
       ],
     };
   },
@@ -260,6 +310,8 @@ export default {
         ? moment(this.FechaMovimiento).format("DD-MM-YYYY")
         : "";
     },
+    
+    
   },
   methods: {
     getMateriaPrima: async function () {
@@ -302,8 +354,6 @@ export default {
         .post(this.url, obj)
 
         .then((response) => {
-          //console.log(response.data.result)
-
           this.Inventario.push(response.data.result);
           this.Cantidad = "";
           this.FechaMovimiento = "";
@@ -316,6 +366,73 @@ export default {
         })
         .catch((error) => this.errors.record(error.response.data));
     },
+
+    /**
+     * Filtro para materia
+     * @param value
+     * @returns {boolean}
+     */
+
+    MateriaPrimaFilter(value) {
+      if (!this.NombreMP) {
+        return true;
+      }
+
+      return value.toLowerCase().includes(this.NombreMP.toLowerCase());
+    },
+    /**
+     * Filtro para sucursal
+     * @param value2
+     * @returns {boolean}
+     */
+    SucursalFilter(value2) {
+      if (!this.SucursalID) {
+        return true;
+      }
+
+      return value2 === this.SucursalID;
+    },
+
+    /**
+     * Filtro para fecha
+     * @param value3
+     * @returns {boolean}
+     */
+    
+    
+   
+
+    
+    
+    FechaFilter(value3) {
+      
+      let result;
+       var d = new Date(value3),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    result = [year, day, month].join('-');
+
+      if (!this.FechaMovimiento) {
+        return true;
+      }
+      console.log("el valor de el valor 3 es " + result);
+      console.log("el valor de fechamovimiento es " + this.FechaMovimiento);
+      return result === this.FechaMovimiento;
+      
+    
+    },
+    clearfilter () {
+        this.NombreMP = ''
+        this.SucursalID = ''
+        this.FechaMovimiento = ''
+        
+      },
+    
   },
   created() {
     this.getInventario();

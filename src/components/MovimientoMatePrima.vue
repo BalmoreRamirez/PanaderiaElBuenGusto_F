@@ -55,15 +55,16 @@
                             type="number"
                             v-model="CantidadPedido"
                             label="Cantidad de pedido*"
-                            :rules="[required('cantidad de pedido'),
-                                     numberRule,]"
+                            :rules="[
+                              required('cantidad de pedido'),
+                              numberRule,
+                            ]"
                             id="CantidadPedido"
-                            
-                            @keydown="errors.clear('CantidadPedido')"
+                            @keydown="errors.clear('msg')"
                           ></v-text-field>
                           <span
                             class="red--text"
-                            v-text="errors.get('CantidadPedido')"
+                            v-text="errors.get('msg')"
                           ></span>
                         </v-col>
                         <v-col cols="12" sm="6">
@@ -140,16 +141,13 @@
                 </v-form>
               </v-card>
             </v-dialog>
-
-
-
-
-             <v-dialog v-model="dialog2" max-width="500px">
-             
-
+            <!--FORMULARIO PARA EDITAR-->
+            <v-dialog v-model="dialog2" max-width="500px">
               <v-card>
                 <v-card-title>
-                  <span class="headline">Editar Movimiento de Materia Prima</span>
+                  <span class="headline"
+                    >Editar Movimiento de Materia Prima</span
+                  >
                 </v-card-title>
 
                 <v-form ref="form" v-model="valid">
@@ -183,11 +181,10 @@
                             type="number"
                             v-model="CantidadPedido"
                             label="Cantidad de pedido*"
-                            :rules='cantidadpedidoregla'
+                            :rules="cantidadpedidoregla"
                             required
                             disabled
                             id="CantidadPedido2"
-                            
                             @keydown="errors.clear('CantidadPedido')"
                           ></v-text-field>
                           <span
@@ -260,20 +257,13 @@
                     <v-btn color="blue darken-1" text @click="close"
                       >Salir</v-btn
                     >
-                    <v-btn
-                      color="blue darken-1"
-                      text
-                      @click="saveEditar"
+                    <v-btn color="blue darken-1" text @click="saveEditar"
                       >Guardar</v-btn
                     >
                   </v-card-actions>
                 </v-form>
               </v-card>
             </v-dialog>
-
-
-
-
           </v-toolbar>
           <div>
             <v-alert :value="Alert" type="success" border="top" dense>
@@ -330,10 +320,10 @@ export default {
       valid: false,
 
       //Creando regla nueva para cantidad de pedido del formulario 2
-      cantidadpedidoregla: [v => !!v || "Cantidad de pedido es necesario"],
-      numberRule: val => {
-      if(val < 0) return 'Solo es permitido numeros positivo'
-      return true
+      cantidadpedidoregla: [(v) => !!v || "Cantidad de pedido es necesario"],
+      numberRule: (val) => {
+        if (val < 0) return "Solo es permitido numeros positivo";
+        return true;
       },
 
       required(propertyType) {
@@ -368,7 +358,6 @@ export default {
       BodegaID: "",
       NombreSucursal: "",
       SucursalID: "",
-     
 
       url4: "/PanaderiaBG/public/Sucursal",
       url3: "/PanaderiaBG/public/ShowMateriaPrima",
@@ -379,8 +368,6 @@ export default {
       dialog2: false,
 
       headers: [
-              
-      
         {
           text: "Materia Prima",
           value: "NombreMP",
@@ -447,8 +434,6 @@ export default {
     //limpia errores front-end
     clear() {
       this.$refs.form.reset();
-      
-      
     },
 
     close() {
@@ -460,8 +445,6 @@ export default {
         this.clear();
       });
     },
-
-   
 
     savePedido: async function () {
       const obj = new FormData();
@@ -490,14 +473,10 @@ export default {
         .catch((error) => this.errors.record(error.response.data));
     },
 
-
-  //Llama formulario de agregar 
+    //Llama formulario de agregar
 
     formNuevo: function () {
-      
-  
       this.dialog = true;
-      
     },
 
     //Llama formulario editar y asigna valores a cada variable
@@ -511,11 +490,9 @@ export default {
       this.SucursalID = item.IdSucursal;
 
       this.dialog2 = true;
-      
-     
     },
 
-   //Actualiza la informacion almacenada 
+    //Actualiza la informacion almacenada
 
     saveEditar: async function () {
       const obj = new FormData();

@@ -4,9 +4,9 @@ import Home from '../views/Home.vue'
 import MateriaPrima from '../components/MateriaPrima.vue'
 import ConfigProduct from "@/components/ConfigProduct";
 import EntradaMatPrima from "@/components/EntradaMatPrima";
-import MigracionMatePrima from "@/components/MigracionMatePrima";
+import MovimientoMatePrima from "@/components/MovimientoMatePrima";
 import Usuarios from "@/components/Usuarios";
-import Inventario from "@/components/Inventario";
+import HistorialMovimientomateriaPrima from "@/components/HistorialMovimientomateriaPrima";
 
 Vue.use(VueRouter)
 
@@ -32,14 +32,14 @@ const routes = [
         component: EntradaMatPrima
     },
     {
-        path: '/migracionMatePrima',
-        name: 'migracionMatePrima',
-        component: MigracionMatePrima
+        path: '/MovimientoMatePrima',
+        name: 'movimientoMatePrima',
+        component: MovimientoMatePrima
     },
     {
-        path: '/inventario',
-        name: 'inventario',
-        component: Inventario
+        path: '/historialMovimientomateriaPrima',
+        name: 'historialMovimientomateriaPrima',
+        component: HistorialMovimientomateriaPrima
     },
     {
         path: '/usuarios',

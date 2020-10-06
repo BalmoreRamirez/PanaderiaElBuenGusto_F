@@ -9,7 +9,7 @@
       >
         <template v-slot:top>
           <v-toolbar flat color="white">
-            <v-toolbar-title>Inventario</v-toolbar-title>
+            <v-toolbar-title>Historial Movimiento Materia Prima</v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>
             <v-spacer></v-spacer>
 
@@ -23,18 +23,7 @@
 
             <v-spacer></v-spacer>
             <v-dialog v-model="dialog" max-width="500px">
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  class="mx-2"
-                  fab
-                  dark
-                  color="indigo"
-                  v-bind="attrs"
-                  v-on="on"
-                >
-                  <v-icon dark>add</v-icon>
-                </v-btn>
-              </template>
+              
 
               <v-card>
                 <v-card-title>
@@ -236,9 +225,21 @@ export default {
         },
 
         {
+          text: "Nombre de Producto",
+          value: "NombreMP",
+          class: "indigo white--text",
+        },
+
+        {
           text: "Cantidad",
           value: "Cantidad",
           class: "indigo white--text",
+        },
+
+         {
+          text: " Sucursal",
+          value: "NombreSucursal",
+          class: "indigo  white--text",
         },
 
         {
@@ -247,17 +248,7 @@ export default {
           class: "indigo  white--text",
         },
 
-        {
-          text: "Nombre de Producto",
-          value: "NombreMP",
-          class: "indigo white--text",
-        },
-
-        {
-          text: " Sucursal",
-          value: "NombreSucursal",
-          class: "indigo  white--text",
-        },
+       
       ],
     };
   },

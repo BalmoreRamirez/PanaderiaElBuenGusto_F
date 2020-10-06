@@ -55,8 +55,10 @@
                             type="number"
                             v-model="CantidadPedido"
                             label="Cantidad de pedido*"
-                            :rules="[required('cantidad de pedido')]"
+                            :rules="[required('cantidad de pedido'),
+                                     numberRule,]"
                             id="CantidadPedido"
+                            
                             @keydown="errors.clear('CantidadPedido')"
                           ></v-text-field>
                           <span
@@ -161,6 +163,7 @@
                             item-value="IdRegistroMP"
                             v-model="RegistroMPID"
                             label="Selecione la materia prima"
+                            disabled
                             :rules="[
                               (v) => !!v || 'Materia prima es requerido',
                             ]"
@@ -182,7 +185,9 @@
                             label="Cantidad de pedido*"
                             :rules='cantidadpedidoregla'
                             required
+                            disabled
                             id="CantidadPedido2"
+                            
                             @keydown="errors.clear('CantidadPedido')"
                           ></v-text-field>
                           <span
@@ -214,6 +219,7 @@
                             :items="Sucursal"
                             item-text="NombreSucursal"
                             item-value="IdSucursal"
+                            disabled
                             v-model="SucursalID"
                             label="Selecione una sucursal"
                             :rules="[(v) => !!v || 'Sucursal es requerido']"
@@ -232,6 +238,7 @@
                             :items="Bodegas"
                             item-text="NombreBodega"
                             item-value="IdBodega"
+                            disabled
                             v-model="BodegaID"
                             label="Selecione Bodega"
                             :rules="[(v) => !!v || 'Bodega es requerido']"
@@ -324,6 +331,10 @@ export default {
 
       //Creando regla nueva para cantidad de pedido del formulario 2
       cantidadpedidoregla: [v => !!v || "Cantidad de pedido es necesario"],
+      numberRule: val => {
+      if(val < 0) return 'Solo es permitido numeros positivo'
+      return true
+      },
 
       required(propertyType) {
         return (v) =>

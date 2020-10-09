@@ -132,9 +132,14 @@
                                 :rules="[required('Fecha Caducidad')]"
                                 prepend-icon="event"
                                 readonly
+                                  @click="errors.clear('message')"
                                 v-bind="attrs"
                                 v-on="on"
                               ></v-text-field>
+                               <span
+                                class="red--text"
+                                v-text="errors.get('message')"
+                              ></span>
                             </template>
                             <v-date-picker
                               v-model="FechaCaducidad"
@@ -335,7 +340,7 @@ export default {
   computed: {
     computedFechaCaducidadFormattedMomentjs() {
       return this.FechaCaducidad
-        ? moment(this.FechaCaducidad).format("DD-MM-YYYY")
+        ? moment(this.FechaCaducidad).format("YYYY-MM-DD")
         : "";
     },
   },

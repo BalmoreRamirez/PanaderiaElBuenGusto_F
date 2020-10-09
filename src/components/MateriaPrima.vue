@@ -40,7 +40,7 @@
                           <v-text-field
                             v-model="CodigoMP"
                             label="Codigo*"
-                            :rules="[required('codigo'), number('numeros')]"
+                            :rules="[required('codigo')]"
                             id="CodigoMP"
                             @keydown="errors.clear('CodigoMP')"
                           >

@@ -15,6 +15,179 @@
             <v-divider class="mx-4" inset vertical></v-divider>
             <v-spacer></v-spacer>
             <v-spacer></v-spacer>
+            <v-dialog v-model="dialog2" persistent max-width="600px">
+              <v-card>
+                <v-card-title>
+                  <span class="headline">Editar Entrada de Materia Prima</span>
+                </v-card-title>
+                <v-form ref="form" v-model="valid">
+                  <v-card-text>
+                    <v-container>
+                      <v-row>
+                        <v-col cols="12" sm="6">
+                          <v-select
+                            :items="MateriaPrima"
+                            item-text="NombreMP"
+                            item-value="IdRegistroMP"
+                            v-model="MateriaPrimaID"
+                            label="Selecione Materia Prima"
+                            :rules="[
+                              (v) => !!v || 'Materia Prima es requerido',
+                            ]"
+                            id="IdRegistroMP"
+                            @click="errors.clear('IdRegistroMP')"
+                            required
+                          ></v-select>
+                          <span
+                            class="red--text"
+                            v-text="errors.get('IdRegistroMP')"
+                          ></span>
+                        </v-col>
+                        <v-col cols="12" sm="6">
+                          <v-text-field
+                            v-model="Desperdicio"
+                            label="Desperdicio*"
+                            :rules="[
+                              desperdicioregla,
+                              number('numeros'),
+                            ]"
+                            id="Desperdicio"
+                            @keydown="errors.clear('Desperdicio')"
+                          ></v-text-field>
+                          <span
+                            class="red--text"
+                            v-text="errors.get('Desperdicio')"
+                          ></span>
+                        </v-col>
+                        <v-col cols="12" sm="6">
+                          <v-text-field
+                            type="number"
+                            v-model="CantidadTotal"
+                            label="Cantidad*"
+                            :rules="cantidadregla"
+                            id="CantidadTotal"
+                            @keydown="errors.clear('CantidadTotal')"
+                          ></v-text-field>
+                          <span
+                            class="red--text"
+                            v-text="errors.get('CantidadTotal')"
+                          ></span>
+                        </v-col>
+                        <v-col cols="12" sm="6">
+                          <v-select
+                            :items="Bodegas"
+                            item-text="NombreBodega"
+                            item-value="IdBodega"
+                            v-model="BodegaID"
+                            label="Selecione Bodega"
+                            :rules="[(v) => !!v || 'Bodega es requerida']"
+                            id="IdBodega"
+                            @click="errors.clear('IdBodega')"
+                            required
+                          ></v-select>
+                          <span
+                            class="red--text"
+                            v-text="errors.get('IdBodega')"
+                          ></span>
+                        </v-col>
+                        <v-col cols="12" sm="6">
+                          <v-text-field
+                            type="number"
+                            v-model="PrecioUnitario"
+                            label="Precio Unitario*"
+                            :rules="precioregla"
+                            id="PrecioUnitario"
+                            @keydown="errors.clear('PrecioUnitario')"
+                          ></v-text-field>
+                          <span
+                            class="red--text"
+                            v-text="errors.get('PrecioUnitario')"
+                          ></span>
+                        </v-col>
+                        <v-col cols="12" sm="6">
+                          <v-menu
+                            v-model="menu2"
+                            :close-on-content-click="false"
+                            :nudge-right="40"
+                            transition="scale-transition"
+                            offset-y
+                            min-width="290px"
+                          >
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-text-field
+                                :value="computedFechaCaducidadFormattedMomentjs"
+                                label="Fecha Caducidad"
+                                :rules="[required('Fecha Caducidad')]"
+                                prepend-icon="event"
+                                readonly
+                                  @click="errors.clear('message')"
+                                v-bind="attrs"
+                                v-on="on"
+                              ></v-text-field>
+                               <span
+                                class="red--text"
+                                v-text="errors.get('message')"
+                              ></span>
+                            </template>
+                            <v-date-picker
+                              v-model="FechaCaducidad"
+                              @input="menu2 = false"
+                            ></v-date-picker>
+                          </v-menu>
+                        </v-col>
+                        <v-col cols="12" sm="6">
+                          <v-select
+                            :items="UnidadMedida"
+                            item-text="NombreUnidad"
+                            item-value="IdUnidadMedida"
+                            v-model="UnidadMedidaID"
+                            label="Selecione la unidad"
+                            :rules="[(v) => !!v || 'Unidad es requerido']"
+                            id="IdUnidadMedida"
+                            @click="errors.clear('IdUnidadMedida')"
+                            required
+                          ></v-select>
+                          <span
+                            class="red--text"
+                            v-text="errors.get('IdUnidadMedida')"
+                          ></span>
+                        </v-col>
+                        <v-col cols="12" sm="6">
+                          <v-select
+                            :items="Proveedor"
+                            item-text="NombreProveedor"
+                            item-value="IdProveedor"
+                            v-model="ProveedorId"
+                            label="Selecione Proveedor"
+                            :rules="[(v) => !!v || 'proveedor es requerido']"
+                            id="IdProveedor"
+                            @click="errors.clear('IdProveedor')"
+                            required
+                          ></v-select>
+                          <span
+                            class="red--text"
+                            v-text="errors.get('IdProveedor')"
+                          ></span>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </v-card-text>
+
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="closeEdit"
+                      >Salir</v-btn
+                    >
+                    <v-btn
+                      color="blue darken-1"
+                      text
+                      @click="saveEditar"
+                      >Guardar</v-btn
+                    >
+                  </v-card-actions>
+                </v-form>
+              </v-card>
+            </v-dialog>
             <v-dialog v-model="dialog" persistent max-width="600px">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
@@ -209,6 +382,11 @@
             </v-alert>
           </div>
         </template>
+        <template v-slot:[`item.actions`]="{ item }">
+          <v-btn class="mb-2" color="primary" @click="formEdit(item)">
+            Editar
+          </v-btn>
+        </template>
       </v-data-table>
     </v-flex>
   </v-layout>
@@ -250,7 +428,11 @@ export default {
       Alert: false,
       errors: new Errors(),
       menu: false,
+      menu2: false,
       valid: false,
+      cantidadregla: [(v) => !!v || "Cantidad es necesaria"],
+      desperdicioregla: [(v) => !!v || "Desperdicio es necesario"],
+      precioregla: [(v) => !!v || "Precio es necesario"],
       required(propertyType) {
         return (v) =>
           (v && v.length > 0) || `Tienes que ingresar ${propertyType}`;
@@ -292,9 +474,10 @@ export default {
       url3: "http://localhost/PanaderiaBG/public/Proveedores",
       url2: "http://localhost/PanaderiaBG/public/UnidadMateria",
       url: "http://localhost/PanaderiaBG/public/MateriaPrimaProveedor",
+      
       search: "",
       dialog: false,
-
+      dialog2: false,
       headers: [
         {
           text: "Materia Prima",
@@ -332,7 +515,16 @@ export default {
           value: "NombreProveedor",
           class: "indigo  white--text",
         },
-        { text: "Bodega", value: "NombreBodega", class: "indigo  white--text" },
+        { text: "Bodega", 
+        value: "NombreBodega", 
+        class: "indigo  white--text" 
+        },
+        {
+          text: "Acción",
+          value: "actions",
+          class: "indigo  white--text",
+          sortable: false,
+        },
       ],
     };
   },
@@ -376,12 +568,79 @@ export default {
     },
     close() {
       this.dialog = false;
+      this.dialog2 = false;
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
         this.clear();
       });
     },
+    closeEdit() {
+      this.dialog2 = false;
+          this.ProductoId = "";
+          this.Desperdicio = "";
+          this.CantidadTotal = "";
+          this.FechaCaducidad = "";
+          this.PrecioUnitario = "";
+          this.UnidadMedidaID = "";
+          this.ProveedorId = "";
+          this.BodegaID = "";
+          this.MateriaPrimaID = "";
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+        this.clear();
+      });
+    },
+    formEdit: function (item) {
+
+      this.ProductoId = item.ProductoId;
+      this.MateriaPrimaID = item.IdRegistroMP;
+      this.Desperdicio = item.Desperdicio;
+      this.CantidadTotal = item.CantidadTotal;
+      this.PrecioUnitario = item.PrecioUnitario;
+      this.BodegaID = item.IdBodega;
+      this.FechaCaducidad = moment(item.FechaCaducidad,'DD/MM/YYYY').format('YYYY-MM-DD');
+      this.UnidadMedidaID = item.IdUnidadMedida;
+      this.ProveedorId = item.IdProveedor;
+      this.dialog2 = true;
+      
+    },
+    saveEditar: async function () {
+      console.log(this.ProveedorId)
+      const obj = new FormData();
+      obj.append("ProductoId", this.ProductoId);
+      obj.append("Desperdicio", this.Desperdicio);
+      obj.append("CantidadTotal", this.CantidadTotal);
+      obj.append("FechaCaducidad", this.FechaCaducidad);
+      obj.append("PrecioUnitario", this.PrecioUnitario);
+      obj.append("UnidadMedidaID", this.UnidadMedidaID);
+      obj.append("ProveedorId", this.ProveedorId);
+      obj.append("BodegaID", this.BodegaID);
+      obj.append("MateriaPrimaID", this.MateriaPrimaID);
+      axios
+        .post(this.url + "/" + this.MateriaPrimaID, obj)
+        .then((response) => {
+          //console.log(response.data.result)
+          this.EntradaMatPrima.push(response.data.result);
+          this.ProductoId = "";
+          this.Desperdicio = "";
+          this.CantidadTotal = "";
+          this.FechaCaducidad = "";
+          this.PrecioUnitario = "";
+          this.UnidadMedidaID = "";
+          this.ProveedorId = "";
+          this.BodegaID = "";
+          this.MateriaPrimaID = "";
+          this.Alert = true;
+          this.getEntradaMatPrima();
+
+          this.clear();
+          this.close();
+        })
+        .catch((error) => this.errors.record(error.response.data));
+    },
+ 
     saveMateriaPrima: async function () {
       const obj = new FormData();
       obj.append("ProductoId", this.ProductoId);

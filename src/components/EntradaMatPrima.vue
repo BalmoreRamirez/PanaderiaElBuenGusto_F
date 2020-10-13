@@ -274,7 +274,6 @@ export default {
       Bodegas: [],
       UnidadMedida: [],
       Proveedor: [],
-
       ProveedorId: "",
       NombreProveedor: "",
       MateriaPrimaID: "",
@@ -365,7 +364,6 @@ export default {
     getEntradaMatPrima: async function () {
       const res = await this.$http.get(this.url);
       this.EntradaMatPrima = res.data;
-
       setTimeout(() => {
         this.Alert = false;
       }, 5000);

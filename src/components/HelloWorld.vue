@@ -1,10 +1,7 @@
 <template>
   <v-container>
     <v-row>
-       <v-img class="col-3"
-      :src="image"
-
-    ></v-img>
+   
     </v-row>
   </v-container>
 </template>
@@ -22,10 +19,11 @@ import  image from "../assets/Home.png"
     },
   }
 </script>
-<style>
-img{
-  width: 50%;
-  height: 50%;
+<style scoped>
+.img{
+
+  width: 400px;
+  height: 400px
 }
 </style>
 

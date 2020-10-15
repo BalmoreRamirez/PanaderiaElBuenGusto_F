@@ -354,6 +354,7 @@
                             v-text="errors.get('IdProveedor')"
                           ></span>
                         </v-col>
+                        
                       </v-row>
                     </v-container>
                   </v-card-text>
@@ -382,11 +383,14 @@
             </v-alert>
           </div>
         </template>
-        <template v-slot:[`item.actions`]="{ item }">
-          <v-btn class="mb-2" color="primary" @click="formEdit(item)">
-            Editar
+        <!-- <template v-slot:[`item.actions`]="{ item }">
+          <v-btn class="mb-2" v-if="item.FechaCaducidad < currentDate" color='green' >
+            ALTA
           </v-btn>
-        </template>
+          <v-btn class="mb-2"  v-else color='red' >
+            BAJA
+          </v-btn>
+        </template> -->
       </v-data-table>
     </v-flex>
   </v-layout>
@@ -469,6 +473,7 @@ export default {
       PrecioUnitario: "",
       BodegaID: "",
       NombreBodega: "",
+      currentDate: moment(new Date()).format("DD/MM/YYYY"),
       url5: "http://localhost/PanaderiaBG/public/ShowMateriaPrima",
       url4: "http://localhost/PanaderiaBG/public/Bodegas",
       url3: "http://localhost/PanaderiaBG/public/Proveedores",
@@ -520,8 +525,8 @@ export default {
         class: "indigo  white--text" 
         },
         {
-          text: "Acción",
-          value: "actions",
+          text: "Dias Faltantes",
+          value: "Dias",
           class: "indigo  white--text",
           sortable: false,
         },
@@ -540,6 +545,7 @@ export default {
     getMateriaPrima: async function () {
       const res = await this.$http.get(this.url5);
       this.MateriaPrima = res.data;
+      
     },
     getBodegas: async function () {
       const res = await this.$http.get(this.url4);
@@ -557,7 +563,27 @@ export default {
     getEntradaMatPrima: async function () {
       const res = await this.$http.get(this.url);
       this.EntradaMatPrima = res.data;
+      let result = this.EntradaMatPrima.map(function(o) {
+        let currentDate = new Date();
+        currentDate.setDate(currentDate.getDate());
 
+        let loopDate = moment(o.FechaCaducidad,'DD-MM-YYYY').format('YYYY-MM-DD');
+        loopDate = new Date(loopDate); 
+        const diffTime = Math.abs(loopDate - currentDate);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+        
+        console.log(currentDate)
+        if (loopDate <=  currentDate) {
+
+          o.Dias = 'Caducado';
+        }
+        else {
+          o.Dias = 'Faltan ' + diffDays + ' dias para que caduque';
+        }
+         
+      return o;
+      })
+      console.log(result);
       setTimeout(() => {
         this.Alert = false;
       }, 5000);

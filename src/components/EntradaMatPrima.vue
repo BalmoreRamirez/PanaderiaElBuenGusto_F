@@ -460,7 +460,6 @@ export default {
       Bodegas: [],
       UnidadMedida: [],
       Proveedor: [],
-
       ProveedorId: "",
       NombreProveedor: "",
       MateriaPrimaID: "",

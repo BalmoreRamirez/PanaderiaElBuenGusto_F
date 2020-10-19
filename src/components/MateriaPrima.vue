@@ -10,8 +10,75 @@
       >
         <template v-slot:top>
           <v-toolbar flat color="white">
-            <v-toolbar-title>Registro de Materia Prima</v-toolbar-title>
-            <v-divider class="mx-4" inset vertical></v-divider>
+            <v-toolbar-title>Materia Prima</v-toolbar-title>
+            <v-divider class="mx-5" inset vertical></v-divider>
+            
+            <v-row>
+              <v-col cols="1">
+                <!-- Filtro por codigo -->
+                <v-text-field
+                  v-model="CodigoMPValue"
+                  append-icon="mdi-magnify"
+                  label="Codigo"
+                  single-line
+                  hide-details
+                ></v-text-field>
+              </v-col>
+              <v-col cols="1">
+                <!-- Filtro por materia -->
+                <v-text-field
+                  v-model="NombreMPValue"
+                  append-icon="mdi-magnify"
+                  label="Nombre"
+                  single-line
+                  hide-details
+                ></v-text-field>
+              </v-col>
+              <v-col cols="1">
+                <!-- Filtro por clase -->
+                <v-text-field
+                  v-model="ClaseValue"
+                  append-icon="mdi-magnify"
+                  label="Clase"
+                  single-line
+                  hide-details
+                ></v-text-field>
+              </v-col>
+              <v-col cols="2">
+                <!-- Filtro por observacion -->
+                <v-text-field
+                  v-model="ObservacionValue"
+                  append-icon="mdi-magnify"
+                  label="Observacion"
+                  single-line
+                  hide-details
+                ></v-text-field>
+              </v-col>
+                             
+                <v-col cols="2">
+                <!-- Filtro por Unidad -->
+                <v-select
+                  :items="UnidadMedida"
+                  item-text="NombreUnidad"
+                  v-model="UnidadMedidaIDValue"
+                  label="Unidad"
+                ></v-select>
+              </v-col>
+              <v-col cols="2">
+                <!-- Filtro por Proveedor -->
+                <v-select
+                  :items="Proveedor"
+                  item-text="NombreProveedor"
+                  v-model="ProveedorIDValue"
+                  label="Proveedor"
+                ></v-select>
+              </v-col>
+                 <v-col cols="1">
+                <v-btn color="blue darken-1" text @click="clearfilter"
+                  >Limpiar</v-btn
+                >
+              </v-col>
+             </v-row>
             <v-spacer></v-spacer>
             <v-dialog v-model="dialog" persistent max-width="600px">
               <!---icono de agregar-->
@@ -259,6 +326,12 @@ export default {
       NombreProveedor: "",
       ProveedorID: "",
       alert: false,
+      CodigoMPValue: '',
+      NombreMPValue:'',
+      ClaseValue:'',
+      ObservacionValue:'',
+      UnidadMedidaIDValue: null,
+      ProveedorIDValue: null,
       url3: "/PanaderiaBG/public/Proveedores",
       url2: "/PanaderiaBG/public/UnidadMateria",
       url: "http://localhost/PanaderiaBG/public/MateriaPrima",
@@ -268,32 +341,47 @@ export default {
         {
           text: "Codigo",
           align: "start",
-          sortable: false,
           value: "CodigoMP",
           class: "indigo white--text",
+          filter: this.CodigoFilter,
         },
-        //  { text: "Codigo", value: "CodigoMP" },
-        { text: "Nombre", value: "NombreMP", class: "indigo  white--text" },
-        { text: "Clase", value: "Clase", class: "indigo white--text" },
+
+        {
+          text: "Nombre",
+          value: "NombreMP",
+          class: "indigo  white--text",
+          filter: this.MateriaPrimaFilter,
+        },
+
+        { text: "Clase", 
+        value: "Clase", 
+        class: "indigo white--text" ,
+        filter: this.ClaseFilter,
+        },
+
         {
           text: "Obervacion",
           value: "Observacion",
           class: "indigo white--text",
+          filter: this.ObservacionFilter,
         },
         {
           text: "Descripcion",
           value: "Descripcion",
           class: "indigo white--text",
+          
         },
         {
           text: "Unidad de Medida",
           value: "NombreUnidad",
           class: "indigo white--text",
+          filter: this.UnidadFilter,
         },
         {
           text: "Proveedor",
           value: "NombreProveedor",
           class: "indigo white--text",
+          filter: this.ProveedorFilter,
         },
       ],
     };
@@ -357,6 +445,99 @@ export default {
           this.close();
         })
         .catch((error) => this.errors.record(error.response.data));
+    },
+
+    /**
+     * Filtro para codigo
+     * @param value
+     * @returns {boolean}
+     */
+
+    CodigoFilter(value) {
+      if (!this.CodigoMPValue) {
+        return true;
+      }
+      
+      return value.toLowerCase().includes(this.CodigoMPValue.toLowerCase());
+    },
+
+     /**
+     * Filtro para materia
+     * @param value
+     * @returns {boolean}
+     */
+
+    MateriaPrimaFilter(value) {
+      if (!this.NombreMPValue) {
+        return true;
+      }
+
+      return value.toLowerCase().includes(this.NombreMPValue.toLowerCase());
+    },
+
+    /**
+     * Filtro para Clase
+     * @param value
+     * @returns {boolean}
+     */
+
+    ClaseFilter(value) {
+      if (!this.ClaseValue) {
+        return true;
+      }
+
+      return value.toLowerCase().includes(this.ClaseValue.toLowerCase());
+    },
+    
+     /**
+     * Filtro para Observacion
+     * @param value
+     * @returns {boolean}
+     */
+
+    ObservacionFilter(value) {
+      if (!this.ObservacionValue) {
+        return true;
+      }
+
+      return value.toLowerCase().includes(this.ObservacionValue.toLowerCase());
+    },
+     
+
+
+    /**
+     * Filtro para Proveedor
+     * @param value2
+     * @returns {boolean}
+     */
+    ProveedorFilter(value2) {
+      if (!this.ProveedorIDValue) {
+        return true;
+      }
+
+      return value2 === this.ProveedorIDValue;
+    },
+
+    /**
+     * Filtro para UnidadMedida
+     * @param value3
+     * @returns {boolean}
+     */
+    UnidadFilter(value3) {
+      if (!this.UnidadMedidaIDValue) {
+        return true;
+      }
+
+      return value3 === this.UnidadMedidaIDValue;
+    },
+
+    clearfilter() {
+      this.NombreMPValue = "";
+      this.CodigoMPValue = "";
+      this.ProveedorIDValue = "";
+      this.ClaseValue = "";
+      this.ObservacionValue = "";
+      this.UnidadMedidaIDValue = "";
     },
   },
   created() {

@@ -43,7 +43,7 @@
           </v-list-item-content>
         </v-list-item>
         <!------------>
-         <v-list-item :to="{name:'historialMovimientomateriaPrima'}">
+        <v-list-item :to="{name:'historialMovimientomateriaPrima'}">
           <v-list-item-icon>
             <v-icon>assignment_turned_in</v-icon>
           </v-list-item-icon>
@@ -60,6 +60,16 @@
 
           <v-list-item-content>
             <v-list-item-title>Usuarios</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <!--inventario--->
+        <v-list-item :to="{name:'inventario'}">
+          <v-list-item-icon>
+            <v-icon>assignment</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>{{inventario}}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
@@ -85,6 +95,7 @@
 
 <script>
 import Footer from "@/components/Home/Footer";
+
 export default {
   name: "panaderia",
   components: {Footer},
@@ -93,6 +104,7 @@ export default {
   },
   data() {
     return {
+      inventario:'Inventario',
       dialog: false,
       drawer: null,
     };

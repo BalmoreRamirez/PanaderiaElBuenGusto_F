@@ -35,30 +35,30 @@
                       <v-row>
                         <v-col cols="12" sm="6">
                           <v-text-field
-                            v-model="NombreUsuario"
+                            v-model="name"
                             label="Nombre*"
                             :rules="[required('Nombre Usuario'), minlength('Nombre Usuario', 4)]"
-                            id="NombreUsuario"
-                            @keydown="errors.clear('NombreUsuario')"
+                            id="name"
+                            @keydown="errors.clear('name')"
                           >
                           </v-text-field>
                           <span
                             class="red--text"
-                            v-text="errors.get('NombreUsuario')"
+                            v-text="errors.get('name')"
                           ></span>
                         </v-col>
                         <v-col cols="12" sm="6">
                           <v-text-field
-                            v-model="EmailUsuario"
+                            v-model="email"
                             label="Correo"
-                            :rules="[required('Email')]"
-                            id="EmailUsuario"
-                            @keydown="errors.clear('EmailUsuario')"
+                            :rules="[required('email')]"
+                            id="email"
+                            @keydown="errors.clear('email')"
                           >
                           </v-text-field>
                           <span
                             class="red--text"
-                            v-text="errors.get('EmailUsuario')"
+                            v-text="errors.get('email')"
                           ></span>
                         </v-col>
                         <v-col cols="12" sm="6">
@@ -82,16 +82,16 @@
                         <v-col cols="12" sm="6">
                           <v-text-field
                             :type="'password'"
-                            v-model="Password"
+                            v-model="password"
                             label="Contraseña"
                             :rules="[required('Contraseña'),minlength('Contraseña', 6)]"
                             id="Password"
-                            @keydown="errors.clear('Password')"
+                            @keydown="errors.clear('password')"
                           >
                           </v-text-field>
                           <span
                             class="red--text"
-                            v-text="errors.get('Password')"
+                            v-text="errors.get('password')"
                           ></span>
                         </v-col>
                       </v-row>
@@ -175,21 +175,21 @@ export default {
       errors: new Errors(),
       Usuarios: [],
       Roles: [],
-      NombreUsuario: "",
-      EmailUsuario: "",
+      name: "",
+      email: "",
       RolId: "",
       NombreRol: "",
-      Password: "",
+      password: "",
 
       urlUsers: "http://localhost/PanaderiaBG/public/Usuarios",
       urlRoles: "/PanaderiaBG/public/Roles",
       headers: [
         {
           text: "Nombre ",
-          value: "NombreUsuario",
+          value: "name",
           class: "indigo  white--text",
         },
-        { text: "Correo", value: "EmailUsuario", class: "indigo  white--text" },
+        { text: "Correo", value: "email", class: "indigo  white--text" },
         { text: "Rol", value: "NombreRol", class: "indigo  white--text" },
       ],
     };
@@ -224,10 +224,10 @@ export default {
     },
     saveUsers: async function () {
       const obj = new FormData();
-      obj.append("NombreUsuario", this.NombreUsuario);
-      obj.append("EmailUsuario", this.EmailUsuario);
+      obj.append("name", this.name);
+      obj.append("email", this.email);
       obj.append("RolId", this.RolId);
-      obj.append("Password", this.Password);
+      obj.append("password", this.password);
       axios
         .post(this.urlUsers, obj)
         .then((response) => {

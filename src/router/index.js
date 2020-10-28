@@ -8,6 +8,8 @@ import MovimientoMatePrima from "@/components/MovimientoMatePrima";
 import Usuarios from "@/components/Usuarios";
 import HistorialMovimientomateriaPrima from "@/components/HistorialMovimientomateriaPrima";
 import Inventario from "@/components/Inventario";
+import Login from "@/views/Login";
+import Inicio from "@/views/Inicio";
 
 Vue.use(VueRouter)
 
@@ -16,6 +18,16 @@ const routes = [
         path: '/',
         name: 'Home',
         component: Home
+    },
+    {
+        path: '/login',
+        name: 'login',
+        component: Login
+    },
+    {
+        path: '/inicio',
+        name: 'inicio',
+        component: Inicio
     },
     {
         path: '/materiaPrima',

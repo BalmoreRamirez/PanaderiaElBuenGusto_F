@@ -43,6 +43,7 @@
                   <v-card-text>
                     <v-form>
                       <v-text-field
+                          v-model="usuario"
                           label="Usuario"
                           name="login"
                           prepend-icon="mdi-account"
@@ -50,6 +51,7 @@
                       ></v-text-field>
 
                       <v-text-field
+                          v-model="password"
                           id="password"
                           label="Contraseña"
                           name="password"
@@ -60,9 +62,14 @@
                   </v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="primary" :to="{name:'inicio'}">{{nameForm.enviar}}</v-btn>
+                    <v-btn @click="login" color="primary" :to="{name:'inicio'} ">{{nameForm.enviar}}</v-btn>
                   </v-card-actions>
                 </v-card>
+                  <div>
+            <v-alert :value="Alert" type="warning" border="top" dense>
+              Usuario o Contraseña invalido
+            </v-alert>
+          </div>
               </v-col>
             </v-row>
           </v-container>
@@ -70,9 +77,34 @@
       </v-app>
     </v-app>
   </div>
+  
 </template>
 
 <script>
+import axios from "axios";
+axios.defaults.baseURL = "http://localhost";
+
+class Errors {
+  constructor() {
+    this.errors = {};
+  }
+
+  get(field) {
+    if (this.errors[field]) {
+      return this.errors[field][0];
+    }
+  }
+
+  //Guarda los errores en el array
+  record(errors) {
+    this.errors = errors;
+  }
+
+  //Limpia validaciones backend
+  clear(field) {
+    delete this.errors[field];
+  }
+}
 export default {
   name: "Login",
   props: {
@@ -83,10 +115,50 @@ export default {
       nameForm:{
         title:"Iniciar session",
         enviar:"Enviar"
-      }
+      },
 
+      usuario: "",
+      password: "",
+      Alert:false,
+        errors: new Errors(),
+      url: "http://localhost/PanaderiaBG/public/login",
     }
   },
+  methods: {
+    login: async function(){
+      
+      const obj = new FormData();
+      obj.append("name", this.usuario);
+      obj.append("password", this.password);
+      axios
+        .post(this.url , obj)
+        .then(() => {
+
+           
+            this.$router.push('/Home')
+            console.log("Usuario correcto")
+             
+        })
+      
+      
+        .catch(() => 
+        this.Alert = true
+        );
+        
+      
+        
+        
+        
+        
+      setTimeout(() => {
+        this.Alert = false;
+      }, 5000);
+
+    }
+
+
+  }
+
 }
 </script>
 

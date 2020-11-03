@@ -33,37 +33,35 @@
                   <v-card-text>
                     <v-container>
                       <v-row>
-                 <!--=============-->
+                        <!--=============-->
                         <v-col cols="12" sm="6">
                           <v-text-field
-                            v-model="CodigoProveedor "
+                            v-model="CodigoProveedor"
                             label="Codigo"
-                             :rules="[
+                            :rules="[
                               required('CodigoProveedor'),
-                              maxlength('CodigoProveedor', 15),
+                              maxlength('CodigoProveedor', 15)
                             ]"
                             id="CodigoProveedor"
                             @keydown="errors.clear('CodigoProveedor')"
-                            >
-                            
+                          >
                           </v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6">
                           <v-text-field
-                            v-model="NombreProveedor "
+                            v-model="NombreProveedor"
                             label="Nombre"
                             :rules="[
                               required('NombreProveedor'),
                               letter('letras'),
-                              maxlength('NombreProveedor', 50),
+                              maxlength('NombreProveedor', 50)
                             ]"
                             id="NombreProveedor"
                             @keydown="errors.clear('NombreProveedor')"
                           >
                           </v-text-field>
-                  
                         </v-col>
-                    <!--=============-->
+                        <!--=============-->
                         <v-col cols="12" sm="6">
                           <v-select
                             v-model="TipoProveedorID"
@@ -71,104 +69,90 @@
                             item-value="IdTipo"
                             label="Selecione tipo de proveedor"
                             id="IdTipo"
-                             @click="errors.clear('IdTipo')"
-                             :rules="[(v) => !!v || 'Tipo proveedor es requerido']"
+                            @click="errors.clear('IdTipo')"
+                            :rules="[v => !!v || 'Tipo proveedor es requerido']"
                             required
                           >
-                          </v-select>    
+                          </v-select>
                         </v-col>
-                
+
                         <v-col cols="12" sm="6">
                           <v-text-field
                             v-model="TelefonoProveedor"
                             label="Telefono"
-                            :rules="[
-                              maxlength('TelefonoProveedor', 8),
-                            ]"
+                            :rules="[maxlength('TelefonoProveedor', 8)]"
                             id="TelefonoProveedor"
                             @keydown="errors.clear('TelefonoProveedor')"
                           >
                           </v-text-field>
                         </v-col>
-                          <!--=============-->
-                          <v-col cols="12" sm="6">
+                        <!--=============-->
+                        <v-col cols="12" sm="6">
                           <v-text-field
                             v-model="MovilProveedor"
                             label="Movil"
-                            :rules="[
-                              maxlength('MovilProveedor', 8),
-                            ]"
+                            :rules="[maxlength('MovilProveedor', 8)]"
                             id="MovilProveedor"
                             @keydown="errors.clear('MovilProveedor')"
                           >
                           </v-text-field>
                         </v-col>
-                
+
                         <v-col cols="12" sm="6">
                           <v-text-field
                             v-model="EmailProveedor"
                             label="Correo"
-                            :rules="[
-                              maxlength('EmailProveedor', 25),
-                            ]"
+                            :rules="[maxlength('EmailProveedor', 25)]"
                             id="EmailProveedor"
                             @keydown="errors.clear('EmailProveedor')"
                           >
                           </v-text-field>
                         </v-col>
-                          <!--=============-->
-                           <v-col cols="12" sm="6">
+                        <!--=============-->
+                        <v-col cols="12" sm="6">
                           <v-text-field
                             v-model="FaxProveedor"
                             label="Movil"
-                            :rules="[
-                              maxlength('FaxProveedor', 9),
-                            ]"
+                            :rules="[maxlength('FaxProveedor', 9)]"
                             id="Observacion"
                             @keydown="errors.clear('FaxProveedor')"
                           >
                           </v-text-field>
                         </v-col>
-                
+
                         <v-col cols="12" sm="6">
                           <v-text-field
                             v-model="NITPRoveedor"
                             label="NIT"
-                            :rules="[
-                              maxlength('NITPRoveedor', 20),
-                            ]"
+                            :rules="[maxlength('NITPRoveedor', 20)]"
                             id="NITPRoveedor"
                             @keydown="errors.clear('NITPRoveedor')"
                           >
                           </v-text-field>
                         </v-col>
-                          <!--=============-->
-                             <v-col cols="12" sm="6">
+                        <!--=============-->
+                        <v-col cols="12" sm="6">
                           <v-text-field
                             v-model="NIDFiscal"
                             label="NID"
-                            :rules="[
-                              maxlength('NIDFiscal', 25),
-                            ]"
+                            :rules="[maxlength('NIDFiscal', 25)]"
                             id="NIDFiscal"
                             @keydown="errors.clear('NIDFiscal')"
                           >
                           </v-text-field>
                         </v-col>
-                
+
                         <v-col cols="12" sm="6">
                           <v-text-field
                             v-model="TituloProveedor"
                             label="Titulo"
-                            :rules="[
-                              maxlength('TituloProveedor', 50),
-                            ]"
+                            :rules="[maxlength('TituloProveedor', 50)]"
                             id="TituloProveedor"
                             @keydown="errors.clear('TituloProveedor')"
                           >
                           </v-text-field>
                         </v-col>
-                          <!--=============-->
+                        <!--=============-->
                       </v-row>
                     </v-container>
                   </v-card-text>
@@ -179,9 +163,9 @@
                     >
                     <v-btn
                       color="blue darken-1"
-                      text     
+                      text
                       @click="saveProveedores"
-                      :disabled="!valid"      
+                      :disabled="!valid"
                       >Guardar</v-btn
                     >
                   </v-card-actions>
@@ -203,57 +187,54 @@
 <script>
 import axios from "axios";
 axios.defaults.baseURL = "http://localhost";
-
 class Errors {
   constructor() {
     this.errors = {};
   }
-
   get(field) {
     if (this.errors[field]) {
       return this.errors[field][0];
     }
   }
-
   //Guarda los errores en el array
   record(errors) {
     this.errors = errors;
   }
-
   //Limpia validaciones backend
   clear(field) {
     delete this.errors[field];
   }
 }
-
 export default {
   name: "Proveedores", //1-definimos el nombre
-
   data() {
     return {
       //retornamos los datos a utilizar
-
       required(propertyType) {
         return v =>
           (v && v.length > 0) || `Tienes que ingresar ${propertyType}`;
       },
-
-      minlength(propertyType, minlength) {
+      maxlength(propertyType, minlength) {
         return v =>
           (v && v.length >= minlength) ||
           `${propertyType} no puede ser inferior ${minlength} caracteres`;
       },
-
+      letter(propertyType) {
+        return v =>
+          /^[ñA-Za-z _]*[ñA-Za-z][ñA-Za-z _]+$/.test(v) ||
+          `Solo acepta ${propertyType}`;
+      },
       valid: false,
       dialog: false,
       Alert: false,
       errors: new Errors(),
-/** ============array============== */
+      /** ============array============== */
       Proveedores: [],
       TipoProveedor: [],
-/** ============model============== */
+      /** ============model============== */
       CodigoProveedor: "",
       NombreProveedor: "",
+      TipoProveedorID: "",
       TelefonoProveedor: "",
       MovilProveedor: "",
       EmailProveedor: "",
@@ -265,42 +246,40 @@ export default {
       IdTipo: "",
       NombreTipo: "",
       urlGuardarProv: "http://localhost/PanaderiaBG/public/Proveedores",
-      urlListaProveedores:"http://localhost/PanaderiaBG/public/ListaProveedores",
-/** ========================== */
-
+      urlListaProveedores:
+        "http://localhost/PanaderiaBG/public/ListaProveedores",
+      /** ========================== */
       headers: [
         {
           text: "Nombre ",
           value: "NombreProveedor",
           class: "indigo  white--text"
         },
-        { text: "Tipo", 
-        value: "NombreTipo", 
-        class: "indigo  white--text" 
-        },
+        { text: "Tipo", value: "NombreTipo", class: "indigo  white--text" },
 
-        { text: "Telefono", 
-        value: "TelefonoProveedor", 
-        class: "indigo  white--text" 
+        {
+          text: "Telefono",
+          value: "TelefonoProveedor",
+          class: "indigo  white--text"
         },
-        { text: "Correo", 
-        value: "EmailProveedor", 
-        class: "indigo  white--text" 
+        {
+          text: "Correo",
+          value: "EmailProveedor",
+          class: "indigo  white--text"
         },
-        { text: "Titulo", 
-        value: "TituloProveedor", 
-        class: "indigo  white--text" }
+        {
+          text: "Titulo",
+          value: "TituloProveedor",
+          class: "indigo  white--text"
+        }
       ]
     };
   },
-
   methods: {
-
-     //limpia errores front-end
+    //limpia errores front-end
     clear() {
       this.$refs.form.reset();
     },
-
     close() {
       this.dialog = false;
       this.$nextTick(() => {
@@ -309,15 +288,17 @@ export default {
         this.clear();
       });
     },
-    getProveedores: async function () {
-      const res = await this.$http.get(this.urlListaProveedores);
-      this.MateriaPrima = res.data;
-      setTimeout(() => {
-        this.Alert = false;
-      }, 5000);
+    async getProveedores() {
+      try{
+        const data = await fetch('http://localhost/PanaderiaBG/public/ListaProveedores')
+        const info = await data.json()
+        this.Proveedores= info
+       console.table(info)
+      }catch(error){
+        console.log(error)
+      }
     },
-
-    saveProveedores: async function () {
+    saveProveedores: async function() {
       const obj = new FormData();
       obj.append("CodigoProveedor", this.CodigoProveedor);
       obj.append("NombreProveedor", this.NombreProveedor);
@@ -331,7 +312,7 @@ export default {
       obj.append("TituloProveedor", this.TituloProveedor);
       axios
         .post(this.urlGuardarProv, obj)
-        .then((response) => {
+        .then(response => {
           //console.log(response.data.result)
           this.EntradaMatPrima.push(response.data.result);
           this.CodigoProveedor = "";
@@ -350,11 +331,13 @@ export default {
           this.clear();
           this.close();
         })
-        .catch((error) => this.errors.record(error.response.data));
-    },
-   
-  }
-};
+        .catch(error => this.errors.record(error.response.data));
+    }
+  },
+    created() {
+    this.getProveedores()
+  },
+}
 </script>
 
 <style scoped>

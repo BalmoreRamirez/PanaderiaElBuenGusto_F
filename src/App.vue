@@ -70,7 +70,7 @@
         </v-list-item>
         <!--Proveedores--->
 
-        <v-list-item :to="{ name: 'proveedores' }">
+        <v-list-item :to="{ name: 'proveedor' }">
           <v-list-item-icon>
             <v-icon>group</v-icon>
           </v-list-item-icon>

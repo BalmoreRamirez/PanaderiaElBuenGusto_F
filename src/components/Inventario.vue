@@ -31,11 +31,11 @@ export default {
     return {
       inventario: 'Inventario',
       headers: [
-        {text: 'ID', value: 'IdInventario',},
-        {text: 'REGISTRO', value: 'NombreMP'},
-        {text: 'DISPONIBLE', value: 'Disponible'},
-        {text: 'BODEGA', value: 'NombreBodega'},
-        {text: 'FECHA INGRESO', value: 'FechaIngreso'},
+        {text: 'ID', value: 'IdInventario', class: "indigo  white--text"},
+        {text: 'REGISTRO', value: 'NombreMP', class: "indigo  white--text"},
+        {text: 'DISPONIBLE', value: 'Disponible', class: "indigo  white--text"},
+        {text: 'BODEGA', value: 'NombreBodega', class: "indigo  white--text"},
+        {text: 'FECHA INGRESO', value: 'FechaIngreso', class: "indigo  white--text"},
       ],
       Inventarios: []
     }

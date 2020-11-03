@@ -6,9 +6,10 @@ import ConfigProduct from "@/components/ConfigProduct";
 import EntradaMatPrima from "@/components/EntradaMatPrima";
 import MovimientoMatePrima from "@/components/MovimientoMatePrima";
 import Usuarios from "@/components/Usuarios";
+import Proveedores from "@/components/Proveedores/Proveedores";
 import HistorialMovimientomateriaPrima from "@/components/HistorialMovimientomateriaPrima";
 import Inventario from "@/components/Inventario";
-import Login from "@/views/Login";
+import Login from "../views/Login";
 import Inicio from "@/views/Inicio";
 
 Vue.use(VueRouter)
@@ -20,14 +21,14 @@ const routes = [
         component: Home
     },
     {
-        path: '/login',
-        name: 'login',
-        component: Login
-    },
-    {
         path: '/inicio',
         name: 'inicio',
         component: Inicio
+    },
+    {
+        path: '/proveedor',
+        name: 'proveedor',
+        component: Proveedores
     },
     {
         path: '/materiaPrima',
@@ -67,13 +68,14 @@ const routes = [
     {
         path: '/about',
         name: 'About',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
         component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    },
+    {
+        path: '/login',
+        name: 'login',
+        component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue')
     }
 ]
-
 const router = new VueRouter({
     mode: 'history',
     base: process.env.BASE_URL,

@@ -72,9 +72,10 @@
             <v-list-item-title>{{inventario}}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-
       </v-list>
     </v-navigation-drawer>
+
+    /**===barra de navegacion=== */
     <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app color="blue darken-3" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title style="width: 300px" class="ml-0 pl-4">
@@ -82,6 +83,9 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
     </v-app-bar>
+    /**===fin de la barrra de navegacion=== */
+
+    /**==aqui se cargan los componentes=== */
     <v-main>
       <v-container class="fill-height" fluid>
         <v-slide-y-transition>
@@ -89,6 +93,7 @@
         </v-slide-y-transition>
       </v-container>
     </v-main>
+    /***===fin de la carga == */
     <Footer></Footer>
   </v-app>
 </template>

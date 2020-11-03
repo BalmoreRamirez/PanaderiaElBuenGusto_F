@@ -63,11 +63,23 @@
           <v-list-item-icon>
             <v-icon>group</v-icon>
           </v-list-item-icon>
-
+      
           <v-list-item-content>
             <v-list-item-title>Usuarios</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <!--Proveedores--->
+
+        <v-list-item :to="{ name: 'proveedores' }">
+          <v-list-item-icon>
+            <v-icon>group</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>Proveedores</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
         <!--inventario--->
         <v-list-item :to="{ name: 'inventario' }">
           <v-list-item-icon>
@@ -105,7 +117,6 @@
         </v-slide-y-transition>
       </v-container>
     </v-main>
-    /***===fin de la carga == */
     <Footer></Footer>
   </v-app>
 </template>

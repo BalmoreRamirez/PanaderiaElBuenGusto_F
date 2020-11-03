@@ -37,13 +37,28 @@
                         <v-col cols="12" sm="6">
                           <v-text-field
                             v-model="CodigoProveedor "
-                            label="Codigo">
+                            label="Codigo"
+                             :rules="[
+                              required('CodigoProveedor'),
+                              maxlength('CodigoProveedor', 15),
+                            ]"
+                            id="CodigoProveedor"
+                            @keydown="errors.clear('CodigoProveedor')"
+                            >
+                            
                           </v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6">
                           <v-text-field
                             v-model="NombreProveedor "
                             label="Nombre"
+                            :rules="[
+                              required('NombreProveedor'),
+                              letter('letras'),
+                              maxlength('NombreProveedor', 50),
+                            ]"
+                            id="NombreProveedor"
+                            @keydown="errors.clear('NombreProveedor')"
                           >
                           </v-text-field>
                   
@@ -51,8 +66,13 @@
                     <!--=============-->
                         <v-col cols="12" sm="6">
                           <v-select
-                            v-model="TipoProveedorID "
-                            label="Selecione el rol"
+                            v-model="TipoProveedorID"
+                            item-text="NombreTipo"
+                            item-value="IdTipo"
+                            label="Selecione tipo de proveedor"
+                            id="IdTipo"
+                             @click="errors.clear('IdTipo')"
+                             :rules="[(v) => !!v || 'Tipo proveedor es requerido']"
                             required
                           >
                           </v-select>    
@@ -62,6 +82,11 @@
                           <v-text-field
                             v-model="TelefonoProveedor"
                             label="Telefono"
+                            :rules="[
+                              maxlength('TelefonoProveedor', 8),
+                            ]"
+                            id="TelefonoProveedor"
+                            @keydown="errors.clear('TelefonoProveedor')"
                           >
                           </v-text-field>
                         </v-col>
@@ -70,6 +95,11 @@
                           <v-text-field
                             v-model="MovilProveedor"
                             label="Movil"
+                            :rules="[
+                              maxlength('MovilProveedor', 8),
+                            ]"
+                            id="MovilProveedor"
+                            @keydown="errors.clear('MovilProveedor')"
                           >
                           </v-text-field>
                         </v-col>
@@ -78,6 +108,11 @@
                           <v-text-field
                             v-model="EmailProveedor"
                             label="Correo"
+                            :rules="[
+                              maxlength('EmailProveedor', 25),
+                            ]"
+                            id="EmailProveedor"
+                            @keydown="errors.clear('EmailProveedor')"
                           >
                           </v-text-field>
                         </v-col>
@@ -86,6 +121,11 @@
                           <v-text-field
                             v-model="FaxProveedor"
                             label="Movil"
+                            :rules="[
+                              maxlength('FaxProveedor', 9),
+                            ]"
+                            id="Observacion"
+                            @keydown="errors.clear('FaxProveedor')"
                           >
                           </v-text-field>
                         </v-col>
@@ -94,6 +134,11 @@
                           <v-text-field
                             v-model="NITPRoveedor"
                             label="NIT"
+                            :rules="[
+                              maxlength('NITPRoveedor', 20),
+                            ]"
+                            id="NITPRoveedor"
+                            @keydown="errors.clear('NITPRoveedor')"
                           >
                           </v-text-field>
                         </v-col>
@@ -102,6 +147,11 @@
                           <v-text-field
                             v-model="NIDFiscal"
                             label="NID"
+                            :rules="[
+                              maxlength('NIDFiscal', 25),
+                            ]"
+                            id="NIDFiscal"
+                            @keydown="errors.clear('NIDFiscal')"
                           >
                           </v-text-field>
                         </v-col>
@@ -110,6 +160,11 @@
                           <v-text-field
                             v-model="TituloProveedor"
                             label="Titulo"
+                            :rules="[
+                              maxlength('TituloProveedor', 50),
+                            ]"
+                            id="TituloProveedor"
+                            @keydown="errors.clear('TituloProveedor')"
                           >
                           </v-text-field>
                         </v-col>
@@ -120,11 +175,13 @@
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" text @click="close"
-                      >Cancelar</v-btn
+                      >Salir</v-btn
                     >
                     <v-btn
                       color="blue darken-1"
-                      text           
+                      text     
+                      @click="saveProveedores"
+                      :disabled="!valid"      
                       >Guardar</v-btn
                     >
                   </v-card-actions>
@@ -170,7 +227,7 @@ class Errors {
 }
 
 export default {
-  name: "Usuarios", //1-definimos el nombre
+  name: "Proveedores", //1-definimos el nombre
 
   data() {
     return {
@@ -193,7 +250,7 @@ export default {
       errors: new Errors(),
 /** ============array============== */
       Proveedores: [],
-      TipoProveedorID: [],
+      TipoProveedor: [],
 /** ============model============== */
       CodigoProveedor: "",
       NombreProveedor: "",
@@ -205,23 +262,41 @@ export default {
       NITPRoveedor: "",
       NIDFiscal: "",
       TituloProveedor: "",
+      IdTipo: "",
+      NombreTipo: "",
+      urlGuardarProv: "http://localhost/PanaderiaBG/public/Proveedores",
+      urlListaProveedores:"http://localhost/PanaderiaBG/public/ListaProveedores",
 /** ========================== */
+
       headers: [
         {
           text: "Nombre ",
-          value: "name",
+          value: "NombreProveedor",
           class: "indigo  white--text"
         },
-        { text: "Tipo", value: "email", class: "indigo  white--text" },
-        { text: "Telefono", value: "NombreRol", class: "indigo  white--text" },
-        { text: "Correo", value: "email", class: "indigo  white--text" },
-        { text: "Titulo", value: "NombreRol", class: "indigo  white--text" }
+        { text: "Tipo", 
+        value: "NombreTipo", 
+        class: "indigo  white--text" 
+        },
+
+        { text: "Telefono", 
+        value: "TelefonoProveedor", 
+        class: "indigo  white--text" 
+        },
+        { text: "Correo", 
+        value: "EmailProveedor", 
+        class: "indigo  white--text" 
+        },
+        { text: "Titulo", 
+        value: "TituloProveedor", 
+        class: "indigo  white--text" }
       ]
     };
   },
 
   methods: {
-    //limpia errores front-end
+
+     //limpia errores front-end
     clear() {
       this.$refs.form.reset();
     },
@@ -233,7 +308,51 @@ export default {
         this.editedIndex = -1;
         this.clear();
       });
-    }
+    },
+    getProveedores: async function () {
+      const res = await this.$http.get(this.urlListaProveedores);
+      this.MateriaPrima = res.data;
+      setTimeout(() => {
+        this.Alert = false;
+      }, 5000);
+    },
+
+    saveProveedores: async function () {
+      const obj = new FormData();
+      obj.append("CodigoProveedor", this.CodigoProveedor);
+      obj.append("NombreProveedor", this.NombreProveedor);
+      obj.append("TipoProveedorID", this.TipoProveedorID);
+      obj.append("TelefonoProveedor", this.TelefonoProveedor);
+      obj.append("MovilProveedor", this.MovilProveedor);
+      obj.append("EmailProveedor", this.EmailProveedor);
+      obj.append("FaxProveedor", this.FaxProveedor);
+      obj.append("NITProveedor", this.NITProveedor);
+      obj.append("NIDFiscal", this.NIDFiscal);
+      obj.append("TituloProveedor", this.TituloProveedor);
+      axios
+        .post(this.urlGuardarProv, obj)
+        .then((response) => {
+          //console.log(response.data.result)
+          this.EntradaMatPrima.push(response.data.result);
+          this.CodigoProveedor = "";
+          this.NombreProveedor = "";
+          this.TipoProveedorID = "";
+          this.TelefonoProveedor = "";
+          this.MovilProveedor = "";
+          this.EmailProveedor = "";
+          this.FaxProveedor = "";
+          this.NITProveedor = "";
+          this.NIDFiscal = "";
+          this.TituloProveedor = "";
+          this.Alert = true;
+          this.getProveedores();
+
+          this.clear();
+          this.close();
+        })
+        .catch((error) => this.errors.record(error.response.data));
+    },
+   
   }
 };
 </script>

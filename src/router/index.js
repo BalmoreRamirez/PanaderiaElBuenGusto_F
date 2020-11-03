@@ -9,7 +9,7 @@ import Usuarios from "@/components/Usuarios";
 import Proveedores from "@/components/Proveedores/Proveedores";
 import HistorialMovimientomateriaPrima from "@/components/HistorialMovimientomateriaPrima";
 import Inventario from "@/components/Inventario";
-import Login from "../views/Login";
+import Login from '../views/Login';
 import Inicio from "@/views/Inicio";
 
 Vue.use(VueRouter)
@@ -73,7 +73,7 @@ const routes = [
     {
         path: '/login',
         name: 'login',
-        component: () => import(/* webpackChunkName: "about" */ '../views/Login.vue')
+        component: Login
     }
 ]
 const router = new VueRouter({

@@ -26,6 +26,8 @@
   </v-layout>
 </template>
 <script>
+import {mapState} from "vuex";
+
 export default {
   data() {
     return {
@@ -40,30 +42,37 @@ export default {
       Inventarios: []
     }
   },
+  computed: {
+    ...mapState(['token'])
+  },
   methods: {
-    //si la cantidad disponible es menor o igual que cuatro se coloca en rojo
-    //si la cantidad disponibles es mayor a 5 se ponen en verde
+    getInventario() {
+     /** let config = {
+        headers: {
+          token: this.token
+        }
+      }**/
+      this.axios.get('/Inventario', /*config*/)
+          .then(res => {
+            console.log(res.data);
+            this.Inventarios = res.data;
+          })
+          .catch(e => {
+            console.log(e.response)
+          })
+    },
     getColor(Disponible) {
       if (Disponible >= 5) return 'green'
       else if (Disponible <= 4) return 'red'
     },
 
-    //se trae los datos de inventario y se transforma en json y se guarda en un array
-    async getInventario() {
-      try {
-        const data = await fetch('http://localhost/PanaderiaBG/public/Inventario')
-        const info = await data.json()
-        this.Inventarios = info
-      } catch (error) {
-        console.log(error)
-      }
-    }
   },
-
-  //para que el navegador lo recargue antes que el componente
   created() {
     this.getInventario()
   },
+
+  //para que el navegador lo recargue antes que el componente
+
 }
 </script>
 

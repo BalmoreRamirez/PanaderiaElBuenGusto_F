@@ -18,42 +18,65 @@
                   </v-tooltip>
                 </v-toolbar>
                 <v-card-text>
-                  <v-form>
+                  <v-form @submit.prevent="login">
                     <v-text-field
-                      label="Correo"
-                      name="correo"
-                      prepend-icon="mdi-account"
-                      type="email"
+                        v-model="usuario.name"
+                        label="Correo"
+                        prepend-icon="mdi-account"
+                        type="text"
                     ></v-text-field>
-
                     <v-text-field
-                      id="password"
-                      label="Contraseña"
-                      name="password"
-                      prepend-icon="mdi-lock"
-                      type="password"
+                        v-model="usuario.password"
+                        label="Contraseña"
+                        prepend-icon="mdi-lock"
+                        type="text"
                     ></v-text-field>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="primary" type="submit">Iniciar</v-btn>
+                    </v-card-actions>
                   </v-form>
+                  <div v-if="mensaje!=''">
+                    <p>{{ mensaje }}</p>
+                  </div>
                 </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="primary" type="submit">Iniciar</v-btn>
-                </v-card-actions>
               </v-card>
             </v-col>
           </v-row>
         </v-container>
       </v-container>
-    </v-flex></v-layout
-  ></template>
-
-
-
+    </v-flex>
+  </v-layout
+  >
+</template>
 <script>
+import {mapActions} from "vuex";
+
 export default {
   name: "Login",
   data() {
-    return {};
+    return {
+      usuario: {
+        name: '',
+        password: ''
+      },
+      mensaje: '',
+    }
+  },
+  methods: {
+    ...mapActions(['guardarUsuario']),
+    login() {
+      this.axios.post('/login', this.usuario)
+          .then(res => {
+            //console.log(res.data);
+           const token = res.data.user.access_token;
+            this.guardarUsuario(token);
+          })
+          .catch(e => {
+            console.log(e.response);
+            this.mensaje = e.response.data.message;
+          })
+    }
   }
-};
+}
 </script>

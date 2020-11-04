@@ -1,6 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Router from 'vue-router'
 import Home from '../views/Home.vue'
+
+import store from '../store'
+
+
 import MateriaPrima from '../components/MateriaPrima.vue'
 import ConfigProduct from "@/components/ConfigProduct";
 import EntradaMatPrima from "@/components/EntradaMatPrima";
@@ -9,77 +14,95 @@ import Usuarios from "@/components/Usuarios";
 import Proveedores from "@/components/Proveedores/Proveedores";
 import HistorialMovimientomateriaPrima from "@/components/HistorialMovimientomateriaPrima";
 import Inventario from "@/components/Inventario";
-import Login from '../views/Login';
+import Login from '@/views/Login';
 import Inicio from "@/views/Inicio";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter, Router)
 
-const routes = [
-    {
-        path: '/',
-        name: 'Home',
-        component: Home
-    },
-    {
-        path: '/inicio',
-        name: 'inicio',
-        component: Inicio
-    },
-    {
-        path: '/proveedor',
-        name: 'proveedor',
-        component: Proveedores
-    },
-    {
-        path: '/materiaPrima',
-        name: 'materiaPrima',
-        component: MateriaPrima
-    },
-    {
-        path: '/configProduct',
-        name: 'configProduct',
-        component: ConfigProduct
-    },
-    {
-        path: '/entradaMatPrima',
-        name: 'entradaMatPrima',
-        component: EntradaMatPrima
-    },
-    {
-        path: '/MovimientoMatePrima',
-        name: 'movimientoMatePrima',
-        component: MovimientoMatePrima
-    },
-    {
-        path: '/historialMovimientomateriaPrima',
-        name: 'historialMovimientomateriaPrima',
-        component: HistorialMovimientomateriaPrima
-    },
-    {
-        path: '/usuarios',
-        name: 'usuarios',
-        component: Usuarios
-    },
-    {
-        path: '/inventario',
-        name: 'inventario',
-        component: Inventario
-    },
-    {
-        path: '/about',
-        name: 'About',
-        component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-    },
-    {
-        path: '/login',
-        name: 'login',
-        component: Login
-    }
-]
-const router = new VueRouter({
+const router = new Router({
     mode: 'history',
     base: process.env.BASE_URL,
-    routes
+    routes: [
+        {
+            path: '/',
+            name: 'Home',
+            component: Home,
+            meta: {requireAuth: true}
+        },
+        {
+            path: '/inicio',
+            name: 'inicio',
+            component: Inicio,
+            meta: {requireAuth: true}
+        },
+        {
+            path: '/proveedor',
+            name: 'proveedor',
+            component: Proveedores,
+            meta: {requireAuth: true}
+        },
+        {
+            path: '/materiaPrima',
+            name: 'materiaPrima',
+            component: MateriaPrima,
+            meta: {requireAuth: true}
+        },
+        {
+            path: '/configProduct',
+            name: 'configProduct',
+            component: ConfigProduct,
+            meta: {requireAuth: true}
+        },
+        {
+            path: '/entradaMatPrima',
+            name: 'entradaMatPrima',
+            component: EntradaMatPrima,
+            meta: {requireAuth: true}
+        },
+        {
+            path: '/MovimientoMatePrima',
+            name: 'movimientoMatePrima',
+            component: MovimientoMatePrima,
+            meta: {requireAuth: true}
+        },
+        {
+            path: '/historialMovimientomateriaPrima',
+            name: 'historialMovimientomateriaPrima',
+            component: HistorialMovimientomateriaPrima,
+            meta: {requireAuth: true}
+        },
+        {
+            path: '/usuarios',
+            name: 'usuarios',
+            component: Usuarios,
+            meta: {requireAuth: true}
+        },
+        {
+            path: '/inventario',
+            name: 'inventario',
+            component: Inventario,
+            meta: {requireAuth: true}
+        },
+        {
+            path: '/login',
+            name: 'login',
+            component: Login
+        },
+        {
+            path: '/about',
+            name: 'About',
+            component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+        },
+    ]
+})
+router.beforeEach((to, from, next) => {
+    const rutaProtegida = to.matched.some(record => record.meta.requireAuth)
+    if (rutaProtegida && store.state.token === '') {
+        next({name: 'login'})
+    }else{
+        next();
+    }
 })
 
-export default router
+
+export default router;

@@ -293,7 +293,6 @@ export default {
         const data = await fetch('http://localhost/PanaderiaBG/public/ListaProveedores')
         const info = await data.json()
         this.Proveedores= info
-       console.table(info)
       }catch(error){
         console.log(error)
       }

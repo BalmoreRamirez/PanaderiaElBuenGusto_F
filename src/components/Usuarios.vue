@@ -37,7 +37,10 @@
                           <v-text-field
                             v-model="name"
                             label="Nombre*"
-                            :rules="[required('Nombre Usuario'), minlength('Nombre Usuario', 4)]"
+                            :rules="[
+                              required('Nombre Usuario'),
+                              minlength('Nombre Usuario', 4)
+                            ]"
                             id="name"
                             @keydown="errors.clear('name')"
                           >
@@ -70,7 +73,7 @@
                             label="Selecione el rol"
                             id="RolId"
                             @click="errors.clear('RolId')"
-                            :rules="[(v) => !!v || 'Rol es requerido']"
+                            :rules="[v => !!v || 'Rol es requerido']"
                             required
                           >
                           </v-select>
@@ -84,7 +87,10 @@
                             :type="'password'"
                             v-model="password"
                             label="Contraseña"
-                            :rules="[required('Contraseña'),minlength('Contraseña', 6)]"
+                            :rules="[
+                              required('Contraseña'),
+                              minlength('Contraseña', 6)
+                            ]"
                             id="Password"
                             @keydown="errors.clear('password')"
                           >
@@ -159,12 +165,12 @@ export default {
       //retornamos los datos a utilizar
 
       required(propertyType) {
-        return (v) =>
+        return v =>
           (v && v.length > 0) || `Tienes que ingresar ${propertyType}`;
       },
 
-       minlength(propertyType, minlength) {
-        return (v) =>
+      minlength(propertyType, minlength) {
+        return v =>
           (v && v.length >= minlength) ||
           `${propertyType} no puede ser inferior ${minlength} caracteres`;
       },
@@ -181,17 +187,15 @@ export default {
       NombreRol: "",
       password: "",
 
-      urlUsers: "http://localhost/PanaderiaBG/public/Usuarios",
-      urlRoles: "/PanaderiaBG/public/Roles",
       headers: [
         {
           text: "Nombre ",
           value: "name",
-          class: "indigo  white--text",
+          class: "indigo  white--text"
         },
         { text: "Correo", value: "email", class: "indigo  white--text" },
-        { text: "Rol", value: "NombreRol", class: "indigo  white--text" },
-      ],
+        { text: "Rol", value: "NombreRol", class: "indigo  white--text" }
+      ]
     };
   },
 
@@ -210,19 +214,22 @@ export default {
       });
     },
 
-    getUsers: async function () {
-      const res = await this.$http.get(this.urlUsers);
-      this.Usuarios = res.data;
-      setTimeout(() => {
-        this.Alert = false;
-      }, 5000);
+    getUsers() {
+      this.axios
+        .get("/Usuarios")
+        .then(res => {
+          this.Usuarios = res.data;
+        })
+        .catch(e => {
+          console.log(e.response);
+        });
     },
 
-    getRol: async function () {
-      const res = await this.$http.get(this.urlRoles);
+    getRol: async function() {
+      const res = await this.$http.get("/Roles");
       this.Roles = res.data;
     },
-    saveUsers: async function () {
+    saveUsers: async function() {
       const obj = new FormData();
       obj.append("name", this.name);
       obj.append("email", this.email);
@@ -230,7 +237,7 @@ export default {
       obj.append("password", this.password);
       axios
         .post(this.urlUsers, obj)
-        .then((response) => {
+        .then(response => {
           //console.log(response.data.result)
           this.Usuarios.push(response.data.result);
           this.Alert = true;
@@ -238,13 +245,13 @@ export default {
           this.clear();
           this.close();
         })
-        .catch((error) => this.errors.record(error.response.data));
-    },
+        .catch(error => this.errors.record(error.response.data));
+    }
   },
   created() {
     this.getUsers();
     this.getRol();
-  },
+  }
 };
 </script>
 

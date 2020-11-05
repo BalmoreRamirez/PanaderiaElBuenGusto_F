@@ -541,22 +541,41 @@ export default {
     },
   },
   methods: {
-    getMateriaPrima: async function () {
-      const res = await this.$http.get(this.url5);
-      this.MateriaPrima = res.data;
-      
+    getMateriaPrima() {
+      this.axios.get('/ShowMateriaPrima')
+     .then(res=>{
+       this.MateriaPrima=res.data
+     })
+      .catch(e=>{
+        console.log(e.response)
+      })
     },
-    getBodegas: async function () {
-      const res = await this.$http.get(this.url4);
-      this.Bodegas = res.data;
+    getBodegas() {
+       this.axios.get('/Bodegas')
+      .then(res=>{
+       this.Bodegas=res.data
+     })
+      .catch(e=>{
+        console.log(e.response)
+      })
     },
-    getProveedores: async function () {
-      const res = await this.$http.get(this.url3);
-      this.Proveedor = res.data;
+    getProveedores() {
+       this.axios.get('/Proveedores')
+     .then(res=>{
+       this.Proveedor=res.data
+     })
+      .catch(e=>{
+        console.log(e.response)
+      })
     },
-    getUnidad: async function () {
-      const res = await this.$http.get(this.url2);
-      this.UnidadMedida = res.data;
+    getUnidad() {
+       this.axios.get('/UnidadMateria')
+    .then(res=>{
+       this.UnidadMedida=res.data
+     })
+      .catch(e=>{
+        console.log(e.response)
+      })
     },
 
     getEntradaMatPrima: async function () {

@@ -35,7 +35,7 @@
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title>Home</v-list-item-title>
+            <v-list-item-title>Inicio</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <!------------>
@@ -65,7 +65,7 @@
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title>Movimientos de materia prima</v-list-item-title>
+            <v-list-item-title>Movimientos</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <!------------>
@@ -76,7 +76,7 @@
 
           <v-list-item-content>
             <v-list-item-title
-            >Historial Movimiento Materia Prima
+            >Historial
             </v-list-item-title
             >
           </v-list-item-content>

@@ -358,11 +358,6 @@ export default {
       BodegaID: "",
       NombreSucursal: "",
       SucursalID: "",
-
-      url4: "/PanaderiaBG/public/Sucursal",
-      url3: "/PanaderiaBG/public/ShowMateriaPrima",
-      url2: "/PanaderiaBG/public/Bodegas",
-      url: "http://localhost/PanaderiaBG/public/Pedido",
       search: "",
       dialog: false,
       dialog2: false,
@@ -408,27 +403,41 @@ export default {
     };
   },
   methods: {
-    getMateriaPrima: async function () {
-      const res = await this.$http.get(this.url3);
-      this.MateriaPrima = res.data;
+    getMateriaPrima() {
+      this.axios.get('/ShowMateriaPrima')
+      .then(res=>{
+        this.MateriaPrima=res.data
+      })
+      .catch(e=>{
+        console.log(e.response)
+      })
     },
-    getBodegas: async function () {
-      const res = await this.$http.get(this.url2);
-      this.Bodegas = res.data;
+    getBodegas() {
+       this.axios.get('/Bodegas')
+     .then(res=>{
+        this.Bodegas=res.data
+      })
+      .catch(e=>{
+        console.log(e.response)
+      })
     },
-    getSucursal: async function () {
-      const res = await this.$http.get(this.url4);
-      this.Sucursal = res.data;
+    getSucursal() {
+      this.axios.get('/Sucursal')
+     .then(res=>{
+        this.Sucursal=res.data
+      })
+      .catch(e=>{
+        console.log(e.response)
+      })
     },
-    getPedido: async function () {
-      const res = await this.$http.get(this.url);
-      this.Pedido = res.data;
-      setTimeout(() => {
-        this.Alert = false;
-      }, 5000);
-      setTimeout(() => {
-        this.Alert2 = false;
-      }, 5000);
+    getPedido() {
+      this.axios.get('/Pedido')
+     .then(res=>{
+        this.Pedido=res.data
+      })
+      .catch(e=>{
+        console.log(e.response)
+      })
     },
 
     //limpia errores front-end

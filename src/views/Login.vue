@@ -57,8 +57,8 @@ export default {
   data() {
     return {
       usuario: {
-        name: '',
-        password: ''
+        name: 'balmore',
+        password: '123456'
       },
       mensaje: '',
     }
@@ -68,7 +68,6 @@ export default {
     login() {
       this.axios.post('/login', this.usuario)
           .then(res => {
-            //console.log(res.data);
            const token = res.data.user.access_token;
             this.guardarUsuario(token);
           })

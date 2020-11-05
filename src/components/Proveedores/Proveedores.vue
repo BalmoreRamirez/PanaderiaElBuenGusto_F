@@ -288,14 +288,15 @@ export default {
         this.clear();
       });
     },
-    async getProveedores() {
-      try{
-        const data = await fetch('http://localhost/PanaderiaBG/public/ListaProveedores')
-        const info = await data.json()
-        this.Proveedores= info
-      }catch(error){
-        console.log(error)
-      }
+    getProveedores() {
+      this.axios
+        .get("/ListaProveedores")
+        .then(res => {
+          this.Proveedores = res.data;
+        })
+        .catch(e => {
+          console.log(e.response);
+        });
     },
     saveProveedores: async function() {
       const obj = new FormData();
@@ -333,10 +334,10 @@ export default {
         .catch(error => this.errors.record(error.response.data));
     }
   },
-    created() {
-    this.getProveedores()
-  },
-}
+  created() {
+    this.getProveedores();
+  }
+};
 </script>
 
 <style scoped>

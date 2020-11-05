@@ -12,7 +12,7 @@
           <v-toolbar flat color="white">
             <v-toolbar-title>Materia Prima</v-toolbar-title>
             <v-divider class="mx-5" inset vertical></v-divider>
-            
+
             <v-row>
               <v-col cols="1">
                 <!-- Filtro por codigo -->
@@ -54,8 +54,8 @@
                   hide-details
                 ></v-text-field>
               </v-col>
-                             
-                <v-col cols="2">
+
+              <v-col cols="2">
                 <!-- Filtro por Unidad -->
                 <v-select
                   :items="UnidadMedida"
@@ -73,12 +73,12 @@
                   label="Proveedor"
                 ></v-select>
               </v-col>
-                 <v-col cols="1">
+              <v-col cols="1">
                 <v-btn color="blue darken-1" text @click="clearfilter"
                   >Limpiar</v-btn
                 >
               </v-col>
-             </v-row>
+            </v-row>
             <v-spacer></v-spacer>
             <v-dialog v-model="dialog" persistent max-width="600px">
               <!---icono de agregar-->
@@ -125,7 +125,7 @@
                             :rules="[
                               required('nombre'),
                               letter('letras'),
-                              minlength('Nombre', 4),
+                              minlength('Nombre', 4)
                             ]"
                             id="NombreMP"
                             @keydown="errors.clear('NombreMP')"
@@ -162,7 +162,7 @@
                             counter="30"
                             :rules="[
                               required('Observacion'),
-                              maxlength('Observacion', 30),
+                              maxlength('Observacion', 30)
                             ]"
                             id="Observacion"
                             @keydown="errors.clear('Observacion')"
@@ -199,7 +199,7 @@
                             label="Selecione la unidad"
                             id="IdUnidadMedida"
                             @click="errors.clear('IdUnidadMedida')"
-                            :rules="[(v) => !!v || 'unidad es requerido']"
+                            :rules="[v => !!v || 'unidad es requerido']"
                             required
                           >
                           </v-select>
@@ -217,7 +217,7 @@
                             label="Selecione Proveedor"
                             id="IdProveedor"
                             @click="errors.clear('IdProveedor')"
-                            :rules="[(v) => !!v || 'proveedor es requerido']"
+                            :rules="[v => !!v || 'proveedor es requerido']"
                             required
                           >
                           </v-select>
@@ -287,24 +287,24 @@ export default {
     return {
       valid: false,
       required(propertyType) {
-        return (v) =>
+        return v =>
           (v && v.length > 0) || `Tienes que ingresar ${propertyType}`;
       },
       letter(propertyType) {
-        return (v) =>
+        return v =>
           /^[ñA-Za-z _]*[ñA-Za-z][ñA-Za-z _]+$/.test(v) ||
           `Solo acepta ${propertyType}`;
       },
       number(propertyType) {
-        return (v) => /^\d+$/.test(v) || `Solo acepta ${propertyType}`;
+        return v => /^\d+$/.test(v) || `Solo acepta ${propertyType}`;
       },
       maxlength(propertyType, maxlength) {
-        return (v) =>
+        return v =>
           (v && v.length <= maxlength) ||
           `${propertyType} no puede superar los ${maxlength} caracteres`;
       },
       minlength(propertyType, minlength) {
-        return (v) =>
+        return v =>
           (v && v.length >= minlength) ||
           `${propertyType} no puede ser inferior ${minlength} caracteres`;
       },
@@ -326,10 +326,10 @@ export default {
       NombreProveedor: "",
       ProveedorID: "",
       alert: false,
-      CodigoMPValue: '',
-      NombreMPValue:'',
-      ClaseValue:'',
-      ObservacionValue:'',
+      CodigoMPValue: "",
+      NombreMPValue: "",
+      ClaseValue: "",
+      ObservacionValue: "",
       UnidadMedidaIDValue: null,
       ProveedorIDValue: null,
       url3: "/PanaderiaBG/public/Proveedores",
@@ -343,59 +343,70 @@ export default {
           align: "start",
           value: "CodigoMP",
           class: "indigo white--text",
-          filter: this.CodigoFilter,
+          filter: this.CodigoFilter
         },
 
         {
           text: "Nombre",
           value: "NombreMP",
           class: "indigo  white--text",
-          filter: this.MateriaPrimaFilter,
+          filter: this.MateriaPrimaFilter
         },
 
-        { text: "Clase", 
-        value: "Clase", 
-        class: "indigo white--text" ,
-        filter: this.ClaseFilter,
+        {
+          text: "Clase",
+          value: "Clase",
+          class: "indigo white--text",
+          filter: this.ClaseFilter
         },
 
         {
           text: "Obervacion",
           value: "Observacion",
           class: "indigo white--text",
-          filter: this.ObservacionFilter,
+          filter: this.ObservacionFilter
         },
         {
           text: "Descripcion",
           value: "Descripcion",
-          class: "indigo white--text",
-          
+          class: "indigo white--text"
         },
         {
           text: "Unidad de Medida",
           value: "NombreUnidad",
           class: "indigo white--text",
-          filter: this.UnidadFilter,
+          filter: this.UnidadFilter
         },
         {
           text: "Proveedor",
           value: "NombreProveedor",
           class: "indigo white--text",
-          filter: this.ProveedorFilter,
-        },
-      ],
+          filter: this.ProveedorFilter
+        }
+      ]
     };
   },
   methods: {
-    getProveedores: async function () {
-      const res = await this.$http.get(this.url3);
-      this.Proveedor = res.data;
+    getProveedores() {
+      this.axios
+        .get('/Proveedores')
+        .then(res => {
+          this.Proveedor = res.data;
+        })
+        .catch(e => {
+          console.log(e.response);
+        });
     },
-    getUnidad: async function () {
-      const res = await this.$http.get(this.url2);
-      this.UnidadMedida = res.data;
+    getUnidad() {
+      this.axios.get('/UnidadMateria')
+      .then(res=>{
+        this.UnidadMedida=res.data
+      })
+      .catch(e=>{
+        console.log(e.response)
+      })
     },
-    getMateriaPrima: async function () {
+    getMateriaPrima: async function() {
       const res = await this.$http.get(this.url);
       this.MateriaPrima = res.data;
       setTimeout(() => {
@@ -417,7 +428,7 @@ export default {
       });
     },
 
-    saveMateriaPrima: async function () {
+    saveMateriaPrima: async function() {
       const obj = new FormData();
       obj.append("CodigoMP", this.CodigoMP);
       obj.append("NombreMP", this.NombreMP);
@@ -428,7 +439,7 @@ export default {
       obj.append("ProveedorID", this.ProveedorID);
       axios
         .post(this.url, obj)
-        .then((response) => {
+        .then(response => {
           //console.log(response.data.result)
           this.MateriaPrima.push(response.data.result);
           this.Alert = true;
@@ -444,7 +455,7 @@ export default {
           this.clear();
           this.close();
         })
-        .catch((error) => this.errors.record(error.response.data));
+        .catch(error => this.errors.record(error.response.data));
     },
 
     /**
@@ -457,11 +468,11 @@ export default {
       if (!this.CodigoMPValue) {
         return true;
       }
-      
+
       return value.toLowerCase().includes(this.CodigoMPValue.toLowerCase());
     },
 
-     /**
+    /**
      * Filtro para materia
      * @param value
      * @returns {boolean}
@@ -488,8 +499,8 @@ export default {
 
       return value.toLowerCase().includes(this.ClaseValue.toLowerCase());
     },
-    
-     /**
+
+    /**
      * Filtro para Observacion
      * @param value
      * @returns {boolean}
@@ -502,8 +513,6 @@ export default {
 
       return value.toLowerCase().includes(this.ObservacionValue.toLowerCase());
     },
-     
-
 
     /**
      * Filtro para Proveedor
@@ -538,12 +547,12 @@ export default {
       this.ClaseValue = "";
       this.ObservacionValue = "";
       this.UnidadMedidaIDValue = "";
-    },
+    }
   },
   created() {
     this.getMateriaPrima();
     this.getUnidad();
     this.getProveedores();
-  },
+  }
 };
 </script>

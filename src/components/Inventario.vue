@@ -47,14 +47,13 @@ export default {
   },
   methods: {
     getInventario() {
-     /** let config = {
+      /** let config = {
         headers: {
           token: this.token
         }
       }**/
       this.axios.get('/Inventario', /*config*/)
           .then(res => {
-            console.log(res.data);
             this.Inventarios = res.data;
           })
           .catch(e => {

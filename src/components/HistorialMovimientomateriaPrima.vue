@@ -62,11 +62,7 @@
               <v-btn color="blue darken-1" text @click="clearfilter"
                       >Limpiar</v-btn
                     >
-                
               </v-col>
- 
-
-
             </v-row>
             <v-spacer></v-spacer>
 
@@ -314,20 +310,32 @@ export default {
     
   },
   methods: {
-    getMateriaPrima: async function () {
-      const res = await this.$http.get(this.url3);
-      this.MateriaPrima = res.data;
+    getMateriaPrima() {
+      this.axios.get('/ShowMateriaPrima')
+     .then(res=>{
+       this.MateriaPrima=res.data
+     })
+     .catch(e=>{
+       console.log(e.response)
+     })
     },
-    getSucursal: async function () {
-      const res = await this.$http.get(this.url2);
-      this.Sucursal = res.data;
+    getSucursal() {
+      this.axios.get('/Sucursal')
+      .then(res=>{
+        this.Sucursal=res.data
+      })
+      .catch(e=>{
+        console.log(e.response)
+      })
     },
-    getInventario: async function () {
-      const res = await this.$http.get(this.url);
-      this.Inventario = res.data;
-      setTimeout(() => {
-        this.Alert = false;
-      }, 5000);
+    getInventario() {
+      this.axios.get('/MovimientoMP')
+      .then(res=>{
+        this.Inventario=res.data
+      })
+      .catch(e=>{
+        console.log(e.response)
+      })
     },
 
     //limpia errores front-end

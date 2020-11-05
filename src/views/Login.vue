@@ -18,27 +18,33 @@
                   </v-tooltip>
                 </v-toolbar>
                 <v-card-text>
-                  <v-form @submit.prevent="login">
+                  <v-form @submit.prevent="login" v-model="valid">
                     <v-text-field
                         v-model="usuario.name"
-                        label="Correo"
+                        label="Usuario"
+                        :rules="[required('Nombre Usuario')]"
                         prepend-icon="mdi-account"
                         type="text"
                     ></v-text-field>
                     <v-text-field
                         v-model="usuario.password"
                         label="Contraseña"
+                        :rules="[required('Contraseña')]"
                         prepend-icon="mdi-lock"
-                        type="text"
+                        :append-icon="btn ? 'visibility' : 'visibility_off'"
+                      @click:append="() => (btn = !btn)"
+                      :type="btn ? 'password' : 'text'"
                     ></v-text-field>
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn color="primary" type="submit">Iniciar</v-btn>
+                      <v-btn color="primary" type="submit" :disabled="!valid">Iniciar</v-btn>
                     </v-card-actions>
                   </v-form>
-                  <div v-if="mensaje!=''">
-                    <p>{{ mensaje }}</p>
+                  
+                  <div  v-if="mensaje!=''">
+                    <p justify="center"  align="center" class="red--text">{{ mensaje }}</p>
                   </div>
+                  
                 </v-card-text>
               </v-card>
             </v-col>
@@ -56,9 +62,14 @@ export default {
   name: "Login",
   data() {
     return {
+       required(propertyType) {
+        return (v) =>
+          (v && v.length > 0) || `Tienes que ingresar ${propertyType}`;
+      },
+       btn: String,
       usuario: {
-        name: 'balmore',
-        password: '123456'
+        name: '',
+        password: ''
       },
       mensaje: '',
     }

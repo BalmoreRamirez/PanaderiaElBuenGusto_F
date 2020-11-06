@@ -11,6 +11,45 @@
           <v-toolbar flat color="white">
             <v-toolbar-title>Proveedores</v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>
+            <v-row>
+              <v-col cols="3">
+                <!-- Filtro por codigo -->
+                <v-text-field
+                  v-model="CodigoValue"
+                  append-icon="mdi-magnify"
+                  label="Codigo"
+                  single-line
+                  hide-details
+                ></v-text-field>
+              </v-col>
+              <v-col cols="3">
+                <!-- Filtro por nombre -->
+                <v-text-field
+                  v-model="NombreValue"
+                  append-icon="mdi-magnify"
+                  label="Nombre"
+                  single-line
+                  hide-details
+                ></v-text-field>
+              </v-col>
+              <v-col cols="3">
+                <!-- Filtro por tipo -->
+                <v-select
+                  :items="TipoProveedor"
+                  item-text="NombreTipo"
+                  v-model="TipoValue"
+                  label="Tipo"
+                ></v-select>
+              </v-col>
+              <v-col cols="1">
+                <v-btn color="blue darken-1" text @click="clearfilter"
+                  >Limpiar</v-btn
+                >
+              </v-col>
+            </v-row>
+
+
+
             <v-spacer></v-spacer>
             <v-dialog v-model="dialog" persistent max-width="500px">
               <template v-slot:activator="{ on, attrs }">
@@ -402,6 +441,9 @@ export default {
       TituloProveedor: "",
       IdTipo: "",
       NombreTipo: "",
+      CodigoValue: "",
+      NombreValue: "",
+      TipoValue: null,
       urlGuardarProv: "http://localhost/PanaderiaBG/public/Proveedores",
       urlListaProveedores:
         "http://localhost/PanaderiaBG/public/ListaProveedores",
@@ -413,13 +455,19 @@ export default {
           text: "Codigo",
           value: "CodigoProveedor",
           class: "indigo  white--text",
+          filter: this.CodigoFilter
         },
         {
           text: "Nombre ",
           value: "NombreProveedor",
           class: "indigo  white--text",
+          filter: this.NombreFilter
         },
-        { text: "Tipo", value: "NombreTipo", class: "indigo  white--text" },
+        { text: "Tipo", 
+        value: "NombreTipo", 
+        class: "indigo  white--text",
+          filter: this.TipoFilter
+        },
 
         {
           text: "Telefono",
@@ -494,6 +542,35 @@ export default {
         })
         .catch((error) => this.errors.record(error.response.data));
     },
+
+        CodigoFilter(value) {
+      if (!this.CodigoValue) {
+        return true;
+      }
+      return value.toLowerCase().includes(this.CodigoValue.toLowerCase());
+    },
+
+     NombreFilter(value) {
+      if (!this.NombreValue) {
+        return true;
+      }
+      return value.toLowerCase().includes(this.NombreValue.toLowerCase());
+    },
+
+     TipoFilter(value2) {
+      if (!this.TipoValue) {
+        return true;
+      }
+      return value2 === this.TipoValue;
+    },
+
+    clearfilter(){
+        this.CodigoValue = "";
+        this.NombreValue = "";
+        this.TipoValue = "";
+    },
+
+    
     saveProveedoresEmpresa: async function () {
       const obj = new FormData();
       obj.append("CodigoProveedor", this.CodigoProveedor);

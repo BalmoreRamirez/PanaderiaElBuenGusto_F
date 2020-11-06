@@ -5,7 +5,7 @@
         <template v-slot:top>
           <v-toolbar flat color="white">
             <v-toolbar-title
-              >Historial Movimiento Materia Prima</v-toolbar-title
+              >Historial de Movimiento</v-toolbar-title
             >
             <v-divider class="mx-6" inset vertical></v-divider>
             <v-spacer></v-spacer>

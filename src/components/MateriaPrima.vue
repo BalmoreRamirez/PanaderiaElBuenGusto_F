@@ -13,7 +13,7 @@
             <v-toolbar-title>Materia Prima</v-toolbar-title>
             <v-divider class="mx-5" inset vertical></v-divider>
             <v-row>
-              <v-col cols="1">
+              <v-col cols="3">
                 <!-- Filtro por codigo -->
                 <v-text-field
                   v-model="CodigoMPValue"
@@ -23,7 +23,7 @@
                   hide-details
                 ></v-text-field>
               </v-col>
-              <v-col cols="1">
+              <v-col cols="3">
                 <!-- Filtro por materia -->
                 <v-text-field
                   v-model="NombreMPValue"
@@ -33,37 +33,11 @@
                   hide-details
                 ></v-text-field>
               </v-col>
-              <v-col cols="1">
-                <!-- Filtro por clase -->
-                <v-text-field
-                  v-model="ClaseValue"
-                  append-icon="mdi-magnify"
-                  label="Clase"
-                  single-line
-                  hide-details
-                ></v-text-field>
-              </v-col>
-              <v-col cols="2">
-                <!-- Filtro por observacion -->
-                <v-text-field
-                  v-model="ObservacionValue"
-                  append-icon="mdi-magnify"
-                  label="Observacion"
-                  single-line
-                  hide-details
-                ></v-text-field>
-              </v-col>
+      
+            
 
-              <v-col cols="2">
-                <!-- Filtro por Unidad -->
-                <v-select
-                  :items="UnidadMedida"
-                  item-text="NombreUnidad"
-                  v-model="UnidadMedidaIDValue"
-                  label="Unidad"
-                ></v-select>
-              </v-col>
-              <v-col cols="2">
+             
+              <v-col cols="3">
                 <!-- Filtro por Proveedor -->
                 <v-select
                   :items="Proveedor"

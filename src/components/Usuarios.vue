@@ -29,13 +29,13 @@
                 <v-card-title>
                   <span class="headline">Usuarios</span>
                 </v-card-title>
-                <v-form ref="form" v-model="valid">
+                <v-form ref="form" @submit.prevent="saveUsers(newuser)" >
                   <v-card-text>
                     <v-container>
                       <v-row>
                         <v-col cols="12" sm="6">
                           <v-text-field
-                            v-model="name"
+                            v-model="newuser.name"
                             label="Nombre*"
                             :rules="[
                               required('Nombre Usuario'),
@@ -52,7 +52,7 @@
                         </v-col>
                         <v-col cols="12" sm="6">
                           <v-text-field
-                            v-model="email"
+                            v-model="newuser.email"
                             label="Correo"
                             :rules="[required('email')]"
                             id="email"
@@ -69,7 +69,7 @@
                             :items="Roles"
                             item-text="NombreRol"
                             item-value="IdRol"
-                            v-model="RolId"
+                            v-model="newuser.RolId"
                             label="Selecione el rol"
                             id="RolId"
                             @click="errors.clear('RolId')"
@@ -85,7 +85,7 @@
                         <v-col cols="12" sm="6">
                           <v-text-field
                             :type="'password'"
-                            v-model="password"
+                            v-model="newuser.password"
                             label="Contraseña"
                             :rules="[
                               required('Contraseña'),
@@ -110,9 +110,7 @@
                     >
                     <v-btn
                       color="blue darken-1"
-                      text
-                      @click="saveUsers"
-                      :disabled="!valid"
+                      type="submit"
                       >Guardar</v-btn
                     >
                   </v-card-actions>
@@ -130,63 +128,51 @@
     </v-flex>
   </v-layout>
 </template>
-
 <script>
-import axios from "axios";
-axios.defaults.baseURL = "http://localhost";
-
 class Errors {
   constructor() {
     this.errors = {};
   }
-
   get(field) {
     if (this.errors[field]) {
       return this.errors[field][0];
     }
   }
-
   //Guarda los errores en el array
   record(errors) {
     this.errors = errors;
   }
-
   //Limpia validaciones backend
   clear(field) {
     delete this.errors[field];
   }
 }
-
 export default {
   name: "Usuarios", //1-definimos el nombre
-
   data() {
     return {
       //retornamos los datos a utilizar
-
       required(propertyType) {
         return v =>
           (v && v.length > 0) || `Tienes que ingresar ${propertyType}`;
       },
-
       minlength(propertyType, minlength) {
         return v =>
           (v && v.length >= minlength) ||
           `${propertyType} no puede ser inferior ${minlength} caracteres`;
       },
-
       valid: false,
       dialog: false,
       Alert: false,
       errors: new Errors(),
       Usuarios: [],
       Roles: [],
+      newuser:{},
       name: "",
       email: "",
       RolId: "",
       NombreRol: "",
       password: "",
-
       headers: [
         {
           text: "Nombre ",
@@ -229,24 +215,18 @@ export default {
       const res = await this.$http.get("/Roles");
       this.Roles = res.data;
     },
-    saveUsers: async function() {
-      const obj = new FormData();
-      obj.append("name", this.name);
-      obj.append("email", this.email);
-      obj.append("RolId", this.RolId);
-      obj.append("password", this.password);
-      axios
-        .post(this.urlUsers, obj)
-        .then(response => {
-          //console.log(response.data.result)
-          this.Usuarios.push(response.data.result);
-          this.Alert = true;
-          this.getUsers();
-          this.clear();
-          this.close();
-        })
-        .catch(error => this.errors.record(error.response.data));
+    saveUsers(item) {
+      this.axios.post('/Usuarios', item)
+      .then(res=>{
+        this.Usuarios.unshift(res.data)
+        this.close()
+        this.getUsers()
+      })
+      .catch(e=>{
+        console.log(e.response)
+      })
     }
+
   },
   created() {
     this.getUsers();

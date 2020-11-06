@@ -27,7 +27,6 @@
 </template>
 <script>
 import {mapState} from "vuex";
-
 export default {
   data() {
     return {
@@ -64,14 +63,10 @@ export default {
       if (Disponible >= 5) return 'green'
       else if (Disponible <= 4) return 'red'
     },
-
   },
   created() {
     this.getInventario()
   },
-
-  //para que el navegador lo recargue antes que el componente
-
 }
 </script>
 

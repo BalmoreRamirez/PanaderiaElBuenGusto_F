@@ -12,7 +12,6 @@
           <v-toolbar flat color="white">
             <v-toolbar-title>Materia Prima</v-toolbar-title>
             <v-divider class="mx-5" inset vertical></v-divider>
-
             <v-row>
               <v-col cols="1">
                 <!-- Filtro por codigo -->
@@ -413,12 +412,10 @@ export default {
         this.Alert = false;
       }, 5000);
     },
-
     //limpia errores front-end
     clear() {
       this.$refs.form.reset();
     },
-
     close() {
       this.dialog = false;
       this.$nextTick(() => {
@@ -427,7 +424,6 @@ export default {
         this.clear();
       });
     },
-
     saveMateriaPrima: async function() {
       const obj = new FormData();
       obj.append("CodigoMP", this.CodigoMP);
@@ -440,7 +436,6 @@ export default {
       axios
         .post(this.url, obj)
         .then(response => {
-          //console.log(response.data.result)
           this.MateriaPrima.push(response.data.result);
           this.Alert = true;
           this.CodigoMP = "";
@@ -457,41 +452,18 @@ export default {
         })
         .catch(error => this.errors.record(error.response.data));
     },
-
-    /**
-     * Filtro para codigo
-     * @param value
-     * @returns {boolean}
-     */
-
     CodigoFilter(value) {
       if (!this.CodigoMPValue) {
         return true;
       }
-
       return value.toLowerCase().includes(this.CodigoMPValue.toLowerCase());
     },
-
-    /**
-     * Filtro para materia
-     * @param value
-     * @returns {boolean}
-     */
-
     MateriaPrimaFilter(value) {
       if (!this.NombreMPValue) {
         return true;
       }
-
       return value.toLowerCase().includes(this.NombreMPValue.toLowerCase());
     },
-
-    /**
-     * Filtro para Clase
-     * @param value
-     * @returns {boolean}
-     */
-
     ClaseFilter(value) {
       if (!this.ClaseValue) {
         return true;
@@ -499,47 +471,24 @@ export default {
 
       return value.toLowerCase().includes(this.ClaseValue.toLowerCase());
     },
-
-    /**
-     * Filtro para Observacion
-     * @param value
-     * @returns {boolean}
-     */
-
     ObservacionFilter(value) {
       if (!this.ObservacionValue) {
         return true;
       }
-
       return value.toLowerCase().includes(this.ObservacionValue.toLowerCase());
     },
-
-    /**
-     * Filtro para Proveedor
-     * @param value2
-     * @returns {boolean}
-     */
     ProveedorFilter(value2) {
       if (!this.ProveedorIDValue) {
         return true;
       }
-
       return value2 === this.ProveedorIDValue;
     },
-
-    /**
-     * Filtro para UnidadMedida
-     * @param value3
-     * @returns {boolean}
-     */
     UnidadFilter(value3) {
       if (!this.UnidadMedidaIDValue) {
         return true;
       }
-
       return value3 === this.UnidadMedidaIDValue;
     },
-
     clearfilter() {
       this.NombreMPValue = "";
       this.CodigoMPValue = "";

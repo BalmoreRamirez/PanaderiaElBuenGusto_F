@@ -1,10 +1,10 @@
 <template>
   <v-app id="inspire">
     <v-navigation-drawer
-        v-if="estaActivo"
-        v-model="drawer"
-        :clipped="$vuetify.breakpoint.lgAndUp"
-        app
+      v-if="estaActivo"
+      v-model="drawer"
+      :clipped="$vuetify.breakpoint.lgAndUp"
+      app
     >
       <v-list dense nav>
         <!---------->
@@ -21,7 +21,7 @@
         <!---------->
         <v-list-item v-if="estaActivo" @click="cerrarSesion()">
           <v-list-item-icon>
-            <v-icon>dashboard</v-icon>
+            <v-icon>power_settings_new</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
@@ -69,28 +69,19 @@
           </v-list-item-content>
         </v-list-item>
         <!------------>
-        <v-list-item v-if="estaActivo" :to="{ name: 'historialMovimientomateriaPrima' }">
+        <v-list-item
+          v-if="estaActivo"
+          :to="{ name: 'historialMovimientomateriaPrima' }"
+        >
           <v-list-item-icon>
             <v-icon>assignment_turned_in</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title
-            >Historial
-            </v-list-item-title
-            >
+            <v-list-item-title>Historial </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <!------------>
-        <v-list-item v-if="estaActivo" :to="{ name: 'usuarios' }">
-          <v-list-item-icon>
-            <v-icon>group</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title>Usuarios</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+      
         <!--Proveedores--->
 
         <v-list-item v-if="estaActivo" :to="{ name: 'proveedor' }">
@@ -113,15 +104,25 @@
             <v-list-item-title>{{ inventario }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+          <!------------>
+        <v-list-item v-if="estaActivo" :to="{ name: 'usuarios' }">
+          <v-list-item-icon>
+            <v-icon>group</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>Usuarios</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
     /***===barra de navegacion=== */
     <v-app-bar
-        :clipped-left="$vuetify.breakpoint.lgAndUp"
-        app
-        color="blue darken-3"
-        dark
+      :clipped-left="$vuetify.breakpoint.lgAndUp"
+      app
+      color="blue darken-3"
+      dark
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title style="width: 300px" class="ml-0 pl-4">
@@ -130,13 +131,12 @@
       <v-spacer></v-spacer>
     </v-app-bar>
 
-
     /***===fin de la barrra de navegacion=== */ /**==aqui se cargan los
     componentes=== */
     <v-main>
       <v-container class="fill-height" fluid>
         <v-slide-y-transition>
-          <router-view/>
+          <router-view />
         </v-slide-y-transition>
       </v-container>
     </v-main>
@@ -146,20 +146,24 @@
 
 <script>
 import Footer from "@/components/Home/Footer";
-import {mapActions, mapGetters} from 'vuex';
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   methods: {
-    ...mapActions(['cerrarSesion'])
+    ...mapActions(["cerrarSesion", "leerToken"])
   },
   computed: {
-    ...mapGetters(['estaActivo'])
+    ...mapGetters(["estaActivo"])
+  },
+  created() {
+    this.leerToken();
   },
   name: "Inicio",
-  components: {Footer},
+  components: { Footer },
   props: {
     source: String
   },
+
   data() {
     return {
       inventario: "Inventario",

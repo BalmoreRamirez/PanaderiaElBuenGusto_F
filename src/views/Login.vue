@@ -20,31 +20,34 @@
                 <v-card-text>
                   <v-form @submit.prevent="login" v-model="valid">
                     <v-text-field
-                        v-model="usuario.name"
-                        label="Usuario"
-                        :rules="[required('Nombre Usuario')]"
-                        prepend-icon="mdi-account"
-                        type="text"
+                      v-model="usuario.name"
+                      label="Usuario"
+                      :rules="[required('Nombre Usuario')]"
+                      prepend-icon="mdi-account"
+                      type="text"
                     ></v-text-field>
                     <v-text-field
-                        v-model="usuario.password"
-                        label="Contraseña"
-                        :rules="[required('Contraseña')]"
-                        prepend-icon="mdi-lock"
-                        :append-icon="btn ? 'visibility' : 'visibility_off'"
+                      v-model="usuario.password"
+                      label="Contraseña"
+                      :rules="[required('Contraseña')]"
+                      prepend-icon="mdi-lock"
+                      :append-icon="btn ? 'visibility' : 'visibility_off'"
                       @click:append="() => (btn = !btn)"
                       :type="btn ? 'password' : 'text'"
                     ></v-text-field>
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn color="primary" type="submit" :disabled="!valid">Iniciar</v-btn>
+                      <v-btn color="primary" type="submit" :disabled="!valid"
+                        >Iniciar</v-btn
+                      >
                     </v-card-actions>
                   </v-form>
-                  
-                  <div  v-if="mensaje!=''">
-                    <p justify="center"  align="center" class="red--text">{{ mensaje }}</p>
+
+                  <div v-if="mensaje != ''">
+                    <p justify="center" align="center" class="red--text">
+                      {{ mensaje }}
+                    </p>
                   </div>
-                  
                 </v-card-text>
               </v-card>
             </v-col>
@@ -52,41 +55,42 @@
         </v-container>
       </v-container>
     </v-flex>
-  </v-layout
-  >
+  </v-layout>
 </template>
 <script>
-import {mapActions} from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   name: "Login",
   data() {
     return {
-       required(propertyType) {
+      required(propertyType) {
         return (v) =>
           (v && v.length > 0) || `Tienes que ingresar ${propertyType}`;
       },
-       btn: String,
+      valid: false,
+      btn: String,
       usuario: {
-        name: '',
-        password: ''
+        name: "",
+        password: "",
       },
-      mensaje: '',
-    }
+      mensaje: "",
+    };
   },
   methods: {
-    ...mapActions(['guardarUsuario']),
+    ...mapActions(["guardarUsuario"]),
     login() {
-      this.axios.post('/login', this.usuario)
-          .then(res => {
-           const token = res.data.user.access_token;
-            this.guardarUsuario(token);
-          })
-          .catch(e => {
-            console.log(e.response);
-            this.mensaje = e.response.data.message;
-          })
-    }
-  }
-}
+      this.axios
+        .post("/login", this.usuario)
+        .then((res) => {
+          const token = res.data.user.access_token;
+          this.guardarUsuario(token);
+        })
+        .catch((e) => {
+          console.log(e.response);
+          this.mensaje = e.response.data.message;
+        });
+    },
+  },
+};
 </script>

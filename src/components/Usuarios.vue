@@ -29,6 +29,7 @@
                 <v-card-title>
                   <span class="headline">Usuarios</span>
                 </v-card-title>
+                
                 <v-form ref="form" @submit.prevent="saveUsers(newuser)" >
                   <v-card-text>
                     <v-container>
@@ -129,6 +130,7 @@
   </v-layout>
 </template>
 <script>
+
 class Errors {
   constructor() {
     this.errors = {};
@@ -211,6 +213,8 @@ export default {
         });
     },
 
+
+
     getRol: async function() {
       const res = await this.$http.get("/Roles");
       this.Roles = res.data;
@@ -222,9 +226,11 @@ export default {
         this.close()
         this.getUsers()
       })
-      .catch(e=>{
+      /*.catch(e=>{
         console.log(e.response)
-      })
+      })*/
+
+      .catch(error => this.errors.record(error.response.data));
     }
 
   },

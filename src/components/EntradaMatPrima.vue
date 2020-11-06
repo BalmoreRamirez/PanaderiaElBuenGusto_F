@@ -15,6 +15,7 @@
             <v-divider class="mx-4" inset vertical></v-divider>
             <v-spacer></v-spacer>
             <v-spacer></v-spacer>
+
             <v-dialog v-model="dialog2" persistent max-width="600px">
               <v-card>
                 <v-card-title>
@@ -31,6 +32,7 @@
                             item-value="IdRegistroMP"
                             v-model="MateriaPrimaID"
                             label="Selecione Materia Prima"
+                            disabled
                             :rules="[
                               (v) => !!v || 'Materia Prima es requerido',
                             ]"
@@ -51,6 +53,7 @@
                               desperdicioregla,
                               number('numeros'),
                             ]"
+                            disabled
                             id="Desperdicio"
                             @keydown="errors.clear('Desperdicio')"
                           ></v-text-field>
@@ -65,6 +68,7 @@
                             v-model="CantidadTotal"
                             label="Cantidad*"
                             :rules="cantidadregla"
+                            disabled
                             id="CantidadTotal"
                             @keydown="errors.clear('CantidadTotal')"
                           ></v-text-field>
@@ -81,6 +85,7 @@
                             v-model="BodegaID"
                             label="Selecione Bodega"
                             :rules="[(v) => !!v || 'Bodega es requerida']"
+                            disabled
                             id="IdBodega"
                             @click="errors.clear('IdBodega')"
                             required
@@ -96,6 +101,7 @@
                             v-model="PrecioUnitario"
                             label="Precio Unitario*"
                             :rules="precioregla"
+                            disabled
                             id="PrecioUnitario"
                             @keydown="errors.clear('PrecioUnitario')"
                           ></v-text-field>
@@ -143,6 +149,7 @@
                             v-model="UnidadMedidaID"
                             label="Selecione la unidad"
                             :rules="[(v) => !!v || 'Unidad es requerido']"
+                            disabled
                             id="IdUnidadMedida"
                             @click="errors.clear('IdUnidadMedida')"
                             required
@@ -160,6 +167,7 @@
                             v-model="ProveedorId"
                             label="Selecione Proveedor"
                             :rules="[(v) => !!v || 'proveedor es requerido']"
+                            disabled
                             id="IdProveedor"
                             @click="errors.clear('IdProveedor')"
                             required
@@ -383,6 +391,12 @@
             </v-alert>
           </div>
         </template>
+          <template v-slot:[`item.actions`]="{ item }">
+          <v-btn class="mb-2" color="primary" @click="formEdit(item)">
+            Editar
+          </v-btn>
+           </template>
+        
         <!-- <template v-slot:[`item.actions`]="{ item }">
           <v-btn class="mb-2" v-if="item.FechaCaducidad < currentDate" color='green' >
             ALTA
@@ -529,6 +543,12 @@ export default {
           class: "indigo  white--text",
           sortable: false,
         },
+        {
+          text: "Acción",
+          value: "actions",
+          class: "indigo  white--text",
+          sortable: false,
+        },
       ],
     };
   },
@@ -589,14 +609,13 @@ export default {
         loopDate = new Date(loopDate); 
         const diffTime = Math.abs(loopDate - currentDate);
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-        
         console.log(currentDate)
         if (loopDate <=  currentDate) {
 
           o.Dias = 'Caducado';
         }
         else {
-          o.Dias = 'Faltan ' + diffDays + ' dias para que caduque';
+          o.Dias = 'Faltan ' + diffDays + ' dias para que caduque'; 
         }
          
       return o;
@@ -638,7 +657,7 @@ export default {
     },
     formEdit: function (item) {
 
-      this.ProductoId = item.ProductoId;
+      //this.ProductoId = item.ProductoId;
       this.MateriaPrimaID = item.IdRegistroMP;
       this.Desperdicio = item.Desperdicio;
       this.CantidadTotal = item.CantidadTotal;
@@ -653,7 +672,7 @@ export default {
     saveEditar: async function () {
       console.log(this.ProveedorId)
       const obj = new FormData();
-      obj.append("ProductoId", this.ProductoId);
+      //obj.append("ProductoId", this.ProductoId);
       obj.append("Desperdicio", this.Desperdicio);
       obj.append("CantidadTotal", this.CantidadTotal);
       obj.append("FechaCaducidad", this.FechaCaducidad);

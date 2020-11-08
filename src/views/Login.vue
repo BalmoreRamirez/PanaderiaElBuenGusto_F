@@ -23,14 +23,14 @@
                       v-model="usuario.name"
                       label="Usuario"
                       :rules="[required('Nombre Usuario')]"
-                      prepend-icon="mdi-account"
+                      prepend-icon="person"
                       type="text"
                     ></v-text-field>
                     <v-text-field
                       v-model="usuario.password"
                       label="Contraseña"
                       :rules="[required('Contraseña')]"
-                      prepend-icon="mdi-lock"
+                      prepend-icon="enhanced_encryption"
                       :append-icon="btn ? 'visibility' : 'visibility_off'"
                       @click:append="() => (btn = !btn)"
                       :type="btn ? 'password' : 'text'"
@@ -42,7 +42,6 @@
                       >
                     </v-card-actions>
                   </v-form>
-
                   <div v-if="mensaje != ''">
                     <p justify="center" align="center" class="red--text">
                       {{ mensaje }}

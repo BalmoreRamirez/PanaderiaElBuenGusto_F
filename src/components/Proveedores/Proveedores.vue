@@ -48,8 +48,6 @@
               </v-col>
             </v-row>
 
-
-
             <v-spacer></v-spacer>
             <v-dialog v-model="dialog" persistent max-width="500px">
               <template v-slot:activator="{ on, attrs }">
@@ -70,286 +68,311 @@
                 </v-card-title>
                 <v-row justify="center">
                   <v-expansion-panels accordion>
-                    <v-expansion-panel >
-                      <v-expansion-panel-header>Persona</v-expansion-panel-header>
+                    <v-expansion-panel>
+                      <v-expansion-panel-header
+                        >Persona</v-expansion-panel-header
+                      >
                       <v-expansion-panel-content>
-                         <v-form ref="form" v-model="valid">
-                  <v-card-text>
-                    <v-container>
-                      <v-row>
-                        <!--=============-->
-                        <v-col cols="12" sm="6">
-                          <v-text-field
-                            v-model="TituloProveedor"
-                            label="Titulo"
-                            :rules="[
-                              letter('letras'),
-                               maxlength('Titulo proveedor', 50),
-                            ]"
-                            id="TituloProveedor"
-                            @keydown="errors.clear('TituloProveedor')"
-                          >
-                          </v-text-field>
-                        </v-col>
-                        <v-col cols="12" sm="6">
-                          <v-text-field
-                            v-model="CodigoProveedor"
-                            label="Codigo"
-                            :rules="[
-                              required('CodigoProveedor'),
-                              maxlength('Codigo Proveedor', 15),
-                             
-                            ]"
-                            id="CodigoProveedor"
-                            @keydown="errors.clear('CodigoProveedor')"
-                          >
-                          </v-text-field>
-                          <span
-                            class="red--text"
-                            v-text="errors.get('CodigoProveedor')"
-                          ></span>
-                        </v-col>
-                        <v-col cols="12" sm="6">
-                          <v-text-field
-                            v-model="NombreProveedor"
-                            label="Nombre de Proveedor"
-                            :rules="[
-                              required('Nombre Proveedor'),
-                              letter('letras'),
-                              maxlength('Nombre Proveedor', 50),
-                            ]"
-                            id="NombreProveedor"
-                            @keydown="errors.clear('NombreProveedor')"
-                          >
-                          </v-text-field>
-                          <span
-                            class="red--text"
-                            v-text="errors.get('NombreProveedor')"
-                          ></span>
-                        </v-col>
-                        <!--=============-->
-                      
-                        <v-col cols="12" sm="6">
-                          <v-text-field
-                            v-model="TelefonoProveedor"
-                            label="Telefono"
-                            :rules="[  number('numeros'),
+                        <v-form ref="form" v-model="valid">
+                          <v-card-text>
+                            <v-container>
+                              <v-row>
+                                <!--=============-->
+                                <v-col cols="12" sm="6">
+                                  <v-text-field
+                                    v-model="TituloProveedor"
+                                    label="Titulo"
+                                    :rules="[
+                                      letter('letras'),
+                                      maxlength('Titulo proveedor', 50),
+                                    ]"
+                                    id="TituloProveedor"
+                                    @keydown="errors.clear('TituloProveedor')"
+                                  >
+                                  </v-text-field>
+                                </v-col>
+                                <v-col cols="12" sm="6">
+                                  <v-text-field
+                                    v-model="CodigoProveedor"
+                                    label="Codigo"
+                                    :rules="[
+                                      required('CodigoProveedor'),
+                                      maxlength('Codigo Proveedor', 15),
+                                    ]"
+                                    id="CodigoProveedor"
+                                    @keydown="errors.clear('CodigoProveedor')"
+                                  >
+                                  </v-text-field>
+                                  <span
+                                    class="red--text"
+                                    v-text="errors.get('CodigoProveedor')"
+                                  ></span>
+                                </v-col>
+                                <v-col cols="12" sm="6">
+                                  <v-text-field
+                                    v-model="NombreProveedor"
+                                    label="Nombre de Proveedor"
+                                    :rules="[
+                                      required('Nombre Proveedor'),
+                                      letter('letras'),
+                                      maxlength('Nombre Proveedor', 50),
+                                    ]"
+                                    id="NombreProveedor"
+                                    @keydown="errors.clear('NombreProveedor')"
+                                  >
+                                  </v-text-field>
+                                  <span
+                                    class="red--text"
+                                    v-text="errors.get('NombreProveedor')"
+                                  ></span>
+                                </v-col>
+                                <!--=============-->
+
+                                <v-col cols="12" sm="6">
+                                  <v-text-field
+                                    v-model="TelefonoProveedor"
+                                    label="Telefono"
+                                    :rules="[
+                                      number('numeros'),
                                       maxlength('Telefono Proveedor', 8),
-                                      minlength('Telefono Proveedor',8),
+                                      minlength('Telefono Proveedor', 8),
                                     ]"
-                            id="TelefonoProveedor"
-                            @keydown="errors.clear('TelefonoProveedor')"
-                            required
-                          >
-                          </v-text-field>
-                        </v-col>
-                        <!--=============-->
-                        <v-col cols="12" sm="6">
-                          <v-text-field
-                            v-model="MovilProveedor"
-                            label="Movil"
-                            :rules="[number('numeros'),
-                                    maxlength('Movil Proveedor', 8),
-                                    minlength('Movil Proveedor',8),
+                                    id="TelefonoProveedor"
+                                    @keydown="errors.clear('TelefonoProveedor')"
+                                    required
+                                  >
+                                  </v-text-field>
+                                </v-col>
+                                <!--=============-->
+                                <v-col cols="12" sm="6">
+                                  <v-text-field
+                                    v-model="MovilProveedor"
+                                    label="Movil"
+                                    :rules="[
+                                      number('numeros'),
+                                      maxlength('Movil Proveedor', 8),
+                                      minlength('Movil Proveedor', 8),
                                     ]"
-                            id="MovilProveedor"
-                            @keydown="errors.clear('MovilProveedor')"
-                          >
-                          </v-text-field>
-                        </v-col>
+                                    id="MovilProveedor"
+                                    @keydown="errors.clear('MovilProveedor')"
+                                  >
+                                  </v-text-field>
+                                </v-col>
 
-                        <v-col cols="12" sm="6">
-                          <v-text-field
-                            v-model="EmailProveedor"
-                            label="Correo"
-                            :rules="[
-                             maxlength('Email', 25),
-                             email('Email'),]"
-                            id="EmailProveedor"
-                            @keydown="errors.clear('EmailProveedor')"
-                            required
-                          >
-                          </v-text-field>
-                        </v-col>
-                        <!--=============-->
-                       
+                                <v-col cols="12" sm="6">
+                                  <v-text-field
+                                    v-model="EmailProveedor"
+                                    label="Correo"
+                                    :rules="[
+                                      maxlength('Email', 25),
+                                      email('Email'),
+                                    ]"
+                                    id="EmailProveedor"
+                                    @keydown="errors.clear('EmailProveedor')"
+                                    required
+                                  >
+                                  </v-text-field>
+                                </v-col>
+                                <!--=============-->
 
-                        <v-col cols="12" sm="6">
-                          <v-text-field
-                            v-model="NITPRoveedor"
-                            label="NIT"
-                            :rules="[ number('numeros'),
-                                    maxlength('NIT Proveedor', 20),
-                                    minlength('Nit Proveedor', 14),
-                                   ]"
-                            id="NITPRoveedor"
-                            @keydown="errors.clear('NITPRoveedor')"
-                          >
-                          </v-text-field>
-                        </v-col>
-                       
-                        
+                                <v-col cols="12" sm="6">
+                                  <v-text-field
+                                    v-model="NITPRoveedor"
+                                    label="NIT"
+                                    :rules="[
+                                      number('numeros'),
+                                      maxlength('NIT Proveedor', 20),
+                                      minlength('Nit Proveedor', 14),
+                                    ]"
+                                    id="NITPRoveedor"
+                                    @keydown="errors.clear('NITPRoveedor')"
+                                  >
+                                  </v-text-field>
+                                </v-col>
 
-                        
-                        <!--=============-->
-                      </v-row>
-                    </v-container>
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="close"
-                      >Salir</v-btn
-                    >
-                    <v-btn
-                      color="blue darken-1"
-                      text
-                      @click="saveProveedoresPersona"
-                      :disabled="!valid"
-                      >Guardar</v-btn
-                    >
-                  </v-card-actions>
-                </v-form>
+                                <!--=============-->
+                              </v-row>
+                            </v-container>
+                          </v-card-text>
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="blue darken-1" text @click="close"
+                              >Salir</v-btn
+                            >
+                            <v-btn
+                              color="blue darken-1"
+                              text
+                              @click="saveProveedoresPersona"
+                              :disabled="!valid"
+                              >Guardar</v-btn
+                            >
+                          </v-card-actions>
+                        </v-form>
                       </v-expansion-panel-content>
                     </v-expansion-panel>
-                 
-                    <v-expansion-panel >
-                      <v-expansion-panel-header>Empresa</v-expansion-panel-header>
+
+                    <v-expansion-panel>
+                      <v-expansion-panel-header
+                        >Empresa</v-expansion-panel-header
+                      >
                       <v-expansion-panel-content>
-                         <v-form ref="form" v-model="valid">
-                  <v-card-text>
-                    <v-container>
-                      <v-row>
-                        <!--=============-->
-                        <v-col cols="12" sm="6">
-                          <v-text-field
-                            v-model="CodigoProveedor"
-                            label="Codigo"
-                            :rules="[
-                              required('Codigo Proveedor'),
-                             maxlength('Codigo Proveedor', 15),
-                            ]"
-                            id="CodigoProveedor"
-                            @keydown="errors.clear('CodigoProveedor')"
-                          >
-                          </v-text-field>
-                          <span
-                            class="red--text"
-                            v-text="errors.get('CodigoProveedor')"
-                          ></span>
-                        </v-col>
-                        <v-col cols="12" sm="6">
-                          <v-text-field
-                            v-model="NombreProveedor"
-                            label="Nombre de Proveedor"
-                            :rules="[
-                              required('Nombre Proveedor'),
-                              letter('letras'),
-                              maxlength('Nombre Proveedor', 50),
-                            ]"
-                            id="NombreProveedor"
-                            @keydown="errors.clear('NombreProveedor')"
-                          >
-                          </v-text-field>
-                          <span
-                            class="red--text"
-                            v-text="errors.get('NombreProveedor')"
-                          ></span>
-                        </v-col>
-                       
+                        <v-form ref="form" v-model="valid">
+                          <v-card-text>
+                            <v-container>
+                              <v-row>
+                                <!--=============-->
+                                <v-col cols="12" sm="6">
+                                  <v-text-field
+                                    v-model="CodigoProveedor"
+                                    label="Codigo"
+                                    :rules="[
+                                      required('Codigo Proveedor'),
+                                      maxlength('Codigo Proveedor', 15),
+                                    ]"
+                                    id="CodigoProveedor"
+                                    @keydown="errors.clear('CodigoProveedor')"
+                                  >
+                                  </v-text-field>
+                                  <span
+                                    class="red--text"
+                                    v-text="errors.get('CodigoProveedor')"
+                                  ></span>
+                                </v-col>
+                                <v-col cols="12" sm="6">
+                                  <v-text-field
+                                    v-model="NombreProveedor"
+                                    label="Nombre de Proveedor"
+                                    :rules="[
+                                      required('Nombre Proveedor'),
+                                      letter('letras'),
+                                      maxlength('Nombre Proveedor', 50),
+                                    ]"
+                                    id="NombreProveedor"
+                                    @keydown="errors.clear('NombreProveedor')"
+                                  >
+                                  </v-text-field>
+                                  <span
+                                    class="red--text"
+                                    v-text="errors.get('NombreProveedor')"
+                                  ></span>
+                                </v-col>
 
-                        <v-col cols="12" sm="6">
-                          <v-text-field
-                            v-model="TelefonoProveedor"
-                            label="Telefono"
-                            :rules="[  number('numeros'),
+                                <v-col cols="12" sm="6">
+                                  <v-text-field
+                                    v-model="TelefonoProveedor"
+                                    label="Telefono"
+                                    :rules="[
+                                      number('numeros'),
                                       maxlength('Telefono Proveedor', 8),
-                                      minlength('Telefono Proveedor',8),
+                                      minlength('Telefono Proveedor', 8),
                                     ]"
-                            id="TelefonoProveedor"
-                            @keydown="errors.clear('TelefonoProveedor')"
-                            required
-                          >
-                          </v-text-field>
-                        </v-col>
-                        <!--=============-->
-                        <v-col cols="12" sm="6">
-                          <v-text-field
-                            v-model="MovilProveedor"
-                            label="Movil"
-                            :rules="[number('numeros'),
-                                    maxlength('Movil Proveedor', 8),
-                                    minlength('Movil Proveedor',8),
+                                    id="TelefonoProveedor"
+                                    @keydown="errors.clear('TelefonoProveedor')"
+                                    required
+                                  >
+                                  </v-text-field>
+                                </v-col>
+                                <!--=============-->
+                                <v-col cols="12" sm="6">
+                                  <v-text-field
+                                    v-model="MovilProveedor"
+                                    label="Movil"
+                                    :rules="[
+                                      number('numeros'),
+                                      maxlength('Movil Proveedor', 8),
+                                      minlength('Movil Proveedor', 8),
                                     ]"
-                            id="MovilProveedor"
-                            @keydown="errors.clear('MovilProveedor')"
-                          >
-                          </v-text-field>
-                        </v-col>
+                                    id="MovilProveedor"
+                                    @keydown="errors.clear('MovilProveedor')"
+                                  >
+                                  </v-text-field>
+                                </v-col>
 
-                        <v-col cols="12" sm="6">
-                          <v-text-field
-                            v-model="EmailProveedor"
-                            label="Correo"
-                            :rules="[
-                             maxlength('Email', 25),
-                             email('Email'),]"
-                            id="EmailProveedor"
-                            @keydown="errors.clear('EmailProveedor')"
-                            required
-                          >
-                          </v-text-field>
-                        </v-col>
-                        <!--=============-->
-                        <v-col cols="12" sm="6">
-                          <v-text-field
-                            v-model="FaxProveedor"
-                            label="Fax"
-                            :rules="[number('numeros'),
-                                    maxlength('Fax Proveedor', 9),
-                                    minlength('Fax Proveedor',8),
+                                <v-col cols="12" sm="6">
+                                  <v-text-field
+                                    v-model="EmailProveedor"
+                                    label="Correo"
+                                    :rules="[
+                                      maxlength('Email', 25),
+                                      email('Email'),
                                     ]"
-                            id="Observacion"
-                            @keydown="errors.clear('FaxProveedor')"
-                          >
-                          </v-text-field>
-                        </v-col>
-
-                       
-                        <v-col cols="12" sm="6">
-                          <v-text-field
-                            v-model="NIDFiscal"
-                            label="NID"
-                            :rules="[number('numeros'),
-                                    maxlength('NID Fiscal', 25),
-                                    minlength('NID Fiscal', 14),
+                                    id="EmailProveedor"
+                                    @keydown="errors.clear('EmailProveedor')"
+                                    required
+                                  >
+                                  </v-text-field>
+                                </v-col>
+                                <!--=============-->
+                                <v-col cols="12" sm="6">
+                                  <v-text-field
+                                    v-model="FaxProveedor"
+                                    label="Fax"
+                                    :rules="[
+                                      number('numeros'),
+                                      maxlength('Fax Proveedor', 9),
+                                      minlength('Fax Proveedor', 8),
                                     ]"
-                            id="NIDFiscal"
-                            @keydown="errors.clear('NIDFiscal')"
-                          >
-                          </v-text-field>
-                        </v-col>
+                                    id="Observacion"
+                                    @keydown="errors.clear('FaxProveedor')"
+                                  >
+                                  </v-text-field>
+                                </v-col>
 
-                      </v-row>
-                    </v-container>
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="close"
-                      >Salir</v-btn
-                    >
-                    <v-btn
-                      color="blue darken-1"
-                      text
-                      @click="saveProveedoresEmpresa"
-                      :disabled="!valid"
-                      >Guardar</v-btn
-                    >
-                  </v-card-actions>
-                </v-form>
+                                <v-col cols="12" sm="6">
+                                  <v-text-field
+                                    v-model="NIDFiscal"
+                                    label="NID"
+                                    :rules="[
+                                      number('numeros'),
+                                      maxlength('NID Fiscal', 25),
+                                      minlength('NID Fiscal', 14),
+                                    ]"
+                                    id="NIDFiscal"
+                                    @keydown="errors.clear('NIDFiscal')"
+                                  >
+                                  </v-text-field>
+                                </v-col>
+                              </v-row>
+                            </v-container>
+                          </v-card-text>
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="blue darken-1" text @click="close"
+                              >Salir</v-btn
+                            >
+                            <v-btn
+                              color="blue darken-1"
+                              text
+                              @click="saveProveedoresEmpresa"
+                              :disabled="!valid"
+                              >Guardar</v-btn
+                            >
+                          </v-card-actions>
+                        </v-form>
                       </v-expansion-panel-content>
                     </v-expansion-panel>
                   </v-expansion-panels>
                 </v-row>
+              </v-card>
+            </v-dialog>
+
+            <!--======Confirmacion eliminar=======-->
+
+            <v-dialog v-model="dialog2" persistent max-width="350">
+                <v-card>
+                <v-card-title class="headline">
+                 ¿Estas seguro de eliminar el registro?
+                </v-card-title>
+               
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="green darken-1" text @click="saveEliminar">
+                    Si
+                  </v-btn>
+                  <v-btn color="green darken-1" text @click="closeEliminar">
+                    No
+                  </v-btn>
+                </v-card-actions>
               </v-card>
             </v-dialog>
           </v-toolbar>
@@ -357,7 +380,15 @@
             <v-alert :value="Alert" type="success" border="top" dense>
               Registro guardado exitosamente.
             </v-alert>
+            <v-alert :value="Alert2" type="success" border="top" dense>
+              Registro Eliminado exitosamente.
+            </v-alert>
           </div>
+        </template>
+        <template v-slot:[`item.actions`]="{ item }">
+          <v-btn class="mb-2" color="primary" @click="FormEliminar(item)">
+            Eliminar
+          </v-btn>
         </template>
       </v-data-table>
     </v-flex>
@@ -422,7 +453,9 @@ export default {
 
       valid: false,
       dialog: false,
+      dialog2: false,
       Alert: false,
+      Alert2: false,
       errors: new Errors(),
       /** ============array============== */
       Proveedores: [],
@@ -440,10 +473,12 @@ export default {
       NIDFiscal: "",
       TituloProveedor: "",
       IdTipo: "",
+      Inactivo: "",
       NombreTipo: "",
       CodigoValue: "",
       NombreValue: "",
       TipoValue: null,
+
       urlGuardarProv: "http://localhost/PanaderiaBG/public/Proveedores",
       urlListaProveedores:
         "http://localhost/PanaderiaBG/public/ListaProveedores",
@@ -455,18 +490,19 @@ export default {
           text: "Codigo",
           value: "CodigoProveedor",
           class: "indigo  white--text",
-          filter: this.CodigoFilter
+          filter: this.CodigoFilter,
         },
         {
           text: "Nombre ",
           value: "NombreProveedor",
           class: "indigo  white--text",
-          filter: this.NombreFilter
+          filter: this.NombreFilter,
         },
-        { text: "Tipo", 
-        value: "NombreTipo", 
-        class: "indigo  white--text",
-          filter: this.TipoFilter
+        {
+          text: "Tipo",
+          value: "NombreTipo",
+          class: "indigo  white--text",
+          filter: this.TipoFilter,
         },
 
         {
@@ -478,6 +514,12 @@ export default {
           text: "Correo",
           value: "EmailProveedor",
           class: "indigo  white--text",
+        },
+        {
+          text: "Acción",
+          value: "actions",
+          class: "indigo  white--text",
+          sortable: false,
         },
       ],
     };
@@ -495,11 +537,20 @@ export default {
         this.clear();
       });
     },
+    closeEliminar() {
+      this.dialog2 = false;
+    },
+
+    FormEliminar(item) {
+      this.IdProveedor = item.IdProveedor;
+      this.dialog2 = true;
+    },
     async getProveedores() {
       const res = await this.$http.get(this.urlListaProveedores);
       this.Proveedores = res.data;
       setTimeout(() => {
         this.Alert = false;
+        this.Alert2 = false;
       }, 5000);
     },
 
@@ -543,34 +594,45 @@ export default {
         .catch((error) => this.errors.record(error.response.data));
     },
 
-        CodigoFilter(value) {
+    saveEliminar: async function () {
+      axios
+        .post(this.urlGuardarProv + "/" + this.IdProveedor)
+        .then(() => {
+          this.Alert2 = true;
+
+          this.getProveedores();
+          this.closeEliminar();
+        })
+        .catch((error) => this.errors.record(error.response.data));
+    },
+
+    CodigoFilter(value) {
       if (!this.CodigoValue) {
         return true;
       }
       return value.toLowerCase().includes(this.CodigoValue.toLowerCase());
     },
 
-     NombreFilter(value) {
+    NombreFilter(value) {
       if (!this.NombreValue) {
         return true;
       }
       return value.toLowerCase().includes(this.NombreValue.toLowerCase());
     },
 
-     TipoFilter(value2) {
+    TipoFilter(value2) {
       if (!this.TipoValue) {
         return true;
       }
       return value2 === this.TipoValue;
     },
 
-    clearfilter(){
-        this.CodigoValue = "";
-        this.NombreValue = "";
-        this.TipoValue = "";
+    clearfilter() {
+      this.CodigoValue = "";
+      this.NombreValue = "";
+      this.TipoValue = "";
     },
 
-    
     saveProveedoresEmpresa: async function () {
       const obj = new FormData();
       obj.append("CodigoProveedor", this.CodigoProveedor);

@@ -10,8 +10,48 @@
       >
         <template v-slot:top>
           <v-toolbar flat color="white">
-            <v-toolbar-title>Registro de Materia Prima</v-toolbar-title>
-            <v-divider class="mx-4" inset vertical></v-divider>
+            <v-toolbar-title>Materia Prima</v-toolbar-title>
+            <v-divider class="mx-5" inset vertical></v-divider>
+            <v-row>
+              <v-col cols="3">
+                <!-- Filtro por codigo -->
+                <v-text-field
+                  v-model="CodigoMPValue"
+                  append-icon="mdi-magnify"
+                  label="Codigo"
+                  single-line
+                  hide-details
+                ></v-text-field>
+              </v-col>
+              <v-col cols="3">
+                <!-- Filtro por materia -->
+                <v-text-field
+                  v-model="NombreMPValue"
+                  append-icon="mdi-magnify"
+                  label="Nombre"
+                  single-line
+                  hide-details
+                ></v-text-field>
+              </v-col>
+      
+            
+
+             
+              <v-col cols="3">
+                <!-- Filtro por Proveedor -->
+                <v-select
+                  :items="Proveedor"
+                  item-text="NombreProveedor"
+                  v-model="ProveedorIDValue"
+                  label="Proveedor"
+                ></v-select>
+              </v-col>
+              <v-col cols="1">
+                <v-btn color="blue darken-1" text @click="clearfilter"
+                  >Limpiar</v-btn
+                >
+              </v-col>
+            </v-row>
             <v-spacer></v-spacer>
             <v-dialog v-model="dialog" persistent max-width="600px">
               <!---icono de agregar-->
@@ -58,7 +98,7 @@
                             :rules="[
                               required('nombre'),
                               letter('letras'),
-                              minlength('Nombre', 4),
+                              minlength('Nombre', 4)
                             ]"
                             id="NombreMP"
                             @keydown="errors.clear('NombreMP')"
@@ -95,7 +135,7 @@
                             counter="30"
                             :rules="[
                               required('Observacion'),
-                              maxlength('Observacion', 30),
+                              maxlength('Observacion', 30)
                             ]"
                             id="Observacion"
                             @keydown="errors.clear('Observacion')"
@@ -132,7 +172,7 @@
                             label="Selecione la unidad"
                             id="IdUnidadMedida"
                             @click="errors.clear('IdUnidadMedida')"
-                            :rules="[(v) => !!v || 'unidad es requerido']"
+                            :rules="[v => !!v || 'unidad es requerido']"
                             required
                           >
                           </v-select>
@@ -150,7 +190,7 @@
                             label="Selecione Proveedor"
                             id="IdProveedor"
                             @click="errors.clear('IdProveedor')"
-                            :rules="[(v) => !!v || 'proveedor es requerido']"
+                            :rules="[v => !!v || 'proveedor es requerido']"
                             required
                           >
                           </v-select>
@@ -220,24 +260,24 @@ export default {
     return {
       valid: false,
       required(propertyType) {
-        return (v) =>
+        return v =>
           (v && v.length > 0) || `Tienes que ingresar ${propertyType}`;
       },
       letter(propertyType) {
-        return (v) =>
+        return v =>
           /^[ñA-Za-z _]*[ñA-Za-z][ñA-Za-z _]+$/.test(v) ||
           `Solo acepta ${propertyType}`;
       },
       number(propertyType) {
-        return (v) => /^\d+$/.test(v) || `Solo acepta ${propertyType}`;
+        return v => /^\d+$/.test(v) || `Solo acepta ${propertyType}`;
       },
       maxlength(propertyType, maxlength) {
-        return (v) =>
+        return v =>
           (v && v.length <= maxlength) ||
           `${propertyType} no puede superar los ${maxlength} caracteres`;
       },
       minlength(propertyType, minlength) {
-        return (v) =>
+        return v =>
           (v && v.length >= minlength) ||
           `${propertyType} no puede ser inferior ${minlength} caracteres`;
       },
@@ -259,6 +299,12 @@ export default {
       NombreProveedor: "",
       ProveedorID: "",
       alert: false,
+      CodigoMPValue: "",
+      NombreMPValue: "",
+      ClaseValue: "",
+      ObservacionValue: "",
+      UnidadMedidaIDValue: null,
+      ProveedorIDValue: null,
       url3: "/PanaderiaBG/public/Proveedores",
       url2: "/PanaderiaBG/public/UnidadMateria",
       url: "http://localhost/PanaderiaBG/public/MateriaPrima",
@@ -268,58 +314,82 @@ export default {
         {
           text: "Codigo",
           align: "start",
-          sortable: false,
           value: "CodigoMP",
           class: "indigo white--text",
+          filter: this.CodigoFilter
         },
-        //  { text: "Codigo", value: "CodigoMP" },
-        { text: "Nombre", value: "NombreMP", class: "indigo  white--text" },
-        { text: "Clase", value: "Clase", class: "indigo white--text" },
+
+        {
+          text: "Nombre",
+          value: "NombreMP",
+          class: "indigo  white--text",
+          filter: this.MateriaPrimaFilter
+        },
+
+        {
+          text: "Clase",
+          value: "Clase",
+          class: "indigo white--text",
+          filter: this.ClaseFilter
+        },
+
         {
           text: "Obervacion",
           value: "Observacion",
           class: "indigo white--text",
+          filter: this.ObservacionFilter
         },
         {
           text: "Descripcion",
           value: "Descripcion",
-          class: "indigo white--text",
+          class: "indigo white--text"
         },
         {
           text: "Unidad de Medida",
           value: "NombreUnidad",
           class: "indigo white--text",
+          filter: this.UnidadFilter
         },
         {
           text: "Proveedor",
           value: "NombreProveedor",
           class: "indigo white--text",
-        },
-      ],
+          filter: this.ProveedorFilter
+        }
+      ]
     };
   },
   methods: {
-    getProveedores: async function () {
-      const res = await this.$http.get(this.url3);
-      this.Proveedor = res.data;
+    getProveedores() {
+      this.axios
+        .get('/Proveedores')
+        .then(res => {
+          this.Proveedor = res.data;
+        })
+        .catch(e => {
+          console.log(e.response);
+        });
     },
-    getUnidad: async function () {
-      const res = await this.$http.get(this.url2);
-      this.UnidadMedida = res.data;
+    getUnidad() {
+      this.axios.get('/UnidadMateria')
+      .then(res=>{
+        this.UnidadMedida=res.data
+      })
+      .catch(e=>{
+        console.log(e.response)
+      })
     },
-    getMateriaPrima: async function () {
+    getMateriaPrima: async function() {
       const res = await this.$http.get(this.url);
       this.MateriaPrima = res.data;
       setTimeout(() => {
         this.Alert = false;
       }, 5000);
     },
-
     //limpia errores front-end
     clear() {
       this.$refs.form.reset();
     },
-
     close() {
       this.dialog = false;
       this.$nextTick(() => {
@@ -328,8 +398,7 @@ export default {
         this.clear();
       });
     },
-
-    saveMateriaPrima: async function () {
+    saveMateriaPrima: async function() {
       const obj = new FormData();
       obj.append("CodigoMP", this.CodigoMP);
       obj.append("NombreMP", this.NombreMP);
@@ -340,8 +409,7 @@ export default {
       obj.append("ProveedorID", this.ProveedorID);
       axios
         .post(this.url, obj)
-        .then((response) => {
-          //console.log(response.data.result)
+        .then(response => {
           this.MateriaPrima.push(response.data.result);
           this.Alert = true;
           this.CodigoMP = "";
@@ -356,13 +424,58 @@ export default {
           this.clear();
           this.close();
         })
-        .catch((error) => this.errors.record(error.response.data));
+        .catch(error => this.errors.record(error.response.data));
     },
+    CodigoFilter(value) {
+      if (!this.CodigoMPValue) {
+        return true;
+      }
+      return value.toLowerCase().includes(this.CodigoMPValue.toLowerCase());
+    },
+    MateriaPrimaFilter(value) {
+      if (!this.NombreMPValue) {
+        return true;
+      }
+      return value.toLowerCase().includes(this.NombreMPValue.toLowerCase());
+    },
+    ClaseFilter(value) {
+      if (!this.ClaseValue) {
+        return true;
+      }
+
+      return value.toLowerCase().includes(this.ClaseValue.toLowerCase());
+    },
+    ObservacionFilter(value) {
+      if (!this.ObservacionValue) {
+        return true;
+      }
+      return value.toLowerCase().includes(this.ObservacionValue.toLowerCase());
+    },
+    ProveedorFilter(value2) {
+      if (!this.ProveedorIDValue) {
+        return true;
+      }
+      return value2 === this.ProveedorIDValue;
+    },
+    UnidadFilter(value3) {
+      if (!this.UnidadMedidaIDValue) {
+        return true;
+      }
+      return value3 === this.UnidadMedidaIDValue;
+    },
+    clearfilter() {
+      this.NombreMPValue = "";
+      this.CodigoMPValue = "";
+      this.ProveedorIDValue = "";
+      this.ClaseValue = "";
+      this.ObservacionValue = "";
+      this.UnidadMedidaIDValue = "";
+    }
   },
   created() {
     this.getMateriaPrima();
     this.getUnidad();
     this.getProveedores();
-  },
+  }
 };
 </script>

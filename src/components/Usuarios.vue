@@ -29,36 +29,40 @@
                 <v-card-title>
                   <span class="headline">Usuarios</span>
                 </v-card-title>
-                <v-form ref="form" v-model="valid">
+                
+                <v-form ref="form" @submit.prevent="saveUsers(newuser)" >
                   <v-card-text>
                     <v-container>
                       <v-row>
                         <v-col cols="12" sm="6">
                           <v-text-field
-                            v-model="NombreUsuario"
+                            v-model="newuser.name"
                             label="Nombre*"
-                            :rules="[required('Nombre Usuario'), minlength('Nombre Usuario', 4)]"
-                            id="NombreUsuario"
-                            @keydown="errors.clear('NombreUsuario')"
+                            :rules="[
+                              required('Nombre Usuario'),
+                              minlength('Nombre Usuario', 4)
+                            ]"
+                            id="name"
+                            @keydown="errors.clear('name')"
                           >
                           </v-text-field>
                           <span
                             class="red--text"
-                            v-text="errors.get('NombreUsuario')"
+                            v-text="errors.get('name')"
                           ></span>
                         </v-col>
                         <v-col cols="12" sm="6">
                           <v-text-field
-                            v-model="EmailUsuario"
+                            v-model="newuser.email"
                             label="Correo"
-                            :rules="[required('Email')]"
-                            id="EmailUsuario"
-                            @keydown="errors.clear('EmailUsuario')"
+                            :rules="[required('email')]"
+                            id="email"
+                            @keydown="errors.clear('email')"
                           >
                           </v-text-field>
                           <span
                             class="red--text"
-                            v-text="errors.get('EmailUsuario')"
+                            v-text="errors.get('email')"
                           ></span>
                         </v-col>
                         <v-col cols="12" sm="6">
@@ -66,11 +70,11 @@
                             :items="Roles"
                             item-text="NombreRol"
                             item-value="IdRol"
-                            v-model="RolId"
+                            v-model="newuser.RolId"
                             label="Selecione el rol"
                             id="RolId"
                             @click="errors.clear('RolId')"
-                            :rules="[(v) => !!v || 'Rol es requerido']"
+                            :rules="[v => !!v || 'Rol es requerido']"
                             required
                           >
                           </v-select>
@@ -82,16 +86,19 @@
                         <v-col cols="12" sm="6">
                           <v-text-field
                             :type="'password'"
-                            v-model="Password"
+                            v-model="newuser.password"
                             label="Contraseña"
-                            :rules="[required('Contraseña'),minlength('Contraseña', 6)]"
+                            :rules="[
+                              required('Contraseña'),
+                              minlength('Contraseña', 6)
+                            ]"
                             id="Password"
-                            @keydown="errors.clear('Password')"
+                            @keydown="errors.clear('password')"
                           >
                           </v-text-field>
                           <span
                             class="red--text"
-                            v-text="errors.get('Password')"
+                            v-text="errors.get('password')"
                           ></span>
                         </v-col>
                       </v-row>
@@ -104,9 +111,7 @@
                     >
                     <v-btn
                       color="blue darken-1"
-                      text
-                      @click="saveUsers"
-                      :disabled="!valid"
+                      type="submit"
                       >Guardar</v-btn
                     >
                   </v-card-actions>
@@ -124,74 +129,61 @@
     </v-flex>
   </v-layout>
 </template>
-
 <script>
-import axios from "axios";
-axios.defaults.baseURL = "http://localhost";
 
 class Errors {
   constructor() {
     this.errors = {};
   }
-
   get(field) {
     if (this.errors[field]) {
       return this.errors[field][0];
     }
   }
-
   //Guarda los errores en el array
   record(errors) {
     this.errors = errors;
   }
-
   //Limpia validaciones backend
   clear(field) {
     delete this.errors[field];
   }
 }
-
 export default {
   name: "Usuarios", //1-definimos el nombre
-
   data() {
     return {
       //retornamos los datos a utilizar
-
       required(propertyType) {
-        return (v) =>
+        return v =>
           (v && v.length > 0) || `Tienes que ingresar ${propertyType}`;
       },
-
-       minlength(propertyType, minlength) {
-        return (v) =>
+      minlength(propertyType, minlength) {
+        return v =>
           (v && v.length >= minlength) ||
           `${propertyType} no puede ser inferior ${minlength} caracteres`;
       },
-
       valid: false,
       dialog: false,
       Alert: false,
       errors: new Errors(),
       Usuarios: [],
       Roles: [],
-      NombreUsuario: "",
-      EmailUsuario: "",
+      newuser:{},
+      name: "",
+      email: "",
       RolId: "",
       NombreRol: "",
-      Password: "",
-
-      urlUsers: "http://localhost/PanaderiaBG/public/Usuarios",
-      urlRoles: "/PanaderiaBG/public/Roles",
+      password: "",
       headers: [
         {
           text: "Nombre ",
-          value: "NombreUsuario",
-          class: "indigo  white--text",
+          value: "name",
+          class: "indigo  white--text"
         },
-        { text: "Correo", value: "EmailUsuario", class: "indigo  white--text" },
-        { text: "Rol", value: "NombreRol", class: "indigo  white--text" },
-      ],
+        { text: "Correo", value: "email", class: "indigo  white--text" },
+        { text: "Rol", value: "NombreRol", class: "indigo  white--text" }
+      ]
     };
   },
 
@@ -210,41 +202,42 @@ export default {
       });
     },
 
-    getUsers: async function () {
-      const res = await this.$http.get(this.urlUsers);
-      this.Usuarios = res.data;
-      setTimeout(() => {
-        this.Alert = false;
-      }, 5000);
+    getUsers() {
+      this.axios
+        .get("/Usuarios")
+        .then(res => {
+          this.Usuarios = res.data;
+        })
+        .catch(e => {
+          console.log(e.response);
+        });
     },
 
-    getRol: async function () {
-      const res = await this.$http.get(this.urlRoles);
+
+
+    getRol: async function() {
+      const res = await this.$http.get("/Roles");
       this.Roles = res.data;
     },
-    saveUsers: async function () {
-      const obj = new FormData();
-      obj.append("NombreUsuario", this.NombreUsuario);
-      obj.append("EmailUsuario", this.EmailUsuario);
-      obj.append("RolId", this.RolId);
-      obj.append("Password", this.Password);
-      axios
-        .post(this.urlUsers, obj)
-        .then((response) => {
-          //console.log(response.data.result)
-          this.Usuarios.push(response.data.result);
-          this.Alert = true;
-          this.getUsers();
-          this.clear();
-          this.close();
-        })
-        .catch((error) => this.errors.record(error.response.data));
-    },
+    saveUsers(item) {
+      this.axios.post('/Usuarios', item)
+      .then(res=>{
+        this.Usuarios.unshift(res.data)
+        this.close()
+        this.getUsers()
+      })
+      /*.catch(e=>{
+        console.log(e.response)
+      })*/
+
+      .catch(error => this.errors.record(error.response.data));
+    }
+
   },
   created() {
     this.getUsers();
     this.getRol();
-  },
+  }
 };
 </script>
 

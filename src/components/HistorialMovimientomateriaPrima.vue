@@ -59,10 +59,20 @@
                 </v-menu>
               </v-col>
               <v-col cols="3">
-              <v-btn color="blue darken-1" text @click="clearfilter"
-                      >Limpiar</v-btn
-                    >
+              <v-btn color="blue darken-1" :style="{ padding: 0 }" text @click="clearfilter"
+                      >Limpiar
+              </v-btn>
+              <v-btn color="blue darken-1" :style="{ padding: 0 }" text @click="print()"
+                      >PDF
+              </v-btn>
+              <v-btn color="blue darken-1" :style="{ padding: 0 }" text
+                      >
+              <download-excel class="btn btn-default" :data="Inventario" worksheet="My Worksheet" name="filename.xls">
+  EXCEL
+</download-excel>
+</v-btn>
               </v-col>
+              
             </v-row>
             <v-spacer></v-spacer>
 
@@ -195,9 +205,12 @@
 import axios from "axios";
 //importo moment para setear la fecha del date picker en el formato segub necesidada
 import moment from "moment";
-
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import JsonExcel from "vue-json-excel";
+import Vue from 'vue'
 axios.defaults.baseURL = "http://localhost";
-
+Vue.component("downloadExcel", JsonExcel);
 class Errors {
   constructor() {
     this.errors = {};
@@ -337,7 +350,19 @@ export default {
         console.log(e.response)
       })
     },
+    print() {
+		const filename  = 'HistorialMovimiento.pdf';
+    const quality = 1;
+		html2canvas(document.querySelector('.v-data-table__wrapper'),{scale: quality}).then(canvas => {
+			let pdf = new jsPDF({
+  orientation: "landscape",
+  unit: "in"
+});
 
+			pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 0, 0);
+			pdf.save(filename);
+		});
+	},
     //limpia errores front-end
     clear() {
       this.$refs.form.reset();

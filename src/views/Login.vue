@@ -20,25 +20,26 @@
                 <v-card-text>
                   <v-form @submit.prevent="login" v-model="valid">
                     <v-text-field
-                      v-model="usuario.name"
-                      label="Usuario"
-                      :rules="[required('Nombre Usuario')]"
-                      prepend-icon="person"
-                      type="text"
+                        v-model="usuario.name"
+                        label="Usuario"
+                        :rules="[required('Nombre Usuario')]"
+                        prepend-icon="person"
+                        type="text"
                     ></v-text-field>
                     <v-text-field
-                      v-model="usuario.password"
-                      label="Contraseña"
-                      :rules="[required('Contraseña')]"
-                      prepend-icon="enhanced_encryption"
-                      :append-icon="btn ? 'visibility' : 'visibility_off'"
-                      @click:append="() => (btn = !btn)"
-                      :type="btn ? 'password' : 'text'"
+                        v-model="usuario.password"
+                        label="Contraseña"
+                        :rules="[required('Contraseña')]"
+                        prepend-icon="enhanced_encryption"
+                        :append-icon="btn ? 'visibility' : 'visibility_off'"
+                        @click:append="() => (btn = !btn)"
+                        :type="btn ? 'password' : 'text'"
                     ></v-text-field>
                     <v-card-actions>
                       <v-spacer></v-spacer>
                       <v-btn color="primary" type="submit" :disabled="!valid"
-                        >Iniciar</v-btn
+                      >Iniciar
+                      </v-btn
                       >
                     </v-card-actions>
                   </v-form>
@@ -57,7 +58,7 @@
   </v-layout>
 </template>
 <script>
-import { mapActions } from "vuex";
+import {mapActions} from "vuex";
 
 export default {
   name: "Login",
@@ -65,7 +66,7 @@ export default {
     return {
       required(propertyType) {
         return (v) =>
-          (v && v.length > 0) || `Tienes que ingresar ${propertyType}`;
+            (v && v.length > 0) || `Tienes que ingresar ${propertyType}`;
       },
       valid: false,
       btn: String,
@@ -80,15 +81,15 @@ export default {
     ...mapActions(["guardarUsuario"]),
     login() {
       this.axios
-        .post("/login", this.usuario)
-        .then((res) => {
-          const token = res.data.user.access_token;
-          this.guardarUsuario(token);
-        })
-        .catch((e) => {
-          console.log(e.response);
-          this.mensaje = e.response.data.message;
-        });
+          .post("/login", this.usuario)
+          .then((res) => {
+            const token = res.data.user.access_token;
+            this.guardarUsuario(token);
+          })
+          .catch((e) => {
+            console.log(e.response);
+            this.mensaje = e.response.data.message;
+          });
     },
   },
 };

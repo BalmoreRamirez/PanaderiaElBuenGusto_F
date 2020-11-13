@@ -1,4 +1,7 @@
+
+
 <template>
+
   <v-layout>
     <v-flex>
       <v-data-table
@@ -278,6 +281,9 @@
           <v-btn class="mb-2" color="primary" @click="formEdit(item)">
             Editar
           </v-btn>
+          <!-- <download-excel class="btn btn-default" :data="Pedido" worksheet="My Worksheet" name="filename.xls">
+  Download Data
+</download-excel> -->
         </template>
       </v-data-table>
     </v-flex>
@@ -286,8 +292,12 @@
 
 <script>
 import axios from "axios";
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import JsonExcel from "vue-json-excel";
+import Vue from 'vue'
 axios.defaults.baseURL = "http://localhost";
-
+Vue.component("downloadExcel", JsonExcel);
 class Errors {
   constructor() {
     this.errors = {};
@@ -448,6 +458,19 @@ export default {
     clear() {
       this.$refs.form.reset();
     },
+    print() {
+		const filename  = 'MovimientoMaterial.pdf';
+    const quality = 1;
+		html2canvas(document.querySelector('.v-data-table__wrapper'),{scale: quality}).then(canvas => {
+			let pdf = new jsPDF({
+  orientation: "landscape",
+  unit: "in"
+});
+
+			pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 0, 0);
+			pdf.save(filename);
+		});
+	},
 
     close() {
       this.dialog = false;

@@ -93,6 +93,7 @@
             <v-list-item-title>Proveedores</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        
 
         <!--inventario--->
         <v-list-item v-if="estaActivo" :to="{ name: 'inventario' }">
@@ -104,7 +105,19 @@
             <v-list-item-title>{{ inventario }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <!--Empleados--->
+
+        <v-list-item v-if="estaActivo" :to="{ name: 'empleados' }">
+          <v-list-item-icon>
+            <v-icon>group</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>Empleados</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
           <!------------>
+
         <v-list-item v-if="estaActivo" :to="{ name: 'usuarios' }">
           <v-list-item-icon>
             <v-icon>group</v-icon>

@@ -259,11 +259,11 @@
                             label="Cantidad*"
                             :rules="[required('Cantidad Total')]"
                             id="CantidadTotal"
-                            @keydown="errors.clear('CantidadTotal')"
+                            @keydown="errors.clear('msg')"
                           ></v-text-field>
                           <span
                             class="red--text"
-                            v-text="errors.get('CantidadTotal')"
+                            v-text="errors.get('msg')"
                           ></span>
                         </v-col>
                         <v-col cols="12" sm="6">

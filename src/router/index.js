@@ -14,6 +14,7 @@ import Usuarios from "@/components/Usuarios";
 import Proveedores from "@/components/Proveedores/Proveedores";
 import HistorialMovimientomateriaPrima from "@/components/HistorialMovimientomateriaPrima";
 import Inventario from "@/components/Inventario";
+import Empleados from "@/components/Empleados";
 import Login from '@/views/Login';
 import Inicio from "@/views/Inicio";
 
@@ -81,6 +82,12 @@ const router = new Router({
             path: '/inventario',
             name: 'inventario',
             component: Inventario,
+            meta: {requireAuth: true}
+        },
+        {
+            path: '/empleados',
+            name: 'empleados',
+            component: Empleados,
             meta: {requireAuth: true}
         },
         {

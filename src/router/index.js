@@ -2,10 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Router from 'vue-router'
 import Home from '../views/Home.vue'
-
 import store from '../store'
-
-
 import MateriaPrima from '../components/MateriaPrima.vue'
 import ConfigProduct from "@/components/ConfigProduct";
 import EntradaMatPrima from "@/components/EntradaMatPrima";
@@ -17,6 +14,8 @@ import Inventario from "@/components/Inventario";
 import Empleados from "@/components/Empleados";
 import Login from '@/views/Login';
 import Inicio from "@/views/Inicio";
+import Pedido from "@/components/Pedidos/Pedido";
+import Sucursal from "@/components/Sucursarles/Sucursal";
 
 Vue.use(VueRouter, Router)
 
@@ -88,6 +87,18 @@ const router = new Router({
             path: '/empleados',
             name: 'empleados',
             component: Empleados,
+            meta: {requireAuth: true}
+        },
+        {
+            path: '/pedido',
+            name: 'pedido',
+            component: Pedido,
+            meta: {requireAuth: true}
+        },
+        {
+            path: '/sucursal',
+            name: 'sucursal',
+            component: Sucursal,
             meta: {requireAuth: true}
         },
         {

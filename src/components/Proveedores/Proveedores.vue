@@ -393,9 +393,15 @@
           </div>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
-          <v-btn class="mb-2" color="primary" @click="FormEliminar(item)">
-            Eliminar
-          </v-btn>
+
+          <v-icon class="mr-2" color="primary" @click="FormEliminar(item)">
+            delete
+          </v-icon>
+          <v-icon class="mr-2" color="primary" @click="ProveedorEdit()">
+           edit
+          </v-icon>
+
+
         </template>
       </v-data-table>
     </v-flex>
@@ -426,7 +432,6 @@ class Errors {
     delete this.errors[field];
   }
 }
-
 export default {
   name: "Proveedores", //1-definimos el nombre
   data() {
@@ -551,7 +556,9 @@ export default {
     closeEliminar() {
       this.dialog2 = false;
     },
-
+    ProveedorEdit(){
+      alert('Edit')
+    },
     FormEliminar(item) {
       this.IdProveedor = item.IdProveedor;
       this.dialog2 = true;

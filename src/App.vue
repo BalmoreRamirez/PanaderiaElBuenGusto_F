@@ -117,16 +117,37 @@
           </v-list-item-content>
         </v-list-item>
           <!------------>
-
         <v-list-item v-if="estaActivo" :to="{ name: 'usuarios' }">
           <v-list-item-icon>
-            <v-icon>group</v-icon>
+            <v-icon>account_circle</v-icon>
           </v-list-item-icon>
-
           <v-list-item-content>
             <v-list-item-title>Usuarios</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <!--------------->
+        <v-list-item v-if="estaActivo" :to="{ name: 'pedido' }">
+          <v-list-item-icon>
+            <v-icon>list_alt</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>Pedido</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <!--------------->
+        <v-list-item v-if="estaActivo" :to="{ name: 'sucursal' }">
+          <v-list-item-icon>
+            <v-icon>room</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>sucursales</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+
+        <!---end-->
       </v-list>
     </v-navigation-drawer>
 

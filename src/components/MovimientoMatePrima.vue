@@ -1,7 +1,4 @@
-
-
 <template>
-
   <v-layout>
     <v-flex>
       <v-data-table

@@ -393,15 +393,12 @@
           </div>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
-
-          <v-icon class="mr-2" color="primary" @click="FormEliminar(item)">
+          <v-icon class="mr-2" color="primary" large @click="FormEliminar(item)">
             delete
           </v-icon>
-          <v-icon class="mr-2" color="primary" @click="ProveedorEdit()">
+          <v-icon class="mr-2" color="primary" large @click="ProveedorEdit()">
            edit
           </v-icon>
-
-
         </template>
       </v-data-table>
     </v-flex>

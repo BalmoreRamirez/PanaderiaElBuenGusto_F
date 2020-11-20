@@ -383,18 +383,49 @@
                 </v-form>
               </v-card>
             </v-dialog>
+
+                 <!--======Confirmacion eliminar=======-->
+
+            <v-dialog v-model="dialog3" persistent max-width="330">
+              <v-card>
+                <v-card-title class="headline">
+                  ¿Estas seguro de anular el registro?
+                </v-card-title>
+
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="green darken-1" text @click="saveAnular">
+                    Si
+                  </v-btn>
+                  <v-btn color="green darken-1" text @click="closeAnular">
+                    No
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+
+            
           </v-toolbar>
 
           <div>
             <v-alert :value="Alert" type="success" border="top" dense>
               Registro guardado exitosamente.
             </v-alert>
+             <v-alert :value="Alert2" type="success" border="top" dense>
+              Registro actualizado exitosamente.
+            </v-alert>
+            <v-alert :value="Alert3" type="success" border="top" dense>
+              Registro anulado exitosamente.
+            </v-alert>
           </div>
         </template>
           <template v-slot:[`item.actions`]="{ item }">
-          <v-btn class="mb-2" color="primary" @click="formEdit(item)">
-            Editar
-          </v-btn>
+          <v-icon class="mb-2" color="primary" @click="formEdit(item)">
+            edit
+          </v-icon>
+          <v-icon class="mr-2" color="primary" large @click="FormAnular(item)">
+            delete
+          </v-icon>
            </template>
         
         <!-- <template v-slot:[`item.actions`]="{ item }">
@@ -444,6 +475,8 @@ export default {
   data() {
     return {
       Alert: false,
+      Alert2: false,
+      Alert3: false,
       errors: new Errors(),
       menu: false,
       menu2: false,
@@ -486,16 +519,19 @@ export default {
       PrecioUnitario: "",
       BodegaID: "",
       NombreBodega: "",
+      Anulado: "",
       currentDate: moment(new Date()).format("DD/MM/YYYY"),
       url5: "http://localhost/PanaderiaBG/public/ShowMateriaPrima",
       url4: "http://localhost/PanaderiaBG/public/Bodegas",
       url3: "http://localhost/PanaderiaBG/public/Proveedores",
       url2: "http://localhost/PanaderiaBG/public/UnidadMateria",
       url: "http://localhost/PanaderiaBG/public/MateriaPrimaProveedor",
+      url6: "http://localhost/PanaderiaBG/public/AnularEntrada",
       
       search: "",
       dialog: false,
       dialog2: false,
+      dialog3: false,
       headers: [
         {
           text: "Materia Prima",
@@ -623,6 +659,8 @@ export default {
       console.log(result);
       setTimeout(() => {
         this.Alert = false;
+        this.Alert2 = false;
+        this.Alert3 = false;
       }, 5000);
     },
     //limpia errores front-end
@@ -637,6 +675,9 @@ export default {
         this.editedIndex = -1;
         this.clear();
       });
+    },
+    closeAnular() {
+      this.dialog3 = false;
     },
     closeEdit() {
       this.dialog2 = false;
@@ -655,6 +696,24 @@ export default {
         this.clear();
       });
     },
+
+     FormAnular(item) {
+      this.IDMatPrimaProveedor = item.IDMatPrimaProveedor;
+      this.dialog3 = true;
+    },
+
+    saveAnular: async function () {
+      axios
+          .post(this.url6 + "/" + this.IDMatPrimaProveedor)
+          .then(() => {
+            this.Alert3 = true;
+
+            this.getEntradaMatPrima();
+            this.closeAnular();
+          })
+          .catch((error) => this.errors.record(error.response.data));
+    },
+
     formEdit: function (item) {
 
       //this.ProductoId = item.ProductoId;
@@ -695,7 +754,7 @@ export default {
           this.ProveedorId = "";
           this.BodegaID = "";
           this.MateriaPrimaID = "";
-          this.Alert = true;
+          this.Alert2 = true;
           this.getEntradaMatPrima();
 
           this.clear();

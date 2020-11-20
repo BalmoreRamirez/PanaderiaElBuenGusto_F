@@ -30,6 +30,22 @@
                     <v-container>
                       <v-row>
                         <v-col cols="12" sm="6">
+                          <v-text-field
+                            type="number"
+                            v-model="NumeroPedido"
+                            label="Numero de Pedido"
+                            :rules="[number('numeros'),
+                            maxlength('numero de pedido',6)]"
+                            required
+                            id="NumeroPedido"
+                            @keydown="errors.clear('NumeroPedido')"
+                          ></v-text-field>
+                          <span
+                            class="red--text"
+                            v-text="errors.get('NumeroPedido')"
+                          ></span>
+                        </v-col>
+                        <v-col cols="12" sm="6">
                           <v-select
                             :items="MateriaPrima"
                             item-text="NombreMP"
@@ -67,6 +83,7 @@
                             v-text="errors.get('msg')"
                           ></span>
                         </v-col>
+
                         <v-col cols="12" sm="6">
                           <v-text-field
                             v-model="DescripcionPedido"
@@ -154,6 +171,22 @@
                   <v-card-text>
                     <v-container>
                       <v-row>
+                         <v-col cols="12" sm="6">
+                          <v-text-field
+                            type="number"
+                            v-model="NumeroPedido"
+                            label="Numero de Pedido"
+                            :rules="[number('numeros')]"
+                            required
+                            disabled
+                            id="NumeroPedido"
+                            @keydown="errors.clear('NumeroPedido')"
+                          ></v-text-field>
+                          <span
+                            class="red--text"
+                            v-text="errors.get('NumeroPedido')"
+                          ></span>
+                        </v-col>
                         <v-col cols="12" sm="6">
                           <v-select
                             :items="MateriaPrima"
@@ -192,6 +225,8 @@
                             v-text="errors.get('CantidadPedido')"
                           ></span>
                         </v-col>
+
+                        
                         <v-col cols="12" sm="6">
                           <v-text-field
                             v-model="DescripcionPedido"
@@ -275,9 +310,9 @@
           </div>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
-          <v-btn class="mb-2" color="primary" @click="formEdit(item)">
-            Editar
-          </v-btn>
+          <v-icon class="mb-2" color="primary" @click="formEdit(item)">
+            edit
+          </v-icon>
           <!-- <download-excel class="btn btn-default" :data="Pedido" worksheet="My Worksheet" name="filename.xls">
   Download Data
 </download-excel> -->
@@ -365,6 +400,8 @@ export default {
       BodegaID: "",
       NombreSucursal: "",
       SucursalID: "",
+      NumeroPedido: "",
+      NombreEncargado: "",
       url4: "/PanaderiaBG/public/Sucursal",
       url3: "/PanaderiaBG/public/ShowMateriaPrima",
       url2: "/PanaderiaBG/public/Bodegas",
@@ -374,6 +411,11 @@ export default {
       dialog2: false,
 
       headers: [
+        {
+          text: "Numero de Pedido",
+          value: "NumeroPedido",
+          class: "indigo  white--text",
+        },
         {
           text: "Materia Prima",
           value: "NombreMP",
@@ -395,6 +437,11 @@ export default {
         {
           text: "Sucursal",
           value: "NombreSucursal",
+          class: "indigo white--text",
+        },
+        {
+          text: "Encargado",
+          value: "NombreEncargado",
           class: "indigo white--text",
         },
 
@@ -486,6 +533,7 @@ export default {
       obj.append("RegistroMPID", this.RegistroMPID);
       obj.append("BodegaID", this.BodegaID);
       obj.append("SucursalID", this.SucursalID);
+      obj.append("NumeroPedido", this.NumeroPedido);
       axios
         .post(this.url, obj)
 
@@ -498,6 +546,7 @@ export default {
           this.RegistroMPID = "";
           this.BodegaID = "";
           this.SucursalID = "";
+           this.NumeroPedido = "";
           this.Alert = true;
           this.getPedido();
           this.clear();
@@ -521,7 +570,7 @@ export default {
       this.RegistroMPID = item.IdRegistroMP;
       this.BodegaID = item.IdBodega;
       this.SucursalID = item.IdSucursal;
-
+      this.NumeroPedido = item.NumeroPedido;
       this.dialog2 = true;
     },
 
@@ -535,6 +584,7 @@ export default {
       obj.append("RegistroMPID", this.RegistroMPID);
       obj.append("BodegaID", this.BodegaID);
       obj.append("SucursalID", this.SucursalID);
+      obj.append("NumeroPedido", this.NumeroPedido);
       axios
         .post(this.url + "/" + this.IdPedido, obj)
 
@@ -546,6 +596,7 @@ export default {
           this.DescripcionPedido = "";
           this.RegistroMPID = "";
           this.BodegaID = "";
+          this.NumeroPedido = "";
           this.Alert2 = true;
           this.getPedido();
           this.clear();

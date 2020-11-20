@@ -275,8 +275,8 @@
                               item-text="NombreCargo"
                               item-value="IdCargo"
                               v-model="CargoID"
-                              label="Selecione el titulo"
-                              :rules="[(v) => !!v || 'titulo es requerido']"
+                              label="Selecione el cargo"
+                              :rules="[(v) => !!v || 'cargo es requerido']"
                               id="CargoID"
                               @click="errors.clear('CargoID')"
                               required
@@ -568,8 +568,8 @@
                               item-text="NombreCargo"
                               item-value="IdCargo"
                               v-model="CargoID"
-                              label="Selecione el titulo"
-                              :rules="[(v) => !!v || 'titulo es requerido']"
+                              label="Selecione el cargo"
+                              :rules="[(v) => !!v || 'cargo es requerido']"
                               id="CargoID"
                               @click="errors.clear('CargoID')"
                               required

@@ -14,7 +14,7 @@ import Inventario from "@/components/Inventario";
 import Empleados from "@/components/Empleados";
 import Login from '@/views/Login';
 import Inicio from "@/views/Inicio";
-import Pedido from "@/components/Pedidos/Pedido";
+
 import Sucursal from "@/components/Sucursarles/Sucursal";
 
 Vue.use(VueRouter, Router)
@@ -89,12 +89,7 @@ const router = new Router({
             component: Empleados,
             meta: {requireAuth: true}
         },
-        {
-            path: '/pedido',
-            name: 'pedido',
-            component: Pedido,
-            meta: {requireAuth: true}
-        },
+      
         {
             path: '/sucursal',
             name: 'sucursal',

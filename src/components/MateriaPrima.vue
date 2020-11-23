@@ -33,10 +33,7 @@
                   hide-details
                 ></v-text-field>
               </v-col>
-      
-            
 
-             
               <v-col cols="3">
                 <!-- Filtro por Proveedor -->
                 <v-select
@@ -98,7 +95,7 @@
                             :rules="[
                               required('nombre'),
                               letter('letras'),
-                              minlength('Nombre', 4)
+                              minlength('Nombre', 4),
                             ]"
                             id="NombreMP"
                             @keydown="errors.clear('NombreMP')"
@@ -135,7 +132,7 @@
                             counter="30"
                             :rules="[
                               required('Observacion'),
-                              maxlength('Observacion', 30)
+                              maxlength('Observacion', 30),
                             ]"
                             id="Observacion"
                             @keydown="errors.clear('Observacion')"
@@ -172,7 +169,7 @@
                             label="Selecione la unidad"
                             id="IdUnidadMedida"
                             @click="errors.clear('IdUnidadMedida')"
-                            :rules="[v => !!v || 'unidad es requerido']"
+                            :rules="[(v) => !!v || 'unidad es requerido']"
                             required
                           >
                           </v-select>
@@ -190,7 +187,7 @@
                             label="Selecione Proveedor"
                             id="IdProveedor"
                             @click="errors.clear('IdProveedor')"
-                            :rules="[v => !!v || 'proveedor es requerido']"
+                            :rules="[(v) => !!v || 'proveedor es requerido']"
                             required
                           >
                           </v-select>
@@ -218,12 +215,46 @@
                 </v-form>
               </v-card>
             </v-dialog>
+
+            <!--======Confirmacion eliminar=======-->
+
+            <v-dialog v-model="dialog2" persistent max-width="350">
+              <v-card>
+                <v-card-title class="headline">
+                  ¿Estas seguro de eliminar el registro?
+                </v-card-title>
+
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="green darken-1" text @click="saveEliminar">
+                    Si
+                  </v-btn>
+                  <v-btn color="green darken-1" text @click="closeEliminar">
+                    No
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           </v-toolbar>
           <div>
             <v-alert :value="Alert" type="success" border="top" dense>
               Registro guardado exitosamente.
             </v-alert>
+            <v-alert :value="Alert2" type="success" border="top" dense>
+              Registro Eliminado exitosamente.
+            </v-alert>
           </div>
+        </template>
+
+        <template v-slot:[`item.actions`]="{ item }">
+          <v-icon
+            class="mr-2"
+            color="primary"
+            large
+            @click="FormEliminar(item)"
+          >
+            delete
+          </v-icon>
         </template>
       </v-data-table>
     </v-flex>
@@ -260,29 +291,30 @@ export default {
     return {
       valid: false,
       required(propertyType) {
-        return v =>
+        return (v) =>
           (v && v.length > 0) || `Tienes que ingresar ${propertyType}`;
       },
       letter(propertyType) {
-        return v =>
+        return (v) =>
           /^[ñA-Za-z _]*[ñA-Za-z][ñA-Za-z _]+$/.test(v) ||
           `Solo acepta ${propertyType}`;
       },
       number(propertyType) {
-        return v => /^\d+$/.test(v) || `Solo acepta ${propertyType}`;
+        return (v) => /^\d+$/.test(v) || `Solo acepta ${propertyType}`;
       },
       maxlength(propertyType, maxlength) {
-        return v =>
+        return (v) =>
           (v && v.length <= maxlength) ||
           `${propertyType} no puede superar los ${maxlength} caracteres`;
       },
       minlength(propertyType, minlength) {
-        return v =>
+        return (v) =>
           (v && v.length >= minlength) ||
           `${propertyType} no puede ser inferior ${minlength} caracteres`;
       },
-
+      dialog2: false,
       Alert: false,
+      Alert2: false,
       errors: new Errors(),
 
       MateriaPrima: [],
@@ -305,85 +337,97 @@ export default {
       ObservacionValue: "",
       UnidadMedidaIDValue: null,
       ProveedorIDValue: null,
+    
+      urlAnular:"/PanaderiaBG/public/MateriaPrimaAnular",
+
       url3: "/PanaderiaBG/public/Proveedores",
       url2: "/PanaderiaBG/public/UnidadMateria",
       url: "http://localhost/PanaderiaBG/public/MateriaPrima",
       search: "",
       dialog: false,
+      
       headers: [
         {
           text: "Codigo",
           align: "start",
           value: "CodigoMP",
           class: "indigo white--text",
-          filter: this.CodigoFilter
+          filter: this.CodigoFilter,
         },
 
         {
           text: "Nombre",
           value: "NombreMP",
           class: "indigo  white--text",
-          filter: this.MateriaPrimaFilter
+          filter: this.MateriaPrimaFilter,
         },
 
         {
           text: "Clase",
           value: "Clase",
           class: "indigo white--text",
-          filter: this.ClaseFilter
+          filter: this.ClaseFilter,
         },
 
         {
           text: "Obervacion",
           value: "Observacion",
           class: "indigo white--text",
-          filter: this.ObservacionFilter
+          filter: this.ObservacionFilter,
         },
         {
           text: "Descripcion",
           value: "Descripcion",
-          class: "indigo white--text"
+          class: "indigo white--text",
         },
         {
           text: "Unidad de Medida",
           value: "NombreUnidad",
           class: "indigo white--text",
-          filter: this.UnidadFilter
+          filter: this.UnidadFilter,
         },
         {
           text: "Proveedor",
           value: "NombreProveedor",
           class: "indigo white--text",
-          filter: this.ProveedorFilter
-        }
-      ]
+          filter: this.ProveedorFilter,
+        },
+        {
+          text: "Acción",
+          value: "actions",
+          class: "indigo  white--text",
+          sortable: false,
+        },
+      ],
     };
   },
   methods: {
     getProveedores() {
       this.axios
-        .get('/Proveedores')
-        .then(res => {
+        .get("/Proveedores")
+        .then((res) => {
           this.Proveedor = res.data;
         })
-        .catch(e => {
+        .catch((e) => {
           console.log(e.response);
         });
     },
     getUnidad() {
-      this.axios.get('/UnidadMateria')
-      .then(res=>{
-        this.UnidadMedida=res.data
-      })
-      .catch(e=>{
-        console.log(e.response)
-      })
+      this.axios
+        .get("/UnidadMateria")
+        .then((res) => {
+          this.UnidadMedida = res.data;
+        })
+        .catch((e) => {
+          console.log(e.response);
+        });
     },
-    getMateriaPrima: async function() {
+    getMateriaPrima: async function () {
       const res = await this.$http.get(this.url);
       this.MateriaPrima = res.data;
       setTimeout(() => {
         this.Alert = false;
+        this.Alert2 = false;
       }, 5000);
     },
     //limpia errores front-end
@@ -392,13 +436,23 @@ export default {
     },
     close() {
       this.dialog = false;
+      
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
         this.clear();
       });
     },
-    saveMateriaPrima: async function() {
+
+    closeEliminar() {
+      this.dialog2 = false;
+    },
+
+    FormEliminar(item) {
+      this.IdRegistroMP = item.IdRegistroMP;
+      this.dialog2 = true;
+    },
+    saveMateriaPrima: async function () {
       const obj = new FormData();
       obj.append("CodigoMP", this.CodigoMP);
       obj.append("NombreMP", this.NombreMP);
@@ -409,7 +463,7 @@ export default {
       obj.append("ProveedorID", this.ProveedorID);
       axios
         .post(this.url, obj)
-        .then(response => {
+        .then((response) => {
           this.MateriaPrima.push(response.data.result);
           this.Alert = true;
           this.CodigoMP = "";
@@ -424,8 +478,20 @@ export default {
           this.clear();
           this.close();
         })
-        .catch(error => this.errors.record(error.response.data));
+        .catch((error) => this.errors.record(error.response.data));
     },
+
+    saveEliminar: async function () {
+      axios
+        .post(this.urlAnular + "/" + this.IdRegistroMP)
+        .then(() => {
+          this.Alert2 = true;
+          this.getMateriaPrima();
+          this.closeEliminar();
+        })
+        .catch((error) => this.errors.record(error.response.data));
+    },
+
     CodigoFilter(value) {
       if (!this.CodigoMPValue) {
         return true;
@@ -470,12 +536,13 @@ export default {
       this.ClaseValue = "";
       this.ObservacionValue = "";
       this.UnidadMedidaIDValue = "";
-    }
+    },
   },
   created() {
     this.getMateriaPrima();
     this.getUnidad();
     this.getProveedores();
-  }
+  },
 };
 </script>
+

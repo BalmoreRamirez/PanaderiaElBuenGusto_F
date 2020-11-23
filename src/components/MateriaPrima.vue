@@ -338,7 +338,7 @@ export default {
       UnidadMedidaIDValue: null,
       ProveedorIDValue: null,
     
-      urlAnular:"/PanaderiaBG/public/MateriaPrimaAnular",
+      urlAnular:"http://localhost/PanaderiaBG/public/MateriaPrimaAnular",
 
       url3: "/PanaderiaBG/public/Proveedores",
       url2: "/PanaderiaBG/public/UnidadMateria",

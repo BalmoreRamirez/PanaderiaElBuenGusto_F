@@ -328,7 +328,7 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import JsonExcel from "vue-json-excel";
 import Vue from 'vue'
-axios.defaults.baseURL = "http://localhost";
+axios.defaults.baseURL = "https://panaderiabg.ga";
 Vue.component("downloadExcel", JsonExcel);
 class Errors {
   constructor() {
@@ -405,7 +405,7 @@ export default {
       url4: "/PanaderiaBG/public/Sucursal",
       url3: "/PanaderiaBG/public/ShowMateriaPrima",
       url2: "/PanaderiaBG/public/Bodegas",
-      url: "http://localhost/PanaderiaBG/public/Pedido",
+      url: "https://panaderiabg.ga",
       search: "",
       dialog: false,
       dialog2: false,

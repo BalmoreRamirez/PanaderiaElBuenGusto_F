@@ -620,7 +620,7 @@
 <script>
 import axios from "axios";
 import moment from "moment";
-axios.defaults.baseURL = "http://localhost";
+axios.defaults.baseURL = "https://panaderiabg.ga";
 class Errors {
   constructor() {
     this.errors = {};
@@ -708,9 +708,9 @@ export default {
       TituloID: "",
       Titulo: "",
 
-      urlEmpleados: "http://localhost/PanaderiaBG/public/Empleados",
-      urlCargo: "http://localhost/PanaderiaBG/public/Cargo",
-      urlTitulo: "http://localhost/PanaderiaBG/public/Titulo",
+      urlEmpleados: "https://panaderiabg.ga",
+      urlCargo: "https://panaderiabg.ga",
+      urlTitulo: "https://panaderiabg.ga",
 
       /** ========================== */
       headers: [

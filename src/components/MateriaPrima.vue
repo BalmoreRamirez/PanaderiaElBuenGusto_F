@@ -262,7 +262,7 @@
 </template>
 <script>
 import axios from "axios";
-axios.defaults.baseURL = "http://localhost";
+axios.defaults.baseURL = "https://panaderiabg.ga";
 
 class Errors {
   constructor() {
@@ -338,11 +338,11 @@ export default {
       UnidadMedidaIDValue: null,
       ProveedorIDValue: null,
     
-      urlAnular:"http://localhost/PanaderiaBG/public/MateriaPrimaAnular",
+      urlAnular:"https://panaderiabg.ga",
 
       url3: "/PanaderiaBG/public/Proveedores",
       url2: "/PanaderiaBG/public/UnidadMateria",
-      url: "http://localhost/PanaderiaBG/public/MateriaPrima",
+      url: "https://panaderiabg.ga",
       search: "",
       dialog: false,
       

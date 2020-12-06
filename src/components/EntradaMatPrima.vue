@@ -446,7 +446,7 @@ import axios from "axios";
 //importo moment para setear la fecha del date picker en el formato segub necesidada
 import moment from "moment";
 
-axios.defaults.baseURL = "http://localhost";
+axios.defaults.baseURL = "https://panaderiabg.ga";
 
 class Errors {
   constructor() {
@@ -521,12 +521,12 @@ export default {
       NombreBodega: "",
       Anulado: "",
       currentDate: moment(new Date()).format("DD/MM/YYYY"),
-      url5: "http://localhost/PanaderiaBG/public/ShowMateriaPrima",
-      url4: "http://localhost/PanaderiaBG/public/Bodegas",
-      url3: "http://localhost/PanaderiaBG/public/Proveedores",
-      url2: "http://localhost/PanaderiaBG/public/UnidadMateria",
-      url: "http://localhost/PanaderiaBG/public/MateriaPrimaProveedor",
-      url6: "http://localhost/PanaderiaBG/public/AnularEntrada",
+      url5: "https://panaderiabg.ga",
+      url4: "https://panaderiabg.ga",
+      url3: "https://panaderiabg.ga",
+      url2: "https://panaderiabg.ga",
+      url: "https://panaderiabg.ga",
+      url6: "https://panaderiabg.ga",
       
       search: "",
       dialog: false,

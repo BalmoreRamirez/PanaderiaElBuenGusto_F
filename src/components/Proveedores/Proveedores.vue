@@ -492,11 +492,11 @@ export default {
       NombreValue: "",
       TipoValue: null,
 
-      urlGuardarProv: "http://localhost/PanaderiaBG/public/Proveedores",
+      urlGuardarProv: "https://panaderiabg.ga",
       urlListaProveedores:
-          "http://localhost/PanaderiaBG/public/ListaProveedores",
+          "https://panaderiabg.ga",
       urlListaTipoProveedores:
-          "http://localhost/PanaderiaBG/public/TipoProveedor",
+          "https://panaderiabg.ga",
       /** ========================== */
       headers: [
         {

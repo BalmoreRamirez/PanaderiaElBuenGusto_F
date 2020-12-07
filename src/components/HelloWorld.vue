@@ -23,9 +23,6 @@ import  image from "../assets/Home.png"
   }
 </script>
 <style scoped>
-.img{
 
-
-}
 </style>
 

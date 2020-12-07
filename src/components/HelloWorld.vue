@@ -3,7 +3,7 @@
     <v-row
     align="center"
     justify="center">
-   <img src="../assets/Home.jpeg">
+   <img src="../assets/Home2.jpeg">
     </v-row>
   </v-container>
 </template>

@@ -340,8 +340,8 @@ export default {
     
       urlAnular:"https://panaderiabg.ga",
 
-      url3: "/PanaderiaBG/public/Proveedores",
-      url2: "/PanaderiaBG/public/UnidadMateria",
+      url3: "https://panaderiabg.ga/Proveedores",
+      url2: "https://panaderiabg.ga/UnidadMateria",
       url: "https://panaderiabg.ga",
       search: "",
       dialog: false,

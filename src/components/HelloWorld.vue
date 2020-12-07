@@ -22,10 +22,6 @@ import  image from "../assets/Home.png"
   }
 </script>
 <style scoped>
-.img{
 
-  width: 400px;
-  height: 400px
-}
 </style>
 

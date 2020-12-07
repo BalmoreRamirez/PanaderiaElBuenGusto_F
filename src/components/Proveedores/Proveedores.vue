@@ -553,9 +553,7 @@ export default {
     closeEliminar() {
       this.dialog2 = false;
     },
-    ProveedorEdit(){
-      alert('Edit')
-    },
+   
     FormEliminar(item) {
       this.IdProveedor = item.IdProveedor;
       this.dialog2 = true;

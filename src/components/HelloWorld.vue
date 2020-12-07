@@ -1,7 +1,8 @@
 <template>
   <v-container>
     <v-row
-    align="center">
+    align="center"
+    justify="center">
    <img src="../assets/Home.jpeg">
     </v-row>
   </v-container>

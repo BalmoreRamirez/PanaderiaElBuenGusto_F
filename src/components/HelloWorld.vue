@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row>
-   
+   <img src="../assets/Home.jpeg">
     </v-row>
   </v-container>
 </template>

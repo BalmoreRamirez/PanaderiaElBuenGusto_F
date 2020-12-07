@@ -404,7 +404,7 @@ export default {
       this.dialog2 = true;
     },
     async getSucursales() {
-      const res = await this.$http.get(this.urlSucursales);
+      const res = await this.$http.get('/Sucursales');
       this.Sucursales = res.data;
       setTimeout(() => {
         this.Alert = false;
@@ -413,7 +413,7 @@ export default {
     },
 
     async getTipoEncargado() {
-      const res = await this.$http.get(this.urlEncargado);
+      const res = await this.$http.get('/Encargados');
       this.TipoEncargado = res.data;
     },
 
@@ -431,7 +431,7 @@ export default {
       obj.append("EncargadoID", this.EncargadoID);
 
       axios
-        .post(this.urlSucursales, obj)
+        .post('/Sucursales', obj)
         .then((response) => {
           //console.log(response.data.result)
           this.Sucursales.push(response.data.result);
@@ -457,7 +457,7 @@ export default {
       obj.append("EncargadoID", this.EncargadoID);
     
       axios
-        .post(this.urlSucursales + "/" + this.IdSucursal, obj)
+        .post('/Sucursales' + "/" + this.IdSucursal, obj)
         .then((response) => {
           //console.log(response.data.result)
           this.Sucursales.push(response.data.result);

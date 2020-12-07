@@ -407,7 +407,7 @@
 
 <script>
 import axios from "axios";
-axios.defaults.baseURL = "http://localhost";
+axios.defaults.baseURL = "https://panaderiabg.ga";
 class Errors {
   constructor() {
     this.errors = {};
@@ -561,7 +561,7 @@ export default {
       this.dialog2 = true;
     },
     async getProveedores() {
-      const res = await this.$http.get(this.urlListaProveedores);
+      const res = await this.$http.get('/ListaProveedores');
       this.Proveedores = res.data;
       setTimeout(() => {
         this.Alert = false;
@@ -570,7 +570,7 @@ export default {
     },
 
     async getTipoProveedor() {
-      const res = await this.$http.get(this.urlListaTipoProveedores);
+      const res = await this.$http.get('/TipoProveedor');
       this.TipoProveedor = res.data;
     },
     saveProveedoresPersona: async function () {
@@ -586,7 +586,7 @@ export default {
       obj.append("NIDFiscal", this.NIDFiscal);
       obj.append("TituloProveedor", this.TituloProveedor);
       axios
-          .post(this.urlGuardarProv, obj)
+          .post('/Proveedores', obj)
           .then((response) => {
             //console.log(response.data.result)
             this.Proveedores.push(response.data.result);
@@ -611,7 +611,7 @@ export default {
 
     saveEliminar: async function () {
       axios
-          .post(this.urlGuardarProv + "/" + this.IdProveedor)
+          .post('/Proveedores' + "/" + this.IdProveedor)
           .then(() => {
             this.Alert2 = true;
 
@@ -661,7 +661,7 @@ export default {
       obj.append("NIDFiscal", this.NIDFiscal);
       obj.append("TituloProveedor", this.TituloProveedor);
       axios
-          .post(this.urlGuardarProv, obj)
+          .post('/Proveedores', obj)
           .then((response) => {
             //console.log(response.data.result)
             this.Proveedores.push(response.data.result);

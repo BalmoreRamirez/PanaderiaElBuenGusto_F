@@ -635,7 +635,7 @@ export default {
     },
 
     getEntradaMatPrima: async function () {
-      const res = await this.$http.get(this.url);
+      const res = await this.$http.get('/MateriaPrimaProveedor');
       this.EntradaMatPrima = res.data;
       let result = this.EntradaMatPrima.map(function(o) {
         let currentDate = new Date();
@@ -704,7 +704,7 @@ export default {
 
     saveAnular: async function () {
       axios
-          .post(this.url6 + "/" + this.IDMatPrimaProveedor)
+          .post('/AnularEntrada' + "/" + this.IDMatPrimaProveedor)
           .then(() => {
             this.Alert3 = true;
 
@@ -741,7 +741,7 @@ export default {
       obj.append("BodegaID", this.BodegaID);
       obj.append("MateriaPrimaID", this.MateriaPrimaID);
       axios
-        .post(this.url + "/" + this.MateriaPrimaID, obj)
+        .post('/MateriaPrimaProveedor' + "/" + this.MateriaPrimaID, obj)
         .then((response) => {
           //console.log(response.data.result)
           this.EntradaMatPrima.push(response.data.result);
@@ -775,7 +775,7 @@ export default {
       obj.append("BodegaID", this.BodegaID);
       obj.append("MateriaPrimaID", this.MateriaPrimaID);
       axios
-        .post(this.url, obj)
+        .post('/MateriaPrimaProveedor', obj)
         .then((response) => {
           //console.log(response.data.result)
           this.EntradaMatPrima.push(response.data.result);

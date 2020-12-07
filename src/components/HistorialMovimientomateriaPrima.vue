@@ -384,7 +384,7 @@ export default {
       obj.append("MateriaPrimaID", this.RegistroMPID);
       obj.append("SucursalID", this.SucursalID);
       axios
-        .post(this.url, obj)
+        .post('/MovimientoMP', obj)
 
         .then((response) => {
           this.Inventario.push(response.data.result);

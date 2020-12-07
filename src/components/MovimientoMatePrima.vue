@@ -535,7 +535,7 @@ export default {
       obj.append("SucursalID", this.SucursalID);
       obj.append("NumeroPedido", this.NumeroPedido);
       axios
-        .post(this.url, obj)
+        .post('/Pedido', obj)
 
         .then((response) => {
           //console.log(response.data.result)
@@ -586,7 +586,7 @@ export default {
       obj.append("SucursalID", this.SucursalID);
       obj.append("NumeroPedido", this.NumeroPedido);
       axios
-        .post(this.url + "/" + this.IdPedido, obj)
+        .post('/Pedido' + "/" + this.IdPedido, obj)
 
         .then((response) => {
           //console.log(response.data.result)

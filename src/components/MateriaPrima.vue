@@ -423,7 +423,7 @@ export default {
         });
     },
     getMateriaPrima: async function () {
-      const res = await this.$http.get(this.url);
+      const res = await this.$http.get('/MateriaPrima');
       this.MateriaPrima = res.data;
       setTimeout(() => {
         this.Alert = false;
@@ -462,7 +462,7 @@ export default {
       obj.append("UnidadMedidaID", this.UnidadMedidaID);
       obj.append("ProveedorID", this.ProveedorID);
       axios
-        .post(this.url, obj)
+        .post('/MateriaPrima', obj)
         .then((response) => {
           this.MateriaPrima.push(response.data.result);
           this.Alert = true;
@@ -483,7 +483,7 @@ export default {
 
     saveEliminar: async function () {
       axios
-        .post(this.urlAnular + "/" + this.IdRegistroMP)
+        .post('/MateriaPrimaAnular' + "/" + this.IdRegistroMP)
         .then(() => {
           this.Alert2 = true;
           this.getMateriaPrima();

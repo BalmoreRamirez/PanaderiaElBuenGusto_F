@@ -814,7 +814,7 @@ export default {
       this.dialog2 = true;
     },
     async getEmpleados() {
-      const res = await this.$http.get(this.urlEmpleados);
+      const res = await this.$http.get('/Empleados');
       this.Empleados = res.data;
       setTimeout(() => {
         this.Alert = false;
@@ -823,12 +823,12 @@ export default {
     },
 
     async getTipoTitulo() {
-      const res = await this.$http.get(this.urlTitulo);
+      const res = await this.$http.get('Titulo');
       this.TipoTitulo = res.data;
     },
 
     async getTipoCargo() {
-      const res = await this.$http.get(this.urlCargo);
+      const res = await this.$http.get('/Cargo');
       this.TipoCargo = res.data;
     },
 
@@ -852,7 +852,7 @@ export default {
       obj.append("CargoID", this.CargoID);
       obj.append("Observaciones", this.Observaciones);
       axios
-        .post(this.urlEmpleados, obj)
+        .post('/Empleados', obj)
         .then((response) => {
           //console.log(response.data.result)
           this.Empleados.push(response.data.result);
@@ -894,7 +894,7 @@ export default {
       obj.append("CargoID", this.CargoID);
       obj.append("Observaciones", this.Observaciones);
       axios
-        .post(this.urlEmpleados + "/" + this.IdEmpleado, obj)
+        .post('/Empleados' + "/" + this.IdEmpleado, obj)
         .then((response) => {
           //console.log(response.data.result)
           this.Empleados.push(response.data.result);

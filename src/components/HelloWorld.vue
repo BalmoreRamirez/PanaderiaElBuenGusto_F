@@ -3,7 +3,8 @@
     <v-row
     align="center"
     justify="center">
-   <img src="../assets/Home2.jpeg">
+   <img src="../assets/Home2.jpeg"   width: 900px;
+  height: 1600px>
     </v-row>
   </v-container>
 </template>
@@ -22,6 +23,9 @@ import  image from "../assets/Home.png"
   }
 </script>
 <style scoped>
+.img{
 
+
+}
 </style>
 

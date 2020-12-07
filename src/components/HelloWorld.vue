@@ -1,6 +1,7 @@
 <template>
   <v-container>
-    <v-row>
+    <v-row
+    align="center">
    <img src="../assets/Home.jpeg">
     </v-row>
   </v-container>

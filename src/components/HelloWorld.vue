@@ -1,11 +1,17 @@
 <template>
-  <v-container>
+  
+   <v-container>
+    <v-col >
     <v-row
     align="center"
     justify="center">
-   <img src="../assets/Home2.jpeg"  width="1600" height="700" >
+   <img src="../assets/Home.jpeg" width="1600"  height="700" >
     </v-row>
-  </v-container>
+    </v-col>
+
+   </v-container>
+  
+  
 </template>
 
 <script>
